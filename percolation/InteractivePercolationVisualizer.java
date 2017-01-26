@@ -1,6 +1,6 @@
 /******************************************************************************
- *  Compilation:  javac InteractivePercolationVisualizer.java
- *  Execution:    java InteractivePercolationVisualizer n
+ *  Compilation:  javac-algs4 InteractivePercolationVisualizer.java
+ *  Execution:    java-algs4 InteractivePercolationVisualizer n
  *  Dependencies: PercolationVisualizer.java Percolation.java
  *                StdDraw.java StdOut.java
  *
