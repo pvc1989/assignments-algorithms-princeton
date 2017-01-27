@@ -147,20 +147,20 @@ public class Percolation {
 	public static void main(String[] args)
 	{// test client (optional)
 		int Total = Integer.parseInt(args[0]);
-		Percolation obj = new Percolation(Total);
+		Percolation perc = new Percolation(Total);
 		
 		// test public instance methods
 		int i, j;
-		while (!obj.percolates())
+		while (!perc.percolates())
 		{
 			StdOut.print("Enter (row,col) to open a site: ");
 			i = StdIn.readInt();
 			j = StdIn.readInt();
-			obj.open(i, j);
-			StdOut.printf("Is (%d,%d) open?: " + obj.isOpen(i,j) + "\n", i, j);
-			StdOut.printf("Is (%d,%d) full?: " + obj.isFull(i,j) + "\n", i, j);
-			StdOut.println("nOpen: " + obj.numberOfOpenSites());
-			StdOut.println("percaolates?: " + obj.percolates());
+			perc.open(i, j);
+			StdOut.printf("Is (%d,%d) open?: " + perc.isOpen(i,j) + "\n", i, j);
+			StdOut.printf("Is (%d,%d) full?: " + perc.isFull(i,j) + "\n", i, j);
+			StdOut.println("nOpen: " + perc.numberOfOpenSites());
+			StdOut.println("percaolates?: " + perc.percolates());
 		}
 	}
 	
