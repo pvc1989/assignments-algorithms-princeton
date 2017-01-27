@@ -40,12 +40,6 @@ public class PercolationStats {
     
     // number of sites that are opened when the system percolates
     private int[] x;
-    
-    // statistic values
-    private double fracMean; // sample mean
-    private double fracStdDev; // sample standard deviation
-    private double fracLo; // lower bound of the 95% confidence interval
-    private double fracHi; // higher bound of the 95% confidence interval
 
 //  public instance mathods
     public PercolationStats(int n, int trials) {
