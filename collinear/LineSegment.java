@@ -1,4 +1,4 @@
-/*************************************************************************
+/******************************************************************************
  *  Compilation:  javac LineSegment.java
  *  Execution:    none
  *  Dependencies: Point.java
@@ -8,12 +8,12 @@
  *
  *  DO NOT MODIFY THIS CODE.
  *
- *************************************************************************/
+ ******************************************************************************/
 
 public class LineSegment {
     private final Point p;   // one endpoint of this line segment
     private final Point q;   // the other endpoint of this line segment
-
+    
     /**
      * Initializes a new line segment.
      *
@@ -29,7 +29,7 @@ public class LineSegment {
         this.p = p;
         this.q = q;
     }
-
+    
     
     /**
      * Draws this line segment to standard draw.
@@ -37,7 +37,7 @@ public class LineSegment {
     public void draw() {
         p.drawTo(q);
     }
-
+    
     /**
      * Returns a string representation of this line segment
      * This method is provide for debugging;
@@ -48,7 +48,7 @@ public class LineSegment {
     public String toString() {
         return p + " -> " + q;
     }
-
+    
     /**
      * Throws an exception if called. The hashCode() method is not supported because
      * hashing has not yet been introduced in this course. Moreover, hashing does not
@@ -60,6 +60,5 @@ public class LineSegment {
     public int hashCode() {
         throw new UnsupportedOperationException();
     }
-
+    
 }
-
