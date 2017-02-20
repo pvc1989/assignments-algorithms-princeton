@@ -12,17 +12,14 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
-import java.util.Arrays;
 import java.util.Stack;
-import java.lang.Math;
 
 public class Board {
-    private final int dim; // dimension of the board
-    private int[][] board; // current board
-    private int nMove; // number of moves made to reach the board
-    private Board prev; // reference to the previous search-node
+    private static final boolean IF_DEBUG = false;
 
-    private final boolean ifDebug = true;
+    private final int dim; // dimension of the board
+    private int[][] board; // board
+    
     /*
      construct a board from an n-by-n array of blocks
      (where blocks[i][j] = block in row i, column j)
@@ -35,8 +32,6 @@ public class Board {
                 board[i][j] = blocks[i][j];
             }
         }
-        nMove = 0;
-        prev = null;
     }
     
     // board dimension n
@@ -46,17 +41,18 @@ public class Board {
     
     /*
      Hamming priority function.
-     The number of blocks in the wrong position, plus the number of moves made 
-     so far to get to the search node. Intuitively, a search node with a small 
+     The number of blocks in the wrong position, a search node with a small
      number of blocks in the wrong position is close to the goal, and we prefer 
      a search node that have been reached using a small number of moves.
      */
     public int hamming() {
         int count = 0;
+        int goal = 0; // goal value in this position
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                if (board[i][j] != i * dim + j + 1) {
-                    if (ifDebug) StdOut.println(i * dim + j + 1);
+                goal = i * dim + j + 1;
+                if (board[i][j] != goal) {
+                    if (IF_DEBUG) StdOut.println(goal);
                     ++count;
                 }
             }
@@ -96,30 +92,33 @@ public class Board {
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
         Board twinObj = new Board(board);
-        twinObj.prev = this.prev;
-        // get 2 random integers uniformly in [0, dim * dim).
+        // get a random integer uniformly in [0, dim * dim).
         int k1 = StdRandom.uniform(dim * dim);
         int i1 = k1 / dim;
         int j1 = k1 % dim;
+        // its value is not 0
         while (board[i1][j1] == 0) {
             k1 = StdRandom.uniform(dim * dim);
-            int i1 = k1 / dim;
-            int j1 = k1 % dim;
+            i1 = k1 / dim;
+            j1 = k1 % dim;
         }
+        // get another random integer uniformly in [0, dim * dim).
         int k2 = StdRandom.uniform(dim * dim);
         int i2 = k2 / dim;
         int j2 = k2 % dim;
+        // which is different from the 1st one
+        // and its value is not 0
         while (k1 == k2 || board[i2][j2] == 0) {
             k2 = StdRandom.uniform(dim * dim);
-            int i2 = k2 / dim;
-            int j2 = k2 % dim;
+            i2 = k2 / dim;
+            j2 = k2 % dim;
         }
         twinObj.swap(i1, j1, i2, j2);
         return twinObj;
     }
     // swap a pair of blocks
     private void swap(int i1, int j1, int i2, int j2) {
-        if (ifDebug)
+        if (IF_DEBUG)
             StdOut.println("swap [" + i1 + "][" + j1 + "] with ["
                            + i2 + "][" + j2 + "]");
         int temp = board[i1][j1];
@@ -144,9 +143,15 @@ public class Board {
         return true;
     }
     
-    // all neighboring boards
+    // check whether (i,j) is valid
+    private boolean checkID(int i, int j) {
+        if (0 <= i && i < dim && 0 <= j && j < dim)
+            return true;
+        return false;
+    }
+    
+    // get all neighboring boards
     public Iterable<Board> neighbors() {
-        Stack<Board> neighbStack = new Stack<Board>();
         // find (i,j) where board[i][j] == 0
         int i0 = 0;
         int j0 = 0;
@@ -159,46 +164,38 @@ public class Board {
                 }
             }
         }
+        // create a stack to hold the neighbors
+        Stack<Board> neighbStack = new Stack<Board>();
         // left neighbor
         if (checkID(i0 - 1, j0)) {
+            // create a new object
             Board that = new Board(board);
+            // make a one-step movement
             that.swap(i0, j0, i0 - 1, j0);
-            that.nMove = this.nMove + 1;
-            that.prev = this;
+            // push it into the stack
             neighbStack.push(that);
         }
         // right neighbor
         if (checkID(i0 + 1, j0)) {
             Board that = new Board(board);
             that.swap(i0, j0, i0 + 1, j0);
-            that.nMove = this.nMove + 1;
-            that.prev = this;
             neighbStack.push(that);
         }
         // upside neighbor
         if (checkID(i0, j0 - 1)) {
             Board that = new Board(board);
             that.swap(i0, j0, i0, j0 - 1);
-            that.nMove = this.nMove + 1;
-            that.prev = this;
             neighbStack.push(that);
         }
         // downside neighbor
         if (checkID(i0, j0 + 1)) {
             Board that = new Board(board);
             that.swap(i0, j0, i0, j0 + 1);
-            that.nMove = this.nMove + 1;
-            that.prev = this;
             neighbStack.push(that);
         }
         return neighbStack;
     }
     
-    // check whether (i,j) is valid
-    private boolean checkID(int i, int j) {
-        if (0 <= i && i < dim && 0 <= j && j < dim) return true;
-        else return false;
-    }
     
     /*
      string representation of this board
@@ -257,8 +254,6 @@ public class Board {
             Board twinObj = initial.twin();
             StdOut.println("initial.twin():\n" + twinObj);
             // test equals()
-            StdOut.println("initial.equals(initial) = "
-                           + initial.equals(initial));
             StdOut.println("initial.equals(twinObj) = "
                            + initial.equals(twinObj));
             // test neighbors()
@@ -267,10 +262,7 @@ public class Board {
             for (Board item : neighbSet) {
                 StdOut.println("possible neighbor:\n" + item);
             }
-                
             
-//            Solver solver = new Solver(initial);
-//            StdOut.println(filename + ": " + solver.moves());
         }
     }
 }
