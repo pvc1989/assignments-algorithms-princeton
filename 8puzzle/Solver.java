@@ -30,7 +30,7 @@ public class Solver {
         }
     }
     
-    public class PriorityOrder implements Comparator<SearchNode> {
+    private class PriorityOrder implements Comparator<SearchNode> {
         public int compare(SearchNode v, SearchNode w) {
             int vPri = v.board.manhattan() + v.nMove;
             int wPri = w.board.manhattan() + w.nMove;
