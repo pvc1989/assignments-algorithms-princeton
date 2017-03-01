@@ -20,8 +20,6 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.TreeSet;
@@ -127,11 +125,7 @@ public class PointSET {
             StdDraw.setPenRadius(0.03);
             StdDraw.setPenColor(StdDraw.RED);
             brute.nearest(query).draw();
-            StdDraw.setPenRadius(0.02);
             
-                // draw in blue the nearest neighbor (using kd-tree algorithm)
-//            StdDraw.setPenColor(StdDraw.BLUE);
-//            kdtree.nearest(query).draw();
             StdDraw.show();
             StdDraw.pause(40);
         }
