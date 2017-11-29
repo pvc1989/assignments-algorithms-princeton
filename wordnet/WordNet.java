@@ -72,7 +72,7 @@ public class WordNet {
 
     // a synset (second field of synsets.txt) that is the common ancestor of 
     // nounA and nounB in a shortest ancestral path (defined below)
-    public String itsSap(String nounA, String nounB) {
+    public String sap(String nounA, String nounB) {
         int id = itsSap.ancestor(
             itsNounToIds.get(nounA), itsNounToIds.get(nounB));
         return itsIdToNouns.get(id);
@@ -105,12 +105,12 @@ public class WordNet {
                 StdOut.println(wordnet.isNoun(StdIn.readString()));
             }
             else if (choice == 2) {
-                // test distance() and itsSap()
+                // test distance() and sap()
                 StdOut.println("Given 2 nouns:");
                 String v = StdIn.readString();
                 String w = StdIn.readString();
                 StdOut.println("Distance: " + wordnet.distance(v, w));
-                StdOut.println("Common Ancestor: " + wordnet.itsSap(v, w));
+                StdOut.println("Common Ancestor: " + wordnet.sap(v, w));
             }
             else {
                 break;
