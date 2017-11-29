@@ -1,14 +1,13 @@
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 public class WordNet {
     
-    private HashMap<String, Integer> noun_to_id_;
+    private HashMap<String, HashSet<Integer>> noun_to_ids_;
     private HashMap<Integer, String> id_to_nouns_;
     private Digraph g_;
     private SAP sap_;
@@ -17,7 +16,7 @@ public class WordNet {
     public WordNet(String synsets, String hypernyms) {
         // parse synsets
         In in = new In(synsets);
-        noun_to_id_ = new HashMap<String, Integer>();
+        noun_to_ids_ = new HashMap<String, HashSet<Integer>>();
         id_to_nouns_ = new HashMap<Integer, String>();
         int id = 0;
         while (in.hasNextLine()) {
@@ -26,7 +25,13 @@ public class WordNet {
             id_to_nouns_.put(id, line[1]);
             String[] nouns = line[1].split(" ");
             for (String s : nouns) {
-                noun_to_id_.put(s, id);
+                if (noun_to_ids_.containsKey(s)) {
+                    noun_to_ids_.get(s).add(id);
+                } else {
+                    HashSet<Integer> ids = new HashSet<Integer>();
+                    ids.add(id);
+                    noun_to_ids_.put(s, ids);
+                }
             }
         }
         // build the Digraph
@@ -45,23 +50,24 @@ public class WordNet {
 
     // returns all WordNet nouns
     public Iterable<String> nouns() {
-        return noun_to_id_.keySet();
+        return noun_to_ids_.keySet();
     }
 
     // is the word a WordNet noun?
     public boolean isNoun(String word) {
-        return noun_to_id_.containsKey(word);
+        return noun_to_ids_.containsKey(word);
     }
 
     // distance between nounA and nounB
     public int distance(String nounA, String nounB) {
-        return sap_.length(noun_to_id_.get(nounA), noun_to_id_.get(nounB));
+        return sap_.length(noun_to_ids_.get(nounA), noun_to_ids_.get(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of 
     // nounA and nounB in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
-        int id = sap_.ancestor(noun_to_id_.get(nounA), noun_to_id_.get(nounB));
+        int id = sap_.ancestor(
+            noun_to_ids_.get(nounA), noun_to_ids_.get(nounB));
         return id_to_nouns_.get(id);
     }
 
@@ -80,17 +86,26 @@ public class WordNet {
         StdOut.println(
             wordnet.g_.V() + " vertices and " + 
             wordnet.g_.E() + " Edges.");
-        // test isNoun(String)
-        int n = 2;
-        StdOut.printf("Given %d nouns:\n", n);
-        for (int i = 0; i < n; ++i) {
-            StdOut.println(wordnet.isNoun(StdIn.readString()));
+        while (true) {
+            StdOut.println(
+                "\nChoose which to test:\n" + 
+                "\t[1] whether a noun is in the WordNet;\n" +
+                "\t[2] distance between 2 nouns.");
+            int choice = StdIn.readInt();
+            if (choice == 1) {
+                // test isNoun(String)
+                StdOut.print("Give a noun: ");
+                StdOut.println(wordnet.isNoun(StdIn.readString()));
+            } else if (choice == 2) {
+                // test distance() and sap()
+                StdOut.println("Given 2 nouns:");
+                String v = StdIn.readString();
+                String w = StdIn.readString();
+                StdOut.println("Distance: " + wordnet.distance(v, w));
+                StdOut.println("Common Ancestor: " + wordnet.sap(v, w));
+            } else {
+                break;
+            }
         }
-        // test distance() and sap()
-        StdOut.println("Given 2 nouns:");
-        String v = StdIn.readString();
-        String w = StdIn.readString();
-        StdOut.println("Distance: " + wordnet.distance(v, w));
-        StdOut.println("Common Ancestor: " + wordnet.sap(v, w));
     }
 }

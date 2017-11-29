@@ -1,216 +1,316 @@
+/******************************************************************************
+ *  Compilation:  javac-algs4 SAP.java
+ *  Execution:    java-algs4 SAP digraph.txt
+ *  Dependencies: In.java StdIn.java StdOut.java
+ *  Data files:   http://coursera.cs.princeton.edu/algs4/testing/wordnet-testing.zip
+ *
+ *  % java BinarySearch tinyW.txt < tinyT.txt
+ *  50
+ *  99
+ *  13
+ *
+ *  % java BinarySearch largeW.txt < largeT.txt | more
+ *  499569
+ *  984875
+ *  295754
+ *  207807
+ *  140925
+ *  161828
+ *  [367,966 total values]
+ *  
+ ******************************************************************************/
+
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.HashSet;
+
+/**
+ * The {@code SAP} class provides methods for querying shortest ancestral path
+ * on Digraphs.
+ * An ancestral path between two vertices v and w in a digraph is a directed 
+ * path from v to a common ancestor x, together with a directed path from w to 
+ * the same ancestor x.
+ * A shortest ancestral path is an ancestral path of minimum total length.
+ *
+ *  @author Vladimir C. Petrov
+ */
 
 public class SAP {
-
-    private final Digraph g_;
-    // cache for single source query
-    private int v_, w_;
-    private HashMap<Integer, Integer> dist_to_v_, dist_to_w_;
-    private int ca_;  // common ancestor of 2 vertices 
-    // cache for multiple sources query
-    private TreeSet<Integer> v_set_, w_set_;
-    private HashMap<Integer, Integer> dist_to_v_set_, dist_to_w_set_;
-    private int ca_of_2_sets_;  // common ancestor of 2 sets of vertices
-
+    private final Digraph graph_;
+    // cache for query on vertex pair
+    private class QueryOnVertexPair {
+        private int v_;
+        private int w_;
+        private int ancestor_;
+        private int length_;
+        public QueryOnVertexPair() {
+            v_ = -1;
+            w_ = -1;
+            ancestor_ = -1;
+            length_ = -1;
+        }
+        public void update(int v, int w, int ancestor, int length) {
+            v_ = v;
+            w_ = w;
+            ancestor_ = ancestor;
+            length_ = length;
+        }
+        public boolean sameQuery(int v, int w) {
+            if (v == v_ && w == w_ || v == w_ && w == v_) {
+                StdOut.print("/* Same as the last query. */ ");                
+                return true;
+            } else {
+                return false;
+            }
+        }
+        public int length() { return length_; }
+        public int ancestor() { return ancestor_; }
+    }
+    private QueryOnVertexPair last_query_on_vertex_pair_;
+    // cache for query on two sets of vertices
+    private class QueryOnVertexSetPair {
+        private HashSet<Integer> v_;
+        private HashSet<Integer> w_;
+        private int ancestor_;
+        private int length_;
+        public QueryOnVertexSetPair() {
+            v_ = new HashSet<Integer>();
+            w_ = new HashSet<Integer>();
+            ancestor_ = -1;
+            length_ = -1;
+        }
+        public void update(Iterable<Integer> v, Iterable<Integer> w, 
+                           int ancestor, int length) {
+            v_.clear();
+            for (int x : v) v_.add(x);
+            w_.clear();
+            for (int x : w) w_.add(x);
+            ancestor_ = ancestor;
+            length_ = length;
+        }
+        public boolean sameQuery(Iterable<Integer> v, Iterable<Integer> w) {
+            if (v_.equals(v) && w_.equals(w) || w_.equals(v) && v_.equals(w)) {
+                StdOut.print("/* Same as the last query. */ ");                
+                return true;
+            } else {
+                return false;
+            }
+        }
+        public int length() { return length_; }
+        public int ancestor() { return ancestor_; }
+    }
+    private QueryOnVertexSetPair last_query_on_vertex_set_pair_;    
+    
     // constructor takes a digraph (not necessarily a DAG)
-    public SAP(Digraph g) {
-        g_ = new Digraph(g);  // a deep copy of the given digraph
-        v_ = -1;
-        w_ = -1;
-        ca_ = -1;
+    public SAP(Digraph graph) {
+        graph_ = new Digraph(graph);  // a deep copy of the given digraph
+        last_query_on_vertex_pair_ = new QueryOnVertexPair();
+        last_query_on_vertex_set_pair_ = new QueryOnVertexSetPair();
     }
 
-    // Run BFS on both sources, one after another, level by level,
-    // to find the common ancestor with minimum path length.
-    private void bfs_(int v, int w) {
-        if (v == v_ && w_ == w) {
-            StdOut.print("(Same as the last query.) ");
-            return;
-        }
-
-        v_ = v;
-        dist_to_v_ = new HashMap<Integer, Integer>();
-        dist_to_v_.put(v, 0);
-        Queue<Integer> v_queue = new Queue<Integer>();
-        v_queue.enqueue(v);
-
-        w_ = w;
-        dist_to_w_ = new HashMap<Integer, Integer>();        
-        dist_to_w_.put(w, 0);
-        Queue<Integer> w_queue = new Queue<Integer>();
-        w_queue.enqueue(w);
-
-        while (true) {
-            // TODO: merge similar blocks
-            // Run BFS on v
-            if (!v_queue.isEmpty()) {
-                int parent = v_queue.dequeue();
-                if (dist_to_w_.containsKey(parent)) {
-                    ca_ = parent;
-                    return;
-                }
-                int depth = dist_to_v_.get(parent) + 1;
-                for (int kid : g_.adj(parent)) {
-                    if (!dist_to_v_.containsKey(kid)) {
-                        dist_to_v_.put(kid, depth);
-                        v_queue.enqueue(kid);
-                    }
-                }
-            }
-            // Run BFS on w
-            if (!w_queue.isEmpty()) {
-                int parent = w_queue.dequeue();
-                if (dist_to_v_.containsKey(parent)) {
-                    ca_ = parent;
-                    return;
-                }
-                int depth = dist_to_w_.get(parent) + 1;
-                for (int kid : g_.adj(parent)) {
-                    if (!dist_to_w_.containsKey(kid)) {
-                        dist_to_w_.put(kid, depth);
-                        w_queue.enqueue(kid);
-                    }
-                }
-            }
-        }
-    }
-
-    // length of shortest ancestral path between v and w; -1 if no such path
+    // length of a shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
-        bfs_(v, w);
-        return dist_to_v_.get(ca_) + dist_to_w_.get(ca_);
-    }
-
-    // a common ancestor of v and w that participates in a shortest ancestral 
-    // path; -1 if no such path
-    public int ancestor(int v, int w) {
-        bfs_(v, w);
-        return ca_;
-    }
-
-    // Run BFS on both sources, one after another, level by level,
-    // to find the common ancestor with minimum path length.
-    private void bfs_(Iterable<Integer> v, Iterable<Integer> w) {
-        TreeSet<Integer> v_set = new TreeSet<Integer>();
-        for (int x : v) v_set.add(x);
-        TreeSet<Integer> w_set = new TreeSet<Integer>();
-        for (int x : w) w_set.add(x);
-        if (v_set.equals(v_set_) && w_set.equals(w_set_)) {
-            StdOut.print("(Same as the last query.) ");
-            return;
+        if (!last_query_on_vertex_pair_.sameQuery(v, w)) {
+            search_common_ancestor_(v, w);
         }
-
-        v_set_ = v_set;
-        dist_to_v_set_ = new HashMap<Integer, Integer>();
-        Queue<Integer> v_queue = new Queue<Integer>();
-        for (int x : v_set) {
-            dist_to_v_set_.put(x, 0);
-            v_queue.enqueue(x);
-        }
-
-        w_set_ = w_set;
-        dist_to_w_set_ = new HashMap<Integer, Integer>();  
-        Queue<Integer> w_queue = new Queue<Integer>();  
-        for (int x : w_set) {
-            dist_to_w_set_.put(x, 0);
-            w_queue.enqueue(x);
-        }
-
-        while (true) {
-            // TODO: merge similar blocks
-            // Run BFS on v_set
-            if (!v_queue.isEmpty()) {
-                int parent = v_queue.dequeue();
-                if (dist_to_w_set_.containsKey(parent)) {
-                    ca_of_2_sets_ = parent;
-                    return;
-                }
-                int depth = dist_to_v_set_.get(parent) + 1;
-                for (int kid : g_.adj(parent)) {
-                    if (!dist_to_v_set_.containsKey(kid)) {
-                        dist_to_v_set_.put(kid, depth);
-                        v_queue.enqueue(kid);
-                    }
-                }
-            }
-            // Run BFS on w_set
-            if (!w_queue.isEmpty()) {
-                int parent = w_queue.dequeue();
-                if (dist_to_v_set_.containsKey(parent)) {
-                    ca_of_2_sets_ = parent;
-                    return;
-                }
-                int depth = dist_to_w_set_.get(parent) + 1;
-                for (int kid : g_.adj(parent)) {
-                    if (!dist_to_w_set_.containsKey(kid)) {
-                        dist_to_w_set_.put(kid, depth);
-                        w_queue.enqueue(kid);
-                    }
-                }
-            }
-        }
+        return last_query_on_vertex_pair_.length();
     }
 
     // length of shortest ancestral path between any vertex in v and any vertex 
     // in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
-        bfs_(v, w);
-        return dist_to_v_set_.get(ca_of_2_sets_) + 
-               dist_to_w_set_.get(ca_of_2_sets_);
+        if (!last_query_on_vertex_set_pair_.sameQuery(v, w)) {
+            search_common_ancestor_(v, w);
+        }
+        return last_query_on_vertex_set_pair_.length();
+    }
+
+    // a common ancestor of v and w that participates in a shortest ancestral 
+    // path; -1 if no such path
+    public int ancestor(int v, int w) {
+        if (!last_query_on_vertex_pair_.sameQuery(v, w)) {
+            search_common_ancestor_(v, w);
+        }
+        return last_query_on_vertex_pair_.ancestor();
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no 
     // such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
-        bfs_(v, w);
-        return ca_of_2_sets_;
+        if (!last_query_on_vertex_set_pair_.sameQuery(v, w)) {
+            search_common_ancestor_(v, w);
+        }
+        return last_query_on_vertex_set_pair_.ancestor();
+    }
+
+    /* Run BFS on both sources, one after another, level by level.
+     */
+    private int search_common_ancestor_(int v, int w) {
+        Queue<Integer> v_queue = new Queue<Integer>();  
+        v_queue.enqueue(v);
+        HashMap<Integer, Integer> dist_to_v = new HashMap<Integer, Integer>();
+        dist_to_v.put(v, 0);
+
+        Queue<Integer> w_queue = new Queue<Integer>();  
+        w_queue.enqueue(w);
+        HashMap<Integer, Integer> dist_to_w = new HashMap<Integer, Integer>();
+        dist_to_w.put(w, 0);
+
+        int path_length = -1;
+        int common_ancestor = -1;
+        while (true) {
+            if (v_queue.isEmpty() && w_queue.isEmpty()) {
+                // Both BFS's have finished and no SAP has been found.
+                break;
+            }
+            if (!v_queue.isEmpty()) {
+                common_ancestor = bfs_(v_queue, dist_to_v, dist_to_w);
+                if (common_ancestor != -1) {
+                    path_length = dist_to_v.get(common_ancestor) +
+                                  dist_to_w.get(common_ancestor);
+                    break;
+                }
+            }
+            if (!w_queue.isEmpty()) {
+                common_ancestor = bfs_(w_queue, dist_to_w, dist_to_v);
+                if (common_ancestor != -1) {
+                    path_length = dist_to_v.get(common_ancestor) +
+                                  dist_to_w.get(common_ancestor);
+                    break;
+                }
+            }
+        }
+        last_query_on_vertex_pair_.update(v, w, common_ancestor, path_length);
+        return common_ancestor;
+    }
+
+    /* Run BFS on both sources, one after another, level by level.
+     */
+    private int search_common_ancestor_(
+            Iterable<Integer> v, Iterable<Integer> w) {
+        Queue<Integer> v_queue = new Queue<Integer>();  
+        HashMap<Integer, Integer> dist_to_v = new HashMap<Integer, Integer>();
+        for (int x : v) {
+            v_queue.enqueue(x);
+            dist_to_v.put(x, 0);
+        }
+
+        Queue<Integer> w_queue = new Queue<Integer>();
+        HashMap<Integer, Integer> dist_to_w = new HashMap<Integer, Integer>();
+        for (int x : w) {
+            w_queue.enqueue(x);
+            dist_to_w.put(x, 0);
+        }
+
+        int path_length = -1;
+        int common_ancestor = -1;
+        while (true) {
+            if (v_queue.isEmpty() && w_queue.isEmpty()) {
+                // Both BFS's have finished and no SAP has been found.
+                break;
+            }
+            if (!v_queue.isEmpty()) {
+                common_ancestor = bfs_(v_queue, dist_to_v, dist_to_w);
+                if (common_ancestor != -1) {
+                    path_length = dist_to_v.get(common_ancestor) +
+                                  dist_to_w.get(common_ancestor);
+                    break;
+                }
+            }
+            if (!w_queue.isEmpty()) {
+                common_ancestor = bfs_(w_queue, dist_to_w, dist_to_v);
+                if (common_ancestor != -1) {
+                    path_length = dist_to_v.get(common_ancestor) +
+                                  dist_to_w.get(common_ancestor);
+                    break;
+                }
+            }
+        }
+        last_query_on_vertex_set_pair_.update(
+            v, w, common_ancestor, path_length);
+        return common_ancestor;
+    }
+
+    /* Grow the breadth-first tree rooted at x.
+     * Check whether a vertex is in another tree rooted at y; 
+     * if so, return it as a common ancestor.
+    */
+    private int bfs_(
+            Queue<Integer> x_queue,
+            HashMap<Integer, Integer> dist_to_x,
+            HashMap<Integer, Integer> dist_to_y) {
+        int parent = x_queue.dequeue();
+        if (dist_to_y.containsKey(parent)) {
+            return parent;
+        }
+        int dist = dist_to_x.get(parent) + 1;
+        for (int kid : graph_.adj(parent)) {
+            if (!dist_to_x.containsKey(kid)) {
+                x_queue.enqueue(kid);
+                dist_to_x.put(kid, dist);
+            }
+            if (dist_to_y.containsKey(kid)) {
+                return kid;
+            }
+        }
+        return -1;
     }
 
     // do unit testing of this class
     public static void main(String[] args) {
         // test constructor
-        SAP sap = new SAP(new Digraph(new In(args[0])));
+        In in = new In(args[0]);
+        Digraph digraph = new Digraph(in);
+        SAP sap = new SAP(digraph);
         StdOut.println("The Digraph:");
-        StdOut.println(sap.g_);
-        // test bfs_(int, int)
-        StdOut.println("Give 2 query vertices:");        
-        int v = StdIn.readInt();
-        int w = StdIn.readInt();
-        StdOut.printf("Common Ancestor of %d and %d: ", v, w);
-        sap.bfs_(v, w);
-        StdOut.println(sap.ca_);
-        // test ancestor(int, int)
-        StdOut.printf("Common Ancestor of %d and %d: ", v, w);
-        StdOut.println(sap.ancestor(v, w));
-        // test length(int, int)
-        StdOut.printf(
-            "Length of shortest ancestral path between %d and %d: ", v, w);
-        StdOut.println(sap.length(v, w));
-        // test bfs_(Iterable<Integer>, Iterable<Integer>)
-        StdOut.println("Give 2 query vertices in the 1st set:");        
-        TreeSet<Integer> v_set = new TreeSet<Integer>();
-        v_set.add(StdIn.readInt());
-        v_set.add(StdIn.readInt());
-        StdOut.println("Give 2 query vertices in the 2nd set:");        
-        TreeSet<Integer> w_set = new TreeSet<Integer>();
-        w_set.add(StdIn.readInt());
-        w_set.add(StdIn.readInt());
-        StdOut.println("Common Ancestor of " + v_set + " and " + w_set);
-        sap.bfs_(v_set, w_set);
-        StdOut.println(sap.ca_of_2_sets_);
-        // test ancestor(Iterable<Integer>, Iterable<Integer>)
-        StdOut.println("Common Ancestor of " + v_set + " and " + w_set);
-        StdOut.println(sap.ancestor(v_set, w_set));
-        // test length(Iterable<Integer>, Iterable<Integer>)
-        StdOut.println(
-            "Length of shortest ancestral path between " + 
-            v_set + " and " + w_set);
-        StdOut.println(sap.length(v_set, w_set));
+        StdOut.println(sap.graph_);
+
+        while (true) {
+            StdOut.println(
+                "\nChoose which to test:\n" + 
+                "\t[1] query on a pair of vertices;\n" +
+                "\t[2] query on a pair of sets of vertices.");
+            int choice = StdIn.readInt();
+            if (choice == 1) {
+                StdOut.print("Give a pair of vertices: ");
+                int v = StdIn.readInt();
+                int w = StdIn.readInt();
+                // test search_common_ancestor_(int, int)
+                StdOut.printf("Common Ancestor of %d and %d: ", v, w);
+                StdOut.println(sap.search_common_ancestor_(v, w));
+                // test ancestor(int, int)
+                StdOut.printf("Common Ancestor of %d and %d: ", v, w);
+                StdOut.println(sap.ancestor(v, w));
+                // test length(int, int)
+                StdOut.printf("Length of SAP between %d and %d: ", v, w);
+                StdOut.println(sap.length(v, w));
+            } else if (choice == 2) {
+                StdOut.print("Give 2 vertices for the 1st set: ");
+                Queue<Integer> v = new Queue<Integer>();
+                v.enqueue(StdIn.readInt());
+                v.enqueue(StdIn.readInt());
+                StdOut.print("Give 2 vertices for the 2nd set: ");
+                Queue<Integer> w = new Queue<Integer>();
+                w.enqueue(StdIn.readInt());
+                w.enqueue(StdIn.readInt());
+                /* test search_common_ancestor_(Iterable<Integer>, 
+                                                Iterable<Integer>) 
+                */
+                StdOut.print("Common Ancestor of " + v + "and " + w + ": ");
+                StdOut.println(sap.search_common_ancestor_(v, w));
+                // test ancestor(Iterable<Integer>, Iterable<Integer>)
+                StdOut.printf("Common Ancestor of " + v + "and " + w + ": ");
+                StdOut.println(sap.ancestor(v, w));
+                // test length(Iterable<Integer>, Iterable<Integer>)
+                StdOut.printf("Length of SAP between " + v + "and " + w + ": ");
+                StdOut.println(sap.length(v, w));
+            } else {
+                break;
+            }
+        }
     }
 }
