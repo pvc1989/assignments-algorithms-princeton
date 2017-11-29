@@ -1,3 +1,9 @@
+/******************************************************************************
+ *  Compilation:    javac-algs4 WordNet.java
+ *  Execution:      java-algs4 WordNet
+ *  Dependencies:   In.java StdIn.java StdOut.java
+ ******************************************************************************/
+
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
@@ -7,68 +13,69 @@ import java.util.HashSet;
 
 public class WordNet {
     
-    private HashMap<String, HashSet<Integer>> noun_to_ids_;
-    private HashMap<Integer, String> id_to_nouns_;
-    private Digraph g_;
-    private SAP sap_;
+    private HashMap<String, HashSet<Integer>> itsNounToIds;
+    private HashMap<Integer, String> itsIdToNouns;
+    private Digraph itsGraph;
+    private SAP itsSap;
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
         // parse synsets
         In in = new In(synsets);
-        noun_to_ids_ = new HashMap<String, HashSet<Integer>>();
-        id_to_nouns_ = new HashMap<Integer, String>();
+        itsNounToIds = new HashMap<String, HashSet<Integer>>();
+        itsIdToNouns = new HashMap<Integer, String>();
         int id = 0;
         while (in.hasNextLine()) {
             String[] line = in.readLine().split(",");
             id = Integer.parseInt(line[0]);
-            id_to_nouns_.put(id, line[1]);
+            itsIdToNouns.put(id, line[1]);
             String[] nouns = line[1].split(" ");
             for (String s : nouns) {
-                if (noun_to_ids_.containsKey(s)) {
-                    noun_to_ids_.get(s).add(id);
-                } else {
+                if (itsNounToIds.containsKey(s)) {
+                    itsNounToIds.get(s).add(id);
+                }
+                else {
                     HashSet<Integer> ids = new HashSet<Integer>();
                     ids.add(id);
-                    noun_to_ids_.put(s, ids);
+                    itsNounToIds.put(s, ids);
                 }
             }
         }
         // build the Digraph
         in = new In(hypernyms);
-        g_ = new Digraph(id + 1);
+        itsGraph = new Digraph(id + 1);
         while (in.hasNextLine()) {
             String[] line = in.readLine().split(",");
             int synset = Integer.parseInt(line[0]);
             for (int i = 1; i < line.length; ++i) {
-                g_.addEdge(synset, Integer.parseInt(line[i]));
+                itsGraph.addEdge(synset, Integer.parseInt(line[i]));
             }
         }
         // build the Shortest Ancestral Path object
-        sap_ = new SAP(g_);
+        itsSap = new SAP(itsGraph);
     }
 
     // returns all WordNet nouns
     public Iterable<String> nouns() {
-        return noun_to_ids_.keySet();
+        return itsNounToIds.keySet();
     }
 
     // is the word a WordNet noun?
     public boolean isNoun(String word) {
-        return noun_to_ids_.containsKey(word);
+        return itsNounToIds.containsKey(word);
     }
 
     // distance between nounA and nounB
     public int distance(String nounA, String nounB) {
-        return sap_.length(noun_to_ids_.get(nounA), noun_to_ids_.get(nounB));
+        return itsSap.length(itsNounToIds.get(nounA), itsNounToIds.get(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of 
     // nounA and nounB in a shortest ancestral path (defined below)
-    public String sap(String nounA, String nounB) {
-        int id = sap_.ancestor(
-            noun_to_ids_.get(nounA), noun_to_ids_.get(nounB));
-        return id_to_nouns_.get(id);
+    public String itsSap(String nounA, String nounB) {
+        int id = itsSap.ancestor(
+            itsNounToIds.get(nounA), itsNounToIds.get(nounB));
+        return itsIdToNouns.get(id);
     }
 
     // do unit testing of this class
@@ -84,8 +91,8 @@ public class WordNet {
         // test parsing hypernyms
         StdOut.println("Digraph:");
         StdOut.println(
-            wordnet.g_.V() + " vertices and " + 
-            wordnet.g_.E() + " Edges.");
+            wordnet.itsGraph.V() + " vertices and " + 
+            wordnet.itsGraph.E() + " Edges.");
         while (true) {
             StdOut.println(
                 "\nChoose which to test:\n" + 
@@ -96,14 +103,16 @@ public class WordNet {
                 // test isNoun(String)
                 StdOut.print("Give a noun: ");
                 StdOut.println(wordnet.isNoun(StdIn.readString()));
-            } else if (choice == 2) {
-                // test distance() and sap()
+            }
+            else if (choice == 2) {
+                // test distance() and itsSap()
                 StdOut.println("Given 2 nouns:");
                 String v = StdIn.readString();
                 String w = StdIn.readString();
                 StdOut.println("Distance: " + wordnet.distance(v, w));
-                StdOut.println("Common Ancestor: " + wordnet.sap(v, w));
-            } else {
+                StdOut.println("Common Ancestor: " + wordnet.itsSap(v, w));
+            }
+            else {
                 break;
             }
         }

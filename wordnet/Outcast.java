@@ -1,29 +1,32 @@
+/******************************************************************************
+ *  Compilation:    javac-algs4 Outcast.java
+ *  Execution:      java-algs4 Outcast
+ *  Dependencies:   WordNet.java
+ ******************************************************************************/
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
-import java.util.HashMap;
 
 public class Outcast {
 
-    private WordNet wordnet_;
+    private WordNet itsWordnet;
 
-    // constructor takes a WordNet object
+    // constructor takes a itsWordnet object
     public Outcast(WordNet wordnet) {
-        wordnet_ = wordnet;
+        itsWordnet = wordnet;
     }   
 
-    // given an array of WordNet nouns, return an outcast
+    // given an array of itsWordnet nouns, return an outcast
     public String outcast(String[] nouns) {
         int n = nouns.length;
-        int max_dist = 0;
+        int maxDist = 0;
         String str = "";
         for (int i = 0; i < n; ++i) {
             int dist = 0;
             for (int j = 0; j < n; ++j) {
-                dist += wordnet_.distance(nouns[i], nouns[j]);
+                dist += itsWordnet.distance(nouns[i], nouns[j]);
             }
-            if (max_dist < dist) {
-                max_dist = dist;
+            if (maxDist < dist) {
+                maxDist = dist;
                 str = nouns[i];
             }
         }
@@ -32,12 +35,12 @@ public class Outcast {
 
     // see test client below
     public static void main(String[] args) {
-        WordNet wordnet = new WordNet(args[0], args[1]);
-        Outcast outcast = new Outcast(wordnet);
+        WordNet itsWordnet = new WordNet(args[0], args[1]);
+        Outcast outcast = new Outcast(itsWordnet);
         for (int t = 2; t < args.length; t++) {
             In in = new In(args[t]);
             String[] nouns = in.readAllStrings();
             StdOut.println(args[t] + ": " + outcast.outcast(nouns));
         }
     }
- }
+}
