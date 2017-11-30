@@ -1,9 +1,7 @@
 /******************************************************************************
  *  Compilation:  javac-algs4 SAP.java
  *  Execution:    java-algs4 SAP digraph.txt
- *  Dependencies: In.java StdIn.java StdOut.java
- *  Data files:   http://coursera.cs.princeton.edu/algs4/testing/wordnet-testing.zip
- *
+ * 
  *  % java BinarySearch tinyW.txt < tinyT.txt
  *  50
  *  99
@@ -40,7 +38,7 @@ import java.util.HashSet;
  */
 
 public class SAP {
-    private final Digraph graph;
+    private final Digraph itsGraph;
     // cache for query on vertex pair
     private class QueryOnVertexPair {
         private int itsV;
@@ -98,7 +96,7 @@ public class SAP {
     
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph graph) {
-        this.graph = new Digraph(graph);  // a deep copy of the given digraph
+        this.itsGraph = new Digraph(graph);  // a deep copy of the given digraph
         lastQueryOnVertexPair = new QueryOnVertexPair();
         lastQueryOnVertexSetPair = new QueryOnVertexSetPair();
     }
@@ -162,7 +160,7 @@ public class SAP {
                 commonAncestor = bfs(vQueue, distToV, distToW);
                 if (commonAncestor != -1) {
                     pathLength = distToV.get(commonAncestor) +
-                                  distToW.get(commonAncestor);
+                                 distToW.get(commonAncestor);
                     break;
                 }
             }
@@ -239,7 +237,7 @@ public class SAP {
             return parent;
         }
         int dist = distToX.get(parent) + 1;
-        for (int kid : graph.adj(parent)) {
+        for (int kid : itsGraph.adj(parent)) {
             if (!distToX.containsKey(kid)) {
                 xQueue.enqueue(kid);
                 distToX.put(kid, dist);
@@ -255,16 +253,17 @@ public class SAP {
     public static void main(String[] args) {
         // test constructor
         In in = new In(args[0]);
-        Digraph digraph = new Digraph(in);
-        SAP sap = new SAP(digraph);
+        Digraph graph = new Digraph(in);
+        SAP sap = new SAP(graph);
         StdOut.println("The Digraph:");
-        StdOut.println(sap.graph);
+        StdOut.println(sap.itsGraph);
 
         while (true) {
             StdOut.println(
                 "\nChoose which to test:\n" + 
-                "\t[1] query on a pair of vertices;\n" +
-                "\t[2] query on a pair of sets of vertices.");
+                "    [1] query on a pair of vertices;\n" +
+                "    [2] query on a pair of sets of vertices;\n" +
+                "    [else] quit.");
             int choice = StdIn.readInt();
             if (choice == 1) {
                 StdOut.print("Give a pair of vertices: ");
