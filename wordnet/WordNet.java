@@ -8,6 +8,7 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.DirectedCycleX;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -41,15 +42,21 @@ public class WordNet {
                 }
             }
         }
-        // build the Digraph
+        // parse hypernyms, build the Digraph
         in = new In(hypernyms);
-        itsGraph = new Digraph(id + 1);
+        itsGraph = new Digraph(itsIdToNouns.size());
         while (in.hasNextLine()) {
             String[] line = in.readLine().split(",");
             int synset = Integer.parseInt(line[0]);
             for (int i = 1; i < line.length; ++i) {
                 itsGraph.addEdge(synset, Integer.parseInt(line[i]));
             }
+        }
+        // make sure the Digraph is acyclic
+        DirectedCycleX cycleFinder = new DirectedCycleX(itsGraph);
+        if (cycleFinder.hasCycle()) {
+            throw new IllegalArgumentException(
+                "The input does not correspond to a DAG.");
         }
         // build the Shortest Ancestral Path object
         itsSap = new SAP(itsGraph);
@@ -65,17 +72,25 @@ public class WordNet {
         return itsNounToIds.containsKey(word);
     }
 
+    // return the ID set corresponding to a noun
+    private HashSet<Integer> getIds(String noun) {
+        HashSet<Integer> ids = itsNounToIds.get(noun);
+        if (ids == null) {
+            throw new IllegalArgumentException(
+                "The noun argument is not in the WordNet.");
+        }
+        return ids;
+    }
+
     // distance between nounA and nounB
     public int distance(String nounA, String nounB) {
-        return itsSap.length(itsNounToIds.get(nounA), itsNounToIds.get(nounB));
+        return itsSap.length(getIds(nounA), getIds(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of 
     // nounA and nounB in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
-        int id = itsSap.ancestor(
-            itsNounToIds.get(nounA), itsNounToIds.get(nounB));
-        return itsIdToNouns.get(id);
+        return itsIdToNouns.get(itsSap.ancestor(getIds(nounA), getIds(nounB)));
     }
 
     // do unit testing of this class
