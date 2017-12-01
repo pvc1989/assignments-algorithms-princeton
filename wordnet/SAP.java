@@ -24,7 +24,7 @@ import java.util.HashSet;
 
 public class SAP {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final int INFINITY = Integer.MAX_VALUE;
 
     private final Digraph itsGraph;
