@@ -19,22 +19,24 @@ import java.util.LinkedList;
  */
 public class DeluxeBFS {
 
-    private Digraph itsGraph;  
-    private HashSet<Integer> itsRoot;  // root of the breadth-first tree
+    private static final boolean DEBUG = false;
+    private static final int INFINITY = Integer.MAX_VALUE;
+
+    private final Digraph itsGraph;  
+    private final HashSet<Integer> itsRoot;  // root of the breadth-first tree
+    private final HashMap<Integer, Node> itsTree;  // the breadth-first tree
+    private LinkedList<Integer> itsNextLevel;
+    private LinkedList<Integer> itsCurrLevel;
+    private int itsDepth;  // maximum depth of leaves  
+
     private class Node {
-        public int itsDepth;
-        public int itsParent;  // parent's id
+        private final int itsDepth;
+        private final int itsParent;  // parent's id
         public Node(int depth, int parent) {
             itsDepth = depth;
             itsParent = parent;
         }
     }
-    private HashMap<Integer, Node> itsTree;  // the breadth-first tree
-    private LinkedList<Integer> itsNextQueue;
-    private LinkedList<Integer> itsCurrQueue;
-    private int itsDepth;  // maximum depth of leaves
-    private static final int INFINITY = Integer.MAX_VALUE;      
-    private static final boolean isDebug = false;
 
     /**
      * Initialize the breadth-first tree rooted at the source vertices in 
@@ -46,13 +48,13 @@ public class DeluxeBFS {
         itsGraph = graph;
         itsRoot = new HashSet<Integer>();
         itsTree = new HashMap<Integer, Node>();
-        itsNextQueue = new LinkedList<Integer>();
-        itsCurrQueue = new LinkedList<Integer>();
+        itsNextLevel = new LinkedList<Integer>();
+        itsCurrLevel = new LinkedList<Integer>();
         itsDepth = 0;
-        for (Integer s : sources) { 
+        for (int s : sources) { 
             itsRoot.add(s);
             itsTree.put(s, new Node(0, s));
-            itsNextQueue.add(s);
+            itsNextLevel.add(s);
         }
     }
 
@@ -65,29 +67,29 @@ public class DeluxeBFS {
         itsGraph = graph;
         itsRoot = new HashSet<Integer>();
         itsTree = new HashMap<Integer, Node>();
-        itsNextQueue = new LinkedList<Integer>();
-        itsCurrQueue = new LinkedList<Integer>();
+        itsNextLevel = new LinkedList<Integer>();
+        itsCurrLevel = new LinkedList<Integer>();
         itsDepth = 0;
         itsRoot.add(s);
         itsTree.put(s, new Node(0, s));
-        itsNextQueue.add(s);
+        itsNextLevel.add(s);
     }
 
     /**
      * Grow the breadth-first tree, one level per call.
      */
     public void growOneLevel() {
-        if (itsNextQueue.isEmpty()) return;
-        assert itsCurrQueue.isEmpty();
-        LinkedList<Integer> temp = itsCurrQueue;
-        itsCurrQueue = itsNextQueue;
-        itsNextQueue = temp;
+        if (itsNextLevel.isEmpty()) return;
+        assert itsCurrLevel.isEmpty();
+        LinkedList<Integer> temp = itsCurrLevel;
+        itsCurrLevel = itsNextLevel;
+        itsNextLevel = temp;
         ++itsDepth;
-        while (!itsCurrQueue.isEmpty()) {
-            int v = itsCurrQueue.remove();
+        while (!itsCurrLevel.isEmpty()) {
+            int v = itsCurrLevel.remove();
             for (int w : itsGraph.adj(v)) {
                 if (!itsTree.containsKey(w)) {
-                    itsNextQueue.add(w);
+                    itsNextLevel.add(w);
                     itsTree.put(w, new Node(itsDepth, v));
                 }
             }
@@ -98,23 +100,36 @@ public class DeluxeBFS {
      * Grow the breadth-first tree, one call for all the levels.
      */
     public void growAll() {
-        while (!itsNextQueue.isEmpty()) {
-            if (isDebug) {
+        while (!itsNextLevel.isEmpty()) {
+            if (DEBUG) {
                 StdOut.print("Vertices to be finished: ");
-                StdOut.println(verticesInQueue());
+                StdOut.println(newVertices());
             }
             growOneLevel();
         }
     }
 
     /**
+     * @return whether the BFS has finished.
+     */
+    public boolean done() {
+        return itsNextLevel.isEmpty();
+    }
+    
+    /**
+     * @return current depth of the breadth-first tree.
+     */
+    public int depth() {
+        return itsDepth;
+    }
+    
+    /**
      * Returns the vertices discovered but unfinished.
      */
-    public Iterable<Integer> verticesInQueue() {
+    public Iterable<Integer> newVertices() {
         // make a deep copy
-        return new LinkedList<Integer>(itsNextQueue);
+        return new LinkedList<Integer>(itsNextLevel);
     }
-
     /**
      * Is there a directed path from the source {@code s} (or sources) to vertex
      * {@code v}?
