@@ -19,7 +19,6 @@ import java.util.LinkedList;
  */
 public class DeluxeBFS {
 
-    private static final int INFINITY = Integer.MAX_VALUE;  
     private Digraph itsGraph;  
     private HashSet<Integer> itsRoot;  // root of the breadth-first tree
     private class Node {
@@ -33,15 +32,15 @@ public class DeluxeBFS {
     private HashMap<Integer, Node> itsTree;  // the breadth-first tree
     private LinkedList<Integer> itsNextQueue;
     private LinkedList<Integer> itsCurrQueue;
-    private int itsDepth;
+    private int itsDepth;  // maximum depth of leaves
+    private static final int INFINITY = Integer.MAX_VALUE;      
+    private static final boolean isDebug = false;
 
     /**
-     * Computes the shortest path from any one of the source vertices in 
-     * {@code sources} to every other vertex in digraph {@code g}.
+     * Initialize the breadth-first tree rooted at the source vertices in 
+     * {@code sources}.
      * @param g the digraph
      * @param sources the source vertices
-     * @throws IllegalArgumentException unless each vertex {@code v} in
-     *         {@code sources} satisfies {@code 0 <= v < V}
      */
     public DeluxeBFS(Digraph graph, Iterable<Integer> sources) {
         itsGraph = graph;
@@ -58,11 +57,9 @@ public class DeluxeBFS {
     }
 
     /**
-     * Computes the shortest path from {@code s} and every other vertex in 
-     * digraph {@code g}.
+     * Initialize the breadth-first tree rooted at the source vertex {@code s}.
      * @param g the digraph
      * @param s the source vertex
-     * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public DeluxeBFS(Digraph graph, int s) {
         itsGraph = graph;
@@ -79,7 +76,7 @@ public class DeluxeBFS {
     /**
      * Grow the breadth-first tree, one level per call.
      */
-    private void growOneLevel() {
+    public void growOneLevel() {
         if (itsNextQueue.isEmpty()) return;
         assert itsCurrQueue.isEmpty();
         LinkedList<Integer> temp = itsCurrQueue;
@@ -100,10 +97,22 @@ public class DeluxeBFS {
     /**
      * Grow the breadth-first tree, one call for all the levels.
      */
-    private void growAll() {
+    public void growAll() {
         while (!itsNextQueue.isEmpty()) {
+            if (isDebug) {
+                StdOut.print("Vertices to be finished: ");
+                StdOut.println(verticesInQueue());
+            }
             growOneLevel();
         }
+    }
+
+    /**
+     * Returns the vertices discovered but unfinished.
+     */
+    public Iterable<Integer> verticesInQueue() {
+        // make a deep copy
+        return new LinkedList<Integer>(itsNextQueue);
     }
 
     /**
@@ -162,7 +171,7 @@ public class DeluxeBFS {
                 "    [else] quit.");
             int choice = StdIn.readInt();
             if (choice == 1) {
-                StdOut.println("Give a source:");
+                StdOut.print("Give a source: ");
                 int s = StdIn.readInt();
                 DeluxeBFS bfs = new DeluxeBFS(graph, s);
                 bfs.growAll();
@@ -182,7 +191,7 @@ public class DeluxeBFS {
                 }
             }
             else if (choice == 2) {
-                StdOut.println("Give 2 sources:");
+                StdOut.print("Give 2 sources: ");
                 HashSet<Integer> sources = new HashSet<Integer>();
                 sources.add(StdIn.readInt());
                 sources.add(StdIn.readInt());
