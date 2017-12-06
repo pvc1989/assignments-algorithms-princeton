@@ -8,7 +8,6 @@ import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
-    private static final boolean DEBUG = false;
     private int[][] itsRGB;
     private double[][] itsEnergy;
     private int itsHeight;
@@ -18,6 +17,9 @@ public class SeamCarver {
      * Create a seam carver object based on the given picture.
      */
     public SeamCarver(Picture pic) {
+        if (pic == null) {
+            throw new IllegalArgumentException("Null argument is illegal.");
+        }
         itsHeight = pic.height();
         itsWidth = pic.width();
         itsRGB = new int[itsHeight][itsWidth];
@@ -65,11 +67,11 @@ public class SeamCarver {
      * @return energy of pixel at column c and row r
      */
     public double energy(int c, int r) {
-        if (DEBUG) {
-            StdOut.printf("/* %d, %d */", r, c);
-        }
         if (onBorder(c, r)) {
             return 1000;  // trivial case
+        }
+        if (isOutside(c, r)) {
+            throw new IllegalArgumentException("Outside the image.");
         }
         else {
             return Math.sqrt(
@@ -90,10 +92,10 @@ public class SeamCarver {
     /**
      * @return whether the pixel is within the closed domain of the picture
      */
-    private boolean inClosedDomain(int c, int r) {
-        if (c < 0 || c >= itsWidth) return false;
-        if (r < 0 || r >= itsHeight) return false;
-        return true;
+    private boolean isOutside(int c, int r) {
+        if (c < 0 || c >= itsWidth) return true;
+        if (r < 0 || r >= itsHeight) return true;
+        return false;
     }
 
     /**
@@ -175,8 +177,6 @@ public class SeamCarver {
      * @return sequence of indices for vertical seam
      */
     public int[] findVerticalSeam() {
-        int h = height();
-        int w = width();
         double[][] dist = new double[itsHeight][itsWidth];
         int[][] prev = new int[itsHeight][itsWidth];
         for (int r = 1; r != itsHeight; ++r) {
@@ -199,7 +199,7 @@ public class SeamCarver {
         }
         // build the path
         int[] seam = new int[itsHeight];
-        seam[h-1] = minCol;
+        seam[itsHeight - 1] = minCol;
         for (int r = itsHeight - 1; r != 0; --r) {
             seam[r-1] = prev[r][seam[r]];
         }
@@ -236,6 +236,12 @@ public class SeamCarver {
      * remove horizontal seam from current picture
      */
     public void removeHorizontalSeam(int[] seam) {
+        if (itsWidth <= 1) {
+            throw new IllegalArgumentException(
+                "The width of the picture is less than or equal to 1."
+            );
+        }
+        checkHorizontalSeam(seam);
         for (int c = 0; c != itsWidth; ++c) {
             int r = seam[c];
             // shift the rest of this column one step up
@@ -248,8 +254,27 @@ public class SeamCarver {
         // update itsEnergy along the seam
         for (int c = 0; c != itsWidth; ++c) {
             int r = seam[c];
-            if (inClosedDomain(c, r)) itsEnergy[r][c] = energy(c, r);
-            if (inClosedDomain(c, r-1)) itsEnergy[r-1][c] = energy(c, r-1);
+            if (!isOutside(c, r)) itsEnergy[r][c] = energy(c, r);
+            if (!isOutside(c, r-1)) itsEnergy[r-1][c] = energy(c, r-1);
+        }
+    }
+
+    private void checkHorizontalSeam(int[] seam) {
+        if (seam == null) {
+            throw new IllegalArgumentException("Null argument is illegal.");
+        }
+        if (seam.length != itsWidth) {
+            throw new IllegalArgumentException("Length of this seam is wrong.");
+        }
+        for (int k = 0; k != seam.length; ++k) {
+            if (seam[k] < 0 || seam[k] >= itsHeight) {
+                throw new IllegalArgumentException(
+                    "An entry of the seam is outside its prescribed range.");
+            }
+            if (k > 0 && Math.abs(seam[k] - seam[k-1]) > 1) {
+                throw new IllegalArgumentException(
+                    "Two adjacent entries differ by more than 1.");
+            }
         }
     }
 
@@ -257,6 +282,12 @@ public class SeamCarver {
      * remove vertical seam from current picture
      */
     public void removeVerticalSeam(int[] seam) {
+        if (itsHeight <= 1) {
+            throw new IllegalArgumentException(
+                "The height of the picture is less than or equal to 1."
+            );
+        }
+        checkVerticalSeam(seam);
         for (int r = 0; r != itsHeight; ++r) {
             int c = seam[r];
             // shift the rest of this row one step left
@@ -269,8 +300,27 @@ public class SeamCarver {
         // update itsEnergy along the seam
         for (int r = 0; r != itsHeight; ++r) {
             int c = seam[r];
-            if (inClosedDomain(c, r)) itsEnergy[r][c] = energy(c, r);
-            if (inClosedDomain(c-1, r)) itsEnergy[r][c-1] = energy(c-1, r);
+            if (!isOutside(c, r)) itsEnergy[r][c] = energy(c, r);
+            if (!isOutside(c-1, r)) itsEnergy[r][c-1] = energy(c-1, r);
+        }
+    }
+    
+    private void checkVerticalSeam(int[] seam) {
+        if (seam == null) {
+            throw new IllegalArgumentException("Null argument is illegal.");
+        }
+        if (seam.length != itsHeight) {
+            throw new IllegalArgumentException("Length of this seam is wrong.");
+        }
+        for (int k = 0; k != seam.length; ++k) {
+            if (seam[k] < 0 || seam[k] >= itsWidth) {
+                throw new IllegalArgumentException(
+                    "An entry of the seam is outside its prescribed range.");
+            }
+            if (k > 0 && Math.abs(seam[k] - seam[k-1]) > 1) {
+                throw new IllegalArgumentException(
+                    "Two adjacent entries differ by more than 1.");
+            }
         }
     }
 
