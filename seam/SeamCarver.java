@@ -8,6 +8,7 @@ import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
+    private static final boolean DEBUG = false;
     private int[][] itsRGB;
 
     /**
@@ -25,7 +26,7 @@ public class SeamCarver {
     }
     
     /**
-     * current picture
+     * @return current picture
      */
     public Picture picture() {
         int h = height();
@@ -40,35 +41,73 @@ public class SeamCarver {
     }
 
     /**
-     * width of current picture
+     * @return width of current picture
      */
     public int width() {
         return itsRGB[0].length;
     }
 
     /**
-     * height of current picture
+     * @return height of current picture
      */
     public int height() {
         return itsRGB.length;
     }
 
     /**
-     * energy of pixel at column x and row y
+     * @return energy of pixel at column c and row r
      */
-    public double energy(int x, int y) {
-        return 0.0;
+    public double energy(int c, int r) {
+        if (DEBUG) {
+            StdOut.printf("/* %d, %d */", r, c);
+        }
+        if (onBorder(c, r)) {
+            return 1000;  // trivial case
+        }
+        else {
+            return Math.sqrt(
+                rgbGradSq(itsRGB[r-1][c], itsRGB[r+1][c]) +
+                rgbGradSq(itsRGB[r][c-1], itsRGB[r][c+1]));
+        }
     }
 
     /**
-     * sequence of indices for horizontal seam
+     * @return whether the pixel is on the border of the picture
+     */
+    private boolean onBorder(int c, int r) {
+        if (c == 0 || c == width() - 1 || r == 0 || r == height() - 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * @return squared central difference of rgb values
+     */
+    private static double rgbGradSq(int rgb1, int rgb2) {
+        int r1 = (rgb1 >> 16) & 0xFF;
+        int r2 = (rgb2 >> 16) & 0xFF;
+        int dr = r1 - r2;
+        int g1 = (rgb1 >>  8) & 0xFF;
+        int g2 = (rgb2 >>  8) & 0xFF;
+        int dg = g1 - g2;
+        int b1 = (rgb1 >>  0) & 0xFF;
+        int b2 = (rgb2 >>  0) & 0xFF;
+        int db = b1 - b2;
+        return dr * dr + dg * dg + db * db;
+    }
+
+    /**
+     * @return sequence of indices for horizontal seam
      */
     public int[] findHorizontalSeam() {
         return null;
     }
 
     /**
-     * sequence of indices for vertical seam
+     * @return sequence of indices for vertical seam
      */
     public int[] findVerticalSeam() {
         return null;
