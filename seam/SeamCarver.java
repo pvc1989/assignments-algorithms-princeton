@@ -236,9 +236,9 @@ public class SeamCarver {
      * remove horizontal seam from current picture
      */
     public void removeHorizontalSeam(int[] seam) {
-        if (itsWidth <= 1) {
+        if (itsHeight <= 1) {
             throw new IllegalArgumentException(
-                "The width of the picture is less than or equal to 1."
+                "The height of the picture is less than or equal to 1."
             );
         }
         checkHorizontalSeam(seam);
@@ -282,9 +282,9 @@ public class SeamCarver {
      * remove vertical seam from current picture
      */
     public void removeVerticalSeam(int[] seam) {
-        if (itsHeight <= 1) {
+        if (itsWidth <= 1) {
             throw new IllegalArgumentException(
-                "The height of the picture is less than or equal to 1."
+                "The width of the picture is less than or equal to 1."
             );
         }
         checkVerticalSeam(seam);
