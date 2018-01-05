@@ -145,7 +145,7 @@ public class BaseballElimination {
     }
     // is given team eliminated?
     public boolean isEliminated(String team) {
-        final int x = itsNameToId.get(team);
+        final int x = nameToId(team);
         Iterable<String> list = trivialEliminate(x);
         if (list != null)
             return true;
@@ -154,7 +154,7 @@ public class BaseballElimination {
     }
     // subset R of teams that eliminates given team; null if not eliminated
     public Iterable<String> certificateOfElimination(String team) {
-        final int x = itsNameToId.get(team);
+        final int x = nameToId(team);
         Iterable<String> list = trivialEliminate(x);
         if (list != null)
             return list;
