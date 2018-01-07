@@ -1,3 +1,7 @@
+/******************************************************************************
+ *  Compilation:  javac-algs4 BoardGraph.java
+ *  Execution:    java-algs4 BoardGraph board4x4.txt
+ ******************************************************************************/
 import java.util.ArrayList;
 
 import edu.princeton.cs.algs4.StdOut;
@@ -10,7 +14,6 @@ public class BoardGraph {
     private final int n;
     private final int mn;
     private final char[] itsChars;
-    private final int[][] id;
     private final ArrayList<Integer>[] itsAdj;
 
     public BoardGraph(BoggleBoard board) {
@@ -19,7 +22,7 @@ public class BoardGraph {
         mn = m * n;
         itsChars = new char[mn];
         itsAdj = (ArrayList<Integer>[]) new ArrayList[mn]; 
-        id = new int[m][n];
+        int[][] id = new int[m][n];
         for (int i = 0, k = 0; i != m; ++i) {
             for (int j = 0; j != n; ++j) {
                 itsChars[k] = board.getLetter(i, j);
