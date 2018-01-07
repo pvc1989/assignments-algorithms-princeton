@@ -39,8 +39,10 @@ public class BoggleSolver {
             return;
         }
         if (node.isString()) {
-            String str = prefix.toString();
-            if (!set.contains(str)) set.add(str);
+            if (prefix.length() > 2) {
+                String str = prefix.toString();
+                if (!set.contains(str)) set.add(str);
+            }
         }
         // recurse on its neighbors
         for (int w : graph.adj(v)) {
@@ -110,7 +112,7 @@ public class BoggleSolver {
         BoggleBoard board = new BoggleBoard(args[1]);
         int score = 0;
         for (String word : solver.getAllValidWords(board)) {
-            // StdOut.println(word);
+            StdOut.println(word);
             score += solver.scoreOf(word);
         }
         StdOut.println("Score = " + score);
