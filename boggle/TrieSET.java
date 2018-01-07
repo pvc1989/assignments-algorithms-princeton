@@ -37,7 +37,8 @@ import edu.princeton.cs.algs4.StdOut;
  *  @author Kevin Wayne
  */
 public class TrieSET implements Iterable<String> {
-    private static final int R = 256;        // extended ASCII
+    private static final char[] CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+    private static final int R = CHAR.length;
 
     private Node root;      // root of trie
     private int n;          // number of keys in trie
@@ -47,7 +48,7 @@ public class TrieSET implements Iterable<String> {
         private Node[] next = new Node[R];
         private boolean isString;
         public Node next(char c) {
-            return next[c];
+            return next[c - 'A'];
         }
         public boolean isString() {
             return isString;
@@ -58,6 +59,7 @@ public class TrieSET implements Iterable<String> {
      * Initializes an empty set of strings.
      */
     public TrieSET() {
+        assert R == 26;
     }
 
     public Node root() {
@@ -82,7 +84,7 @@ public class TrieSET implements Iterable<String> {
     private Node get(Node x, String key, int d) {
         if (x == null) return null;
         if (d == key.length()) return x;
-        char c = key.charAt(d);
+        int c = key.charAt(d) - 'A';
         return get(x.next[c], key, d+1);
     }
 
@@ -104,7 +106,7 @@ public class TrieSET implements Iterable<String> {
             x.isString = true;
         }
         else {
-            char c = key.charAt(d);
+            int c = key.charAt(d) - 'A';
             x.next[c] = add(x.next[c], key, d+1);
         }
         return x;
@@ -153,7 +155,8 @@ public class TrieSET implements Iterable<String> {
         if (x == null) return;
         if (x.isString) results.enqueue(prefix.toString());
         for (char c = 0; c < R; c++) {
-            prefix.append(c);
+            prefix.append(CHAR[c]);
+            // StdOut.println(prefix);
             collect(x.next[c], prefix, results);
             prefix.deleteCharAt(prefix.length() - 1);
         }
@@ -181,16 +184,16 @@ public class TrieSET implements Iterable<String> {
             results.enqueue(prefix.toString());
         if (d == pattern.length())
             return;
-        char c = pattern.charAt(d);
-        if (c == '.') {
+        int c = pattern.charAt(d) - 'A';
+        if (pattern.charAt(d) == '.') {
             for (char ch = 0; ch < R; ch++) {
-                prefix.append(ch);
+                prefix.append(CHAR[ch]);
                 collect(x.next[ch], prefix, pattern, results);
                 prefix.deleteCharAt(prefix.length() - 1);
             }
         }
         else {
-            prefix.append(c);
+            prefix.append(CHAR[c]);
             collect(x.next[c], prefix, pattern, results);
             prefix.deleteCharAt(prefix.length() - 1);
         }
@@ -220,7 +223,7 @@ public class TrieSET implements Iterable<String> {
         if (x == null) return length;
         if (x.isString) length = d;
         if (d == query.length()) return length;
-        char c = query.charAt(d);
+        int c = query.charAt(d) - 'A';
         return longestPrefixOf(x.next[c], query, d+1, length);
     }
 
@@ -242,7 +245,7 @@ public class TrieSET implements Iterable<String> {
             x.isString = false;
         }
         else {
-            char c = key.charAt(d);
+            int c = key.charAt(d) - 'A';
             x.next[c] = delete(x.next[c], key, d+1);
         }
 
@@ -276,26 +279,26 @@ public class TrieSET implements Iterable<String> {
             StdOut.println();
         }
 
-        StdOut.println("longestPrefixOf(\"shellsort\"):");
-        StdOut.println(set.longestPrefixOf("shellsort"));
+        StdOut.println("longestPrefixOf(\"SHELLSORT\"):");
+        StdOut.println(set.longestPrefixOf("SHELLSORT"));
         StdOut.println();
 
-        StdOut.println("longestPrefixOf(\"xshellsort\"):");
-        StdOut.println(set.longestPrefixOf("xshellsort"));
+        StdOut.println("longestPrefixOf(\"XSHELLSORT\"):");
+        StdOut.println(set.longestPrefixOf("XSHELLSORT"));
         StdOut.println();
 
-        StdOut.println("keysWithPrefix(\"shor\"):");
-        for (String s : set.keysWithPrefix("shor"))
+        StdOut.println("keysWithPrefix(\"SHOR\"):");
+        for (String s : set.keysWithPrefix("SHOR"))
             StdOut.println(s);
         StdOut.println();
 
-        StdOut.println("keysWithPrefix(\"shortening\"):");
-        for (String s : set.keysWithPrefix("shortening"))
+        StdOut.println("keysWithPrefix(\"SHORTENING\"):");
+        for (String s : set.keysWithPrefix("SHORTENING"))
             StdOut.println(s);
         StdOut.println();
 
-        StdOut.println("keysThatMatch(\".he.l.\"):");
-        for (String s : set.keysThatMatch(".he.l."))
+        StdOut.println("keysThatMatch(\".HE.L.\"):");
+        for (String s : set.keysThatMatch(".HE.L."))
             StdOut.println(s);
     }
 }
