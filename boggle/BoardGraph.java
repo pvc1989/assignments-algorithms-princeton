@@ -14,35 +14,36 @@ public class BoardGraph {
     private final int n;
     private final int mn;
     private final char[] itsChars;
-    private final ArrayList<Integer>[] itsAdj;
+    private final int[][] itsAdj;
 
     public BoardGraph(BoggleBoard board) {
         m = board.rows();
         n = board.cols();
         mn = m * n;
         itsChars = new char[mn];
-        itsAdj = (ArrayList<Integer>[]) new ArrayList[mn]; 
+        itsAdj = new int[mn][8]; 
         int[][] id = new int[m][n];
         for (int i = 0, k = 0; i != m; ++i) {
             for (int j = 0; j != n; ++j) {
                 itsChars[k] = board.getLetter(i, j);
                 id[i][j] = k;
-                itsAdj[k] = new ArrayList<Integer>(8);
                 ++k;
             }
         }
         // build the adj-list
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-                ArrayList<Integer> adjList = itsAdj[id[i][j]];
-                if (isValid(i  , j+1)) adjList.add(id[i  ][j+1]);
-                if (isValid(i-1, j+1)) adjList.add(id[i-1][j+1]);
-                if (isValid(i-1, j  )) adjList.add(id[i-1][j  ]);
-                if (isValid(i-1, j-1)) adjList.add(id[i-1][j-1]);
-                if (isValid(i  , j-1)) adjList.add(id[i  ][j-1]);
-                if (isValid(i+1, j-1)) adjList.add(id[i+1][j-1]);
-                if (isValid(i+1, j  )) adjList.add(id[i+1][j  ]);
-                if (isValid(i+1, j+1)) adjList.add(id[i+1][j+1]);
+                int[] adjList = itsAdj[id[i][j]];
+                int k = 0;
+                if (isValid(i  , j+1)) adjList[k++] = id[i  ][j+1];
+                if (isValid(i-1, j+1)) adjList[k++] = id[i-1][j+1];
+                if (isValid(i-1, j  )) adjList[k++] = id[i-1][j  ];
+                if (isValid(i-1, j-1)) adjList[k++] = id[i-1][j-1];
+                if (isValid(i  , j-1)) adjList[k++] = id[i  ][j-1];
+                if (isValid(i+1, j-1)) adjList[k++] = id[i+1][j-1];
+                if (isValid(i+1, j  )) adjList[k++] = id[i+1][j  ];
+                if (isValid(i+1, j+1)) adjList[k++] = id[i+1][j+1];
+                if (k != 8) adjList[k] = -1;
             }
         }
     }
@@ -61,7 +62,13 @@ public class BoardGraph {
     }
     public Iterable<Integer> adj(int v) {
         assert isValid(v);
-        return itsAdj[v];
+        ArrayList<Integer> arraylist = new ArrayList<Integer>(8);
+        for (int k = 0; k != 8; ++k) {
+            int w = itsAdj[v][k];
+            if (w < 0) break;
+            else       arraylist.add(w);
+        }
+        return arraylist;
     }
     public String toString() {
         StringBuilder str = new StringBuilder(V() + "\n");
