@@ -77,6 +77,7 @@ public class BoggleSolver {
      * 0 otherwise.
      */
     public int scoreOf(String word) {
+        if (!itsDict.contains(word)) return 0;
         int score;
         switch (word.length()) {
             case 1:
