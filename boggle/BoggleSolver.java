@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class BoggleSolver {
 
-    private final TrieSET itsDict = new TrieSET();
+    private final TrieSet itsDict = new TrieSet();
     /**
      * Initializes the data structure using the given dictionary.
      * Each word in the dictionary contains only the uppercase letters [A-Z].
@@ -20,8 +20,8 @@ public class BoggleSolver {
     /**
      * Enumerate all strings in the given BoggleBoard started from [i][j].
      */
-    private void getWords(BoardGraph graph, TrieSET set, boolean[] marked,
-                          int v, StringBuilder prefix, TrieSET.Node node) {
+    private void getWords(BoggleGraph graph, TrieSet set, boolean[] marked,
+                          int v, StringBuilder prefix, TrieSet.Node node) {
         if (marked[v]) return;  // found an ancestor, just ignore it
         // otherwise, marked this vertex
         marked[v] = true;
@@ -61,13 +61,13 @@ public class BoggleSolver {
      *  Returns the set of all valid words in the given Boggle board.
      */
     public Iterable<String> getAllValidWords(BoggleBoard board) {
-        TrieSET set = new TrieSET();
-        BoardGraph graph = new BoardGraph(board);
+        TrieSet set = new TrieSet();
+        BoggleGraph graph = new BoggleGraph(board);
         int mn = graph.V();
         boolean[] marked = new boolean[mn];
         StringBuilder prefix = new StringBuilder();
         for (int v = 0; v != mn; ++v) {
-            TrieSET.Node node = itsDict.root();
+            TrieSet.Node node = itsDict.root();
             getWords(graph, set, marked, v, prefix, node);
         }
         return set;

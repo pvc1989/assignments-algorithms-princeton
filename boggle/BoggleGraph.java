@@ -1,6 +1,6 @@
 /******************************************************************************
- *  Compilation:  javac-algs4 BoardGraph.java
- *  Execution:    java-algs4 BoardGraph board4x4.txt
+ *  Compilation:  javac-algs4 BoggleGraph.java
+ *  Execution:    java-algs4 BoggleGraph board4x4.txt
  ******************************************************************************/
 import java.util.ArrayList;
 
@@ -9,14 +9,14 @@ import edu.princeton.cs.algs4.StdOut;
 /**
  * A Graph representation of BoggleBoard.
  */
-public class BoardGraph {
+public class BoggleGraph {
     private final int m;
     private final int n;
     private final int mn;
     private final char[] itsChars;
     private final int[][] itsAdj;
 
-    public BoardGraph(BoggleBoard board) {
+    public BoggleGraph(BoggleBoard board) {
         m = board.rows();
         n = board.cols();
         mn = m * n;
@@ -86,7 +86,7 @@ public class BoardGraph {
     public static void main(String[] args) {
         BoggleBoard board = new BoggleBoard(args[0]);
         StdOut.println(board);
-        BoardGraph graph = new BoardGraph(board);
+        BoggleGraph graph = new BoggleGraph(board);
         StdOut.println(graph);
     }
 }
