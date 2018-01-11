@@ -53,6 +53,9 @@ public class CircularSuffixArray {
     }
     // returns index of ith sorted suffix
     public int index(int i) {
+        if (i < 0 || i >= N) {
+            throw new IllegalArgumentException();
+        }
         return index[i];
     }
     // unit testing (required)
