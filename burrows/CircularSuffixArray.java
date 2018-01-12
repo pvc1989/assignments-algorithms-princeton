@@ -64,7 +64,7 @@ public class CircularSuffixArray {
                 //      \forall x \in [lt, gt) : x = pivot
                 //      \forall x \in [gt, hi) : x > pivot
         sort(lo, lt, d);
-        if(pivot >= 0) sort(lt, gt, d+1);
+        if (pivot >= 0) sort(lt, gt, d+1);
         sort(gt, hi, d);
     }
     private void swap(int i, int j) {
