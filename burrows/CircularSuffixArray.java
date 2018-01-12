@@ -1,9 +1,9 @@
 /******************************************************************************
  *  Compilation:    javac-algs4 CircularSuffixArray.java
- *  Execution:      java-algs4 CircularSuffixArray
+ *  Execution:      java-algs4 CircularSuffixArray 
  * 
  *  Demo:
- *  > java-algs4 CircularSuffixArray
+ *  > java-algs4 CircularSuffixArray ABRACADABRA!
  *   i       Original Suffixes           Sorted Suffixes         index[i]
  *  --    -----------------------     -----------------------    --------
  *   0    A B R A C A D A B R A !     ! A B R A C A D A B R A    11
@@ -39,15 +39,19 @@ public class CircularSuffixArray {
         }
         sort(0, n, 0);
     }
+    private int charAt(int d) {
+        if (d < chars.length) return chars[d];
+        else                  return -1;
+    }
     private void sort(int lo, int hi, int d) {
         // 3-way string quicksort
         if (hi - 1 <= lo) return;
         int lt = lo;      // exclusive upper bound of <
         int gt = hi - 1;  // exclusive lower bound of >
-        char pivot = chars[index(lo) + d];  // pivot
+        int pivot = charAt(index(lo) + d);  // pivot
         int i = lo + 1;
         while (i <= gt) {
-            char x = chars[index(i) + d];
+            int x = charAt(index(i) + d);
             if      (x < pivot) swap(lt++, i++);
             else if (x > pivot) swap(gt--, i);
             else                ++i;
@@ -60,7 +64,7 @@ public class CircularSuffixArray {
                 //      \forall x \in [lt, gt) : x = pivot
                 //      \forall x \in [gt, hi) : x > pivot
         sort(lo, lt, d);
-        sort(lt, gt, d+1);
+        if(pivot >= 0) sort(lt, gt, d+1);
         sort(gt, hi, d);
     }
     private void swap(int i, int j) {
@@ -106,7 +110,7 @@ public class CircularSuffixArray {
     }
     // unit testing (required)
     public static void main(String[] args) {
-        String s = "ABRACADABRA!";
+        String s = args[0];
         CircularSuffixArray csa = new CircularSuffixArray(s);
         StdOut.print("Index: ");
         for (int i = 0; i != csa.length(); ++i) {

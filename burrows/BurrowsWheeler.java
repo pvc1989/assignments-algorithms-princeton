@@ -43,7 +43,7 @@ public class BurrowsWheeler {
         final String input = BinaryStdIn.readString();
         final int N = input.length();
         final int R = 256;
-        Stack<Integer>[] rankStacks = new Stack[R];
+        Stack<Integer>[] rankStacks = (Stack<Integer>[]) new Object[R];
         for (int i = 0; i != N; ++i) {  // go through the t[] array
             char c = input.charAt(i);
             if (rankStacks[c] == null) {
