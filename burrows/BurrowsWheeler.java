@@ -9,6 +9,8 @@
  *  > java-algs4 BurrowsWheeler - < abra.txt | java-algs4 BurrowsWheeler +
  *  ABRACADABRA!
  ******************************************************************************/
+import java.util.ArrayList;
+
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
 import edu.princeton.cs.algs4.StdOut;
@@ -43,20 +45,20 @@ public class BurrowsWheeler {
         final String input = BinaryStdIn.readString();
         final int N = input.length();
         final int R = 256;
-        Stack<Integer>[] rankStacks = (Stack<Integer>[]) new Object[R];
+        ArrayList<Stack<Integer>> rankStacks = new ArrayList<Stack<Integer>>(R);
+        for (char c = 0; c != R; ++c) {
+            rankStacks.add(c, new Stack<Integer>());
+        }
         for (int i = 0; i != N; ++i) {  // go through the t[] array
             char c = input.charAt(i);
-            if (rankStacks[c] == null) {
-                rankStacks[c] = new Stack<Integer>();
-            }
-            rankStacks[c].push(i);  // record the rank of c in t[]
+            rankStacks.get(c).push(i);  // record the rank of c in t[]
         }
         int[] next = new int[N];
         char[] head = new char[N];
         for (int iCount = R-1, iNext = N-1; iCount >= 0; --iCount) {
-            Stack<Integer> stack = rankStacks[iCount];
+            Stack<Integer> stack = rankStacks.get(iCount);
             while (stack != null && !stack.isEmpty()) {
-                next[iNext] = stack.pop();     // build the next[] array
+                next[iNext] = stack.pop();    // build the next[] array
                 head[iNext] = (char) iCount;  // sort the t[] array
                 --iNext;
             }
