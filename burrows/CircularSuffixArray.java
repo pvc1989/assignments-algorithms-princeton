@@ -1,22 +1,43 @@
+/******************************************************************************
+ *  Compilation:    javac-algs4 CircularSuffixArray.java
+ *  Execution:      java-algs4 CircularSuffixArray
+ * 
+ *  Demo:
+ *  > java-algs4 CircularSuffixArray
+ *   i       Original Suffixes           Sorted Suffixes         index[i]
+ *  --    -----------------------     -----------------------    --------
+ *   0    A B R A C A D A B R A !     ! A B R A C A D A B R A    11
+ *   1    B R A C A D A B R A ! A     A ! A B R A C A D A B R    10
+ *   2    R A C A D A B R A ! A B     A B R A ! A B R A C A D    7
+ *   3    A C A D A B R A ! A B R     A B R A C A D A B R A !    0
+ *   4    C A D A B R A ! A B R A     A C A D A B R A ! A B R    3
+ *   5    A D A B R A ! A B R A C     A D A B R A ! A B R A C    5
+ *   6    D A B R A ! A B R A C A     B R A ! A B R A C A D A    8
+ *   7    A B R A ! A B R A C A D     B R A C A D A B R A ! A    1
+ *   8    B R A ! A B R A C A D A     C A D A B R A ! A B R A    4
+ *   9    R A ! A B R A C A D A B     D A B R A ! A B R A C A    6
+ *  10    A ! A B R A C A D A B R     R A ! A B R A C A D A B    9
+ *  11    ! A B R A C A D A B R A     R A C A D A B R A ! A B    2
+ ******************************************************************************/
 import edu.princeton.cs.algs4.StdOut;
 
 public class CircularSuffixArray {
-    private final int N;
+    private final int n;
     private final char[] chars;
     private int[] index;
 
     // circular suffix array of s
     public CircularSuffixArray(String s) {
         if (s == null) throw new java.lang.IllegalArgumentException();
-        N = s.length();
-        index = new int[N];
-        chars = new char[2*N];
-        for (int i = 0, j = N; i != N; ++i, ++j) {
+        n = s.length();
+        index = new int[n];
+        chars = new char[2*n];
+        for (int i = 0, j = n; i != n; ++i, ++j) {
             index[i] = i;
             chars[i] = s.charAt(i);
             chars[j] = s.charAt(i);
         }
-        sort(0, N, 0);
+        sort(0, n, 0);
     }
     private void sort(int lo, int hi, int d) {
         // 3-way string quicksort
@@ -49,16 +70,15 @@ public class CircularSuffixArray {
     }
     // length of s
     public int length() {
-        return N;
+        return n;
     }
     // returns index of ith sorted suffix
     public int index(int i) {
-        if (i < 0 || i >= N) {
+        if (i < 0 || i >= n) {
             throw new IllegalArgumentException();
         }
         return index[i];
     }
-    // unit testing (required)
     private void print() {
         StdOut.print(" i    ");
         StdOut.print("Original Suffixes          ");
@@ -70,13 +90,13 @@ public class CircularSuffixArray {
         StdOut.print("-----------------------    ");
         StdOut.print("--------");
         StdOut.println();
-        for (int i = 0; i != N; ++i) {
+        for (int i = 0; i != n; ++i) {
             StdOut.printf("%2d    ", i);
-            for (int j = 0; j != N; ++j) {
+            for (int j = 0; j != n; ++j) {
                 StdOut.printf("%c ", chars[i+j]);
             }
             StdOut.print("   ");
-            for (int j = 0; j != N; ++j) {
+            for (int j = 0; j != n; ++j) {
                 StdOut.printf("%c ", chars[index(i)+j]);
             }
             StdOut.print("   ");
@@ -84,6 +104,7 @@ public class CircularSuffixArray {
             StdOut.println();
         }
     }
+    // unit testing (required)
     public static void main(String[] args) {
         String s = "ABRACADABRA!";
         CircularSuffixArray csa = new CircularSuffixArray(s);
@@ -95,4 +116,4 @@ public class CircularSuffixArray {
         StdOut.println("Length: " + csa.length());
         csa.print();
     }
- }
+}

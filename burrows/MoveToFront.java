@@ -1,11 +1,23 @@
+/******************************************************************************
+ *  Compilation:    javac-algs4 MoveToFront.java
+ *  Execution:      java-algs4 MoveToFront - < input
+ *                  java-algs4 MoveToFront + < input
+ * 
+ *  Demo:
+ *  > cat abra.txt 
+ *  ABRACADABRA!
+ *  > java-algs4 MoveToFront - < abra.txt | java-algs4 edu.princeton.cs.algs4.HexDump 16
+ *  41 42 52 02 44 01 45 01 04 04 02 26
+ *  96 bits
+ *  > java-algs4 MoveToFront - < abra.txt | java-algs4 MoveToFront +
+ *  ABRACADABRA!
+ ******************************************************************************/
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
-import edu.princeton.cs.algs4.StdOut;
-import java.util.LinkedList;
 
 public class MoveToFront {
     private static final int R = 256;
-    
+
     // apply move-to-front encoding, 
     // reading from standard input and writing to standard output
     public static void encode() {

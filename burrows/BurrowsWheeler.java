@@ -1,9 +1,22 @@
+/******************************************************************************
+ *  Compilation:    javac-algs4 BurrowsWheeler.java
+ *  Execution:      java-algs4 BurrowsWheeler - < input
+ *                  java-algs4 BurrowsWheeler + < input
+ * 
+ *  Demo:
+ *  > cat abra.txt 
+ *  ABRACADABRA!
+ *  > java-algs4 BurrowsWheeler - < abra.txt | java-algs4 BurrowsWheeler +
+ *  ABRACADABRA!
+ ******************************************************************************/
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stack;
 
 public class BurrowsWheeler {
+    private static final boolean DEBUG = false;
+
     // apply Burrows-Wheeler transform, 
     // reading from standard input and writing to standard output
     public static void transform() {
@@ -30,30 +43,32 @@ public class BurrowsWheeler {
         final String input = BinaryStdIn.readString();
         final int N = input.length();
         final int R = 256;
-        Stack<Integer>[] rank_stacks = new Stack[R];
+        Stack<Integer>[] rankStacks = new Stack[R];
         for (int i = 0; i != N; ++i) {  // go through the t[] array
             char c = input.charAt(i);
-            if (rank_stacks[c] == null) {
-                rank_stacks[c] = new Stack<Integer>();
+            if (rankStacks[c] == null) {
+                rankStacks[c] = new Stack<Integer>();
             }
-            rank_stacks[c].push(i);  // record the rank of c in t[]
+            rankStacks[c].push(i);  // record the rank of c in t[]
         }
         int[] next = new int[N];
         char[] head = new char[N];
-        for (int i_count = R-1, i_next = N-1; i_count >= 0; --i_count) {
-            Stack<Integer> stack = rank_stacks[i_count];
+        for (int iCount = R-1, iNext = N-1; iCount >= 0; --iCount) {
+            Stack<Integer> stack = rankStacks[iCount];
             while (stack != null && !stack.isEmpty()) {
-                next[i_next] = stack.pop();     // build the next[] array
-                head[i_next] = (char) i_count;  // sort the t[] array
-                --i_next;
+                next[iNext] = stack.pop();     // build the next[] array
+                head[iNext] = (char) iCount;  // sort the t[] array
+                --iNext;
             }
         }
-        // for (int i = 0; i != N; ++i) {
-        //     StdOut.print(head[i]);
-        //     StdOut.print(" ");
-        //     StdOut.print(next[i]);
-        //     StdOut.println();
-        // }
+        if (DEBUG) {
+            for (int i = 0; i != N; ++i) {
+                StdOut.print(head[i]);
+                StdOut.print(" ");
+                StdOut.print(next[i]);
+                StdOut.println();
+            }
+        }
         // output the original string
         for (int i = 0, j = first; i != N; ++i) {
             BinaryStdOut.write(head[j]);
