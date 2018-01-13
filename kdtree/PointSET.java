@@ -27,38 +27,33 @@ import java.util.LinkedList;
 
 public class PointSET {
     private TreeSet<Point2D> pointSet;
-    private int nPoint;
     
-        // construct an empty set of points
+    // construct an empty set of points
     public PointSET() {
         pointSet = new TreeSet<Point2D>();
-        nPoint = 0;
     }
-        // is the set empty?
+    // is the set empty?
     public boolean isEmpty() {
-        return (nPoint == 0);
+        return (size() == 0);
     }
-        // number of points in the set
+    // number of points in the set
     public int size() {
-        return nPoint;
+        return pointSet.size();
     }
-    
     private void check(Object obj) {
-        if (obj == null) throw new java.lang.NullPointerException(
-            "argument is null");
+        if (obj == null) throw new IllegalArgumentException();
     }
-        // add the point to the set (if it is not already in the set)
+    // add the point to the set (if it is not already in the set)
     public void insert(Point2D p) {
         check(p);
         pointSet.add(p);
-        ++nPoint;
     }
-        // does the set contain point p?
+    // does the set contain point p?
     public boolean contains(Point2D p) {
         check(p);
         return pointSet.contains(p);
     }
-        // draw all points to standard draw
+    // draw all points to standard draw
     public void draw() {
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.setPenRadius(0.01);
@@ -66,10 +61,10 @@ public class PointSET {
             StdDraw.point(p.x(), p.y());
         }
     }
-        // all points that are inside the rectangle
+    // all points that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
         check(rect);
-            // create an empty queue for Point2D
+        // create an empty queue for Point2D
         LinkedList<Point2D> queuePoint2D = new LinkedList<Point2D>();
         for (Point2D p : pointSet) {
             if (rect.contains(p))
@@ -77,7 +72,7 @@ public class PointSET {
         }
         return queuePoint2D;
     }
-        // a nearest neighbor in the set to point p; null if the set is empty
+    // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
         check(p);
         if (pointSet.isEmpty()) return null;
@@ -91,37 +86,37 @@ public class PointSET {
         }
         return nearestPoint;
     }
-        // unit testing of the methods (optional)
+    // unit testing of the methods (optional)
     public static void main(String[] args) {
         String filename = args[0];
         In in = new In(filename);
         
         StdDraw.enableDoubleBuffering();
         
-            // initialize the two data structures with point from standard input
+        // initialize the two data structures with point from standard input
         PointSET brute = new PointSET();
-//        KdTree kdtree = new KdTree();
+        // KdTree kdtree = new KdTree();
         while (!in.isEmpty()) {
             double x = in.readDouble();
             double y = in.readDouble();
             Point2D p = new Point2D(x, y);
-//            kdtree.insert(p);
+            // kdtree.insert(p);
             brute.insert(p);
         }
         
         while (true) {
-                // the location (x, y) of the mouse
+            // the location (x, y) of the mouse
             double x = StdDraw.mouseX();
             double y = StdDraw.mouseY();
             Point2D query = new Point2D(x, y);
             
-                // draw all of the points
+            // draw all of the points
             StdDraw.clear();
             StdDraw.setPenColor(StdDraw.BLACK);
             StdDraw.setPenRadius(0.01);
             brute.draw();
             
-                // draw in red the nearest neighbor (using brute-force algorithm)
+            // draw in red the nearest neighbor (using brute-force algorithm)
             StdDraw.setPenRadius(0.03);
             StdDraw.setPenColor(StdDraw.RED);
             brute.nearest(query).draw();

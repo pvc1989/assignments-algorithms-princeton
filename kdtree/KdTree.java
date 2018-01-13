@@ -49,8 +49,7 @@ public class KdTree {
     }
     // ensure the argument is valid
     private void check(Object obj) {
-        if (obj == null) throw new java.lang.NullPointerException(
-            "argument is null");
+        if (obj == null) throw new IllegalArgumentException();
     }
     // add the point to the set (if it is not already in the set)
     public void insert(Point2D point) {
@@ -185,6 +184,7 @@ public class KdTree {
     }
     // all points that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
+        check(rect);
         // initialize container for output
         LinkedList<Point2D> queue = new LinkedList<Point2D>();
         // call recursive version of range-search from root
@@ -204,6 +204,7 @@ public class KdTree {
     }
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D pQuery) {
+        check(pQuery);
         Point2D pNearest = null;
         if (root != null) {
             pNearest = root.point;
