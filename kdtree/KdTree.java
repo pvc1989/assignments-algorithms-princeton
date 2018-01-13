@@ -1,15 +1,22 @@
 /******************************************************************************
  *  Compilation:  javac-algs4 KdTree.java
  *  Execution:    java-algs4 KdTree
- *
+ *  Dependencies: 
+ * 
+ *  $ java-algs4 KdTree < circle4.txt
+ *  Size: 4
+ *  $ java-algs4 KdTreeGenerator 5 | java-algs4 KdTree
+ *  Size: 5
+ * 
  ******************************************************************************/
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.LinkedList;
+
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 public class KdTree {
     private static final boolean DEBUG = false;
@@ -258,72 +265,11 @@ public class KdTree {
     }
     // unit testing of the methods (optional)
     public static void main(String[] args) {
-        String points = args[0];
-        In in = new In(points);
-        // initialize the two data structures with point from standard input
-        KdTree kdtree = new KdTree();
-        while (!in.isEmpty()) {
-            kdtree.insert(new Point2D(/* x= */in.readDouble(),
-                                      /* y= */in.readDouble()));
+        KdTree points = new KdTree();
+        while (!StdIn.isEmpty()) {
+            points.insert(new Point2D(/* x= */StdIn.readDouble(),
+                                      /* y= */StdIn.readDouble()));
         }
-        StdOut.printf("Size: %d\n", kdtree.size());
-        // draw kdtree
-        StdDraw.enableDoubleBuffering();
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
-        kdtree.draw();
-        StdDraw.show();
-        // test contains()
-        Point2D p0 = new Point2D(0, 0);
-        Point2D p1 = new Point2D(0.5, 1);
-        StdOut.println(kdtree.contains(p0));
-        StdOut.println(kdtree.contains(p1));
-        // draw query rectangle
-        StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.setPenRadius(0.01);
-        RectHV rect = new RectHV(0.5, 0, 1, 0.5);
-        rect.draw();
-        StdDraw.show();
-        // draw points inside query rectangle
-        for (Point2D p : kdtree.range(rect)) {
-            p.draw();
-        }
-        StdDraw.show();
-        // draw point at root
-        StdDraw.setPenRadius(0.03);
-        StdDraw.setPenColor(StdDraw.BLUE);
-        kdtree.root.point.draw();
-        StdDraw.show();
-        // draw query point
-        Point2D query = new Point2D(0.1, 0.5);
-        StdDraw.setPenRadius(0.03);
-        StdDraw.setPenColor(StdDraw.BLACK);
-        query.draw();
-        StdDraw.show();
-        // draw nearest point
-        Point2D pNearest = kdtree.nearest(query);
-        StdOut.println("Nearest point: " + pNearest);
-        StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.setPenRadius(0.03);
-        pNearest.draw();
-        StdDraw.show();
-        // interactive test
-        while (true) {
-            // the location (x, y) of the mouse
-            double x = StdDraw.mouseX();
-            double y = StdDraw.mouseY();
-            Point2D p = new Point2D(x, y);
-            // draw all of the points
-            StdDraw.clear();
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(0.01);
-            kdtree.draw();
-            // draw in blue the nearest neighbor (using kd-tree algorithm)
-            StdDraw.setPenRadius(0.03);
-            StdDraw.setPenColor(StdDraw.BLUE);
-            kdtree.nearest(p).draw();
-            StdDraw.show();
-            StdDraw.pause(40);
-        }       
+        StdOut.printf("Size: %d\n", points.size());
     }
 }

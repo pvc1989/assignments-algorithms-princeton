@@ -18,12 +18,10 @@ import edu.princeton.cs.algs4.StdDraw;
 public class NearestNeighborVisualizer {
 
     public static void main(String[] args) {
+
+        // initialize the two data structures with point from file
         String filename = args[0];
         In in = new In(filename);
-
-        StdDraw.enableDoubleBuffering();
-
-        // initialize the two data structures with point from standard input
         PointSET brute = new PointSET();
         KdTree kdtree = new KdTree();
         while (!in.isEmpty()) {
@@ -34,6 +32,8 @@ public class NearestNeighborVisualizer {
             brute.insert(p);
         }
 
+        // process nearest neighbor queries
+        StdDraw.enableDoubleBuffering();
         while (true) {
 
             // the location (x, y) of the mouse

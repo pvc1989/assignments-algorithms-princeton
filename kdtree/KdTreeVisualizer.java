@@ -20,22 +20,20 @@ public class KdTreeVisualizer {
         StdDraw.enableDoubleBuffering();
         KdTree kdtree = new KdTree();
         while (true) {
-            if (StdDraw.mousePressed()) {
+            if (StdDraw.isMousePressed()) {
                 double x = StdDraw.mouseX();
                 double y = StdDraw.mouseY();
-//                StdOut.printf("%8.6f %8.6f\n", x, y);
+                StdOut.printf("%8.6f %8.6f\n", x, y);
                 Point2D p = new Point2D(x, y);
-                StdOut.println(p + " created");
                 if (rect.contains(p)) {
-//                    StdOut.printf("%8.6f %8.6f\n", x, y);
+                    StdOut.printf("%8.6f %8.6f\n", x, y);
                     kdtree.insert(p);
-                    StdOut.println(p + " inserted");
                     StdDraw.clear();
                     kdtree.draw();
                     StdDraw.show();
                 }
             }
-            StdDraw.pause(100);
+            StdDraw.pause(20);
         }
 
     }

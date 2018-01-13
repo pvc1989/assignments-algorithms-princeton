@@ -1,29 +1,23 @@
 /******************************************************************************
  *  Compilation:  javac-algs4 PointSET.java
- *  Execution:    javac-algs4 PointSET filename
+ *  Execution:    java-algs4 PointSET
  *  Dependencies: 
- *
- *  a mutable data type that represents a set of points in the unit square using
- *  a red-black BST.
- *
- *  Corner cases:
- *      Throw a java.lang.NullPointerException if any argument is null.
- *
- *  Performance requirements:
- *      Your implementation should support insert() and contains() in time 
- *      proportional to the logarithm of the number of points in the set in the 
- *      worst case; it should support nearest() and range() in time proportional
- *      to the number of points in the set.
- *
+ * 
+ *  $ java-algs4 PointSET < circle4.txt
+ *  Size: 4
+ *  $ java-algs4 KdTreeGenerator 5 | java-algs4 PointSET
+ *  Size: 5
+ * 
  ******************************************************************************/
-
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.TreeSet;
 import java.util.LinkedList;
+
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 public class PointSET {
     private TreeSet<Point2D> pointSet;
@@ -88,41 +82,11 @@ public class PointSET {
     }
     // unit testing of the methods (optional)
     public static void main(String[] args) {
-        String filename = args[0];
-        In in = new In(filename);
-        
-        StdDraw.enableDoubleBuffering();
-        
-        // initialize the two data structures with point from standard input
-        PointSET brute = new PointSET();
-        // KdTree kdtree = new KdTree();
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();
-            Point2D p = new Point2D(x, y);
-            // kdtree.insert(p);
-            brute.insert(p);
+        PointSET points = new PointSET();
+        while (!StdIn.isEmpty()) {
+            points.insert(new Point2D(/* x= */StdIn.readDouble(),
+                                      /* y= */StdIn.readDouble()));
         }
-        
-        while (true) {
-            // the location (x, y) of the mouse
-            double x = StdDraw.mouseX();
-            double y = StdDraw.mouseY();
-            Point2D query = new Point2D(x, y);
-            
-            // draw all of the points
-            StdDraw.clear();
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(0.01);
-            brute.draw();
-            
-            // draw in red the nearest neighbor (using brute-force algorithm)
-            StdDraw.setPenRadius(0.03);
-            StdDraw.setPenColor(StdDraw.RED);
-            brute.nearest(query).draw();
-            
-            StdDraw.show();
-            StdDraw.pause(40);
-        }
+        StdOut.printf("Size: %d\n", points.size());
     }
 }
