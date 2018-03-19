@@ -109,7 +109,6 @@ public class Percolation {
             strongConnection.union(id, idNeighbor);
         }
     }
-
     /** is site (row, col) open?
      * 
      */
