@@ -19,9 +19,9 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {    
-    private final int nSquare;  // n^2, i.e. number of sites
-    private final int nTrials;  // times of trials
-    private int[] x;  // number of open sites when the system percolates
+    private final double itsMean;
+    private final double itsStddev;
+    private final double itsHalf;
 
     public PercolationStats(int n, int trials) {
         if (n <= 0) {
@@ -31,38 +31,39 @@ public class PercolationStats {
             throw new IllegalArgumentException("trials must be >= 1.");
         }
         // perform trials independent experiments on an n-by-n grid
-        nSquare = n * n;
-        nTrials = trials;
-        x = new int[nTrials];
-        for (int k = 0, i, j; k < nTrials; ++k) {
+        final int[] nOpen = new int[trials];
+        for (int k = 0, i, j; k < trials; ++k) {
             // Initialize all sites to be blocked.
             Percolation perc = new Percolation(n);
             // Repeat the following until the system percolates:
             while (!perc.percolates()) {
-                // Choose a site uniformly at random among all blocked sites.
-                i = StdRandom.uniform(1, n + 1);
-                j = StdRandom.uniform(1, n + 1);
-                // Open the site.
+                // uniform(int n) returns a random integer uniformly in [0, n).
+                i = 1 + StdRandom.uniform(n);
+                j = 1 + StdRandom.uniform(n);
                 perc.open(i, j);
             }
-            x[k] = perc.numberOfOpenSites();
+            nOpen[k] = perc.numberOfOpenSites();
         }
+        final int nSquare = n * n;
+        itsMean = StdStats.mean(nOpen) / nSquare;
+        itsStddev = StdStats.stddev(nOpen) / nSquare;
+        itsHalf = 1.96 * itsStddev / Math.sqrt(trials);
     }
     public double mean() {
         // sample mean of percolation threshold
-        return StdStats.mean(x) / nSquare;
+        return itsMean;
     }
     public double stddev() {
         // sample standard deviation of percolation threshold
-        return StdStats.stddev(x) / nSquare;
+        return itsStddev;
     }
     public double confidenceLo() {
         // low  endpoint of 95% confidence interval
-        return mean() - 1.96 * stddev() / Math.sqrt(nTrials);
+        return itsMean - itsHalf;
     }
     public double confidenceHi() {
         // high endpoint of 95% confidence interval
-        return mean() + 1.96 * stddev() / Math.sqrt(nTrials);
+        return itsMean + itsHalf;
     }
     
     public static void main(String[] args) {
