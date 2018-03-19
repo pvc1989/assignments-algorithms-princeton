@@ -21,7 +21,6 @@ public class Percolation {
     // instance variables
     private final int nRow;  // number of rows
     private final int nCol;  // number of columns
-    private final int nSite;  // number of sites
     private final int iTop;  // id of the top sentinel
     private final int iBottom;  // id of the bottom sentinel
     private int nOpen;  // number of open sites
@@ -38,22 +37,22 @@ public class Percolation {
         // initialize private variables
         nRow = n;
         nCol = n;
-        nSite = n * n;
-        iBottom = nSite + 1;
+        final int nSquare = n * n;
+        iBottom = nSquare + 1;
         iTop = 0;
         nOpen = 0;
-        alreadyOpen = new boolean[nSite + 2];
-        weakConnection = new WeightedQuickUnionUF(nSite + 2);
-        strongConnection = new WeightedQuickUnionUF(nSite + 1);
+        alreadyOpen = new boolean[nSquare + 2];
+        weakConnection = new WeightedQuickUnionUF(nSquare + 2);
+        strongConnection = new WeightedQuickUnionUF(nSquare + 1);
     }
     /** Make sure that row and column indices are integers between 1 and n.
      * 
      */
     private void checkIndices(int row, int col) {
         if (row < 1 || row > nRow)
-            throw new IndexOutOfBoundsException("row index i out of bounds");
+            throw new IllegalArgumentException("row index i out of bounds");
         if (col < 1 || col > nCol)
-            throw new IndexOutOfBoundsException("col index j out of bounds");
+            throw new IllegalArgumentException("col index j out of bounds");
     }
     /** Map from (row, col) to a 1-dimensional index.
      * 
@@ -72,7 +71,7 @@ public class Percolation {
      */
     public void open(int row, int col) {
         int id = xyCheckedTo1D(row, col);
-        if(alreadyOpen[id]) return;
+        if (alreadyOpen[id]) return;
         // open this site
         alreadyOpen[id] = true;
         ++nOpen;
