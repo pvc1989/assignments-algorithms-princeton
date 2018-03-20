@@ -5,127 +5,92 @@
  *  Description:
  ******************************************************************************/
 
-// standard libraries developed for use in algs4
-// import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdDraw;
-// import edu.princeton.cs.algs4.StdRandom;
-// import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.In;
-// import edu.princeton.cs.algs4.Out;
-
-// system libraries
 import java.util.Arrays;
 import java.util.LinkedList;
 
-
 public class FastCollinearPoints {
-    private final boolean isDebugging = false;
-    private int nPoints;
-    private int nSegments;
-    private LinkedList<LineSegment> lineSegList;
+    private final Point[] itsPoints;
+    private final LinkedList<LineSegment> itsLineSegments;
     
     // finds all line segments containing 4 or more points
     public FastCollinearPoints(Point[] points) {
-        // check input
-        if (points == null) throw new NullPointerException(
-            "the argument to the constructor is null");
-        
-        // check points
-        nPoints = 0;
-        for (Point p : points) {
-            if (p == null) throw new NullPointerException(
-                "some point in the array is null");
-            ++nPoints;
-        }
-        
-        // check repeated points
-        for (int i = 1; i < nPoints; ++i) {
-            if (points[0].compareTo(points[i]) == 0)
+        if (points == null)  // detect null input
+            throw new IllegalArgumentException("The input is null.");
+        final int nPoints = points.length;
+        itsPoints = new Point[nPoints];
+        for (int i = 0; i != nPoints; ++i) {
+            if (points[i] == null)  // detect null point
                 throw new IllegalArgumentException(
-                    "input contains a repeated point");
+                    "Some point in the array is null.");
+            itsPoints[i] = points[i];
         }
-        
-        // make sure points[0] <= ... <= points[nPoints - 1]
-        Arrays.sort(points);
-        if (isDebugging) {
-            for (Point pt : points) {
-                StdOut.println(pt);
-            }
+        Arrays.sort(itsPoints);
+        for (int i = 1; i != nPoints; ++i) {
+            if (itsPoints[i-1].compareTo(itsPoints[i]) == 0)
+                throw new IllegalArgumentException(
+                    "The input contains a repeated point.");
         }
-        
-        nSegments = 0;
-        lineSegList = new LinkedList<LineSegment>();
-        
-        // Think of p as the origin.
-        for (int i = 0; i < nPoints - 1; ++i) {
-            if (isDebugging) StdOut.println("i: " + i);
-            // For each other point q, determine the slope it makes with p.
+        itsLineSegments = new LinkedList<LineSegment>();
+        findSegments();
+    }
+    private void findSegments() {
+        final int nPoints = itsPoints.length;
+        final Point[] points = itsPoints.clone();
+        for (Point p : itsPoints) {
             // Sort the points according to the slopes they makes with p.
-            Point p = points[i];
             Arrays.sort(points, p.slopeOrder());
-            
-            // Check if any 3 (or more) adjacent points in the sorted order have
-            // equal slopes with respect to p. If so, these points, together
-            // with p, are collinear.
-            LinkedList<Integer> idStack = new LinkedList<Integer>();
-            
-            int first = 1;
-            double slope1 = p.slopeTo(points[first]);
-            idStack.addLast(first);
-            if (isDebugging) StdOut.println(first + " in");
-
-            int j = 2;
-            for (; j < nPoints; ++j) {
-                double slope2 = p.slopeTo(points[j]);
-                if (slope2 != slope1) {
-                    // when find different slope
-                    // check # of collinear points
-                    if (idStack.size() >= 3) {
-                        if (isDebugging)
-                            StdOut.println("Stack.size(): " + idStack.size());
-                        first = idStack.getFirst();
-                        if (p.compareTo(points[first]) < 0) {
-                            LineSegment lineSeg = new LineSegment(
-                                p, points[j - 1]);
-                            lineSegList.addLast(lineSeg);
-                            ++nSegments;
-                        }
+            // According to the specification, the slope of a degenerate line 
+            // segment (between a point and itself) is negative infinity,
+            Point q = points[0];
+            assert (p == q);  // p must be the min
+            // If any 3 (or more) adjacent points in the sorted order have equal
+            // slopes with respect to p, then these points, together with p, are
+            // collinear.
+            // initial state {p}:
+            int count = 1;
+            Point qMin = p;
+            Point qMax = p;
+            double lastSlope = p.slopeTo(p);
+            for (int i = 1; i != nPoints; ++i) {
+                q = points[i];
+                double nextSlope = p.slopeTo(q);
+                if (lastSlope == nextSlope) {
+                    ++count;
+                    if (q.compareTo(qMin) < 0) qMin = q;
+                    if (q.compareTo(qMax) > 0) qMax = q;
+                }
+                else {  // encounter a different slope
+                    updateLineSegments(p, qMin, qMax, count);
+                    // set to {p, q}:
+                    count = 2;
+                    if (p.compareTo(q) < 0) {
+                        qMin = p;
+                        qMax = q;
                     }
-                    slope1 = slope2;
-                    if (isDebugging) StdOut.println((j - 1) + " out");
-                    idStack.clear();
+                    else {
+                        qMin = q;
+                        qMax = p;
+                    }
+                    lastSlope = nextSlope;
                 }
-                idStack.addLast(j);
-                if (isDebugging) StdOut.println(j + " in");
-            } // p-loop
-            
-            // when j == nPoints
-            // check # of collinear points
-            if (idStack.size() >= 3) {
-                if (isDebugging)
-                    StdOut.println("Stack.size(): " + idStack.size());
-                first = idStack.getFirst();
-                if (p.compareTo(points[first]) < 0) {
-                    LineSegment lineSeg = new LineSegment(p, points[j - 1]);
-                    lineSegList.addLast(lineSeg);
-                    ++nSegments;
-                }
-            }
-            
-            // recover natural order of points[]
-            Arrays.sort(points);
-            
-        } // p-loop
-        
+            }  // q-loop
+            updateLineSegments(p, qMin, qMax, count);     
+        }  // p-loop
     }
-    
-    // the number of line segments
+    private void updateLineSegments(Point p, Point qMin, Point qMax, int count) {
+        if (count >= 4 && p == qMin) {
+            itsLineSegments.add(new LineSegment(p, qMax));
+        } 
+    }
+    /**
+     * the number of line segments
+     */
     public int numberOfSegments() {
-        return nSegments;
+        return itsLineSegments.size();
     }
-    
-    // the line segments
     /**
      *  The method segments() should include each maximal line segment 
      *  containing 4 (or more) points exactly once. For example, if 5 points 
@@ -133,9 +98,8 @@ public class FastCollinearPoints {
      *  subsegments p→s or q→t.
      */
     public LineSegment[] segments() {
-        return lineSegList.toArray(new LineSegment[nSegments]);
+        return itsLineSegments.toArray(new LineSegment[1]);
     }
-
     /**
      *  This client program takes the name of an input file as a command-line
      *  argument; read the input file (in the format specified below); prints to

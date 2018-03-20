@@ -9,95 +9,65 @@
  *      and s are all equal.
  ******************************************************************************/
 
-// standard libraries developed for use in algs4
-// import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdDraw;
-// import edu.princeton.cs.algs4.StdRandom;
-// import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.In;
-// import edu.princeton.cs.algs4.Out;
-
-// system libraries
-// import java.util.Arrays;
 import java.util.LinkedList;
 
 public class BruteCollinearPoints {
-    private int nSegments;
-    private LinkedList<LineSegment> lineSegList;
+    private final Point[] itsPoints;
+    private final LinkedList<LineSegment> itsLineSegments;
     
     // finds all line segments containing 4 points
     public BruteCollinearPoints(Point[] points) {
-        if (points == null) throw new NullPointerException(
-            "the argument to the constructor is null");
-        // check points
-        for (Point pt : points) {
-            if (pt == null) throw new NullPointerException(
-                "some point in the array is null");
+        if (points == null)  // detect null input
+            throw new IllegalArgumentException("The input is null.");
+        final int nPoints = points.length;
+        itsPoints = new Point[nPoints];
+        for (int i = 0; i != nPoints; ++i) {
+            if (points[i] == null)  // detect null point
+                throw new IllegalArgumentException(
+                    "Some point in the array is null.");
+            itsPoints[i] = points[i];
         }
-        nSegments = 0;
-        lineSegList = new LinkedList<LineSegment>();
-        
-        // look for collinear points
-        double pqSlope = 0.0;
-        double prSlope = 0.0;
-        double psSlope = 0.0;
-        for (Point p : points) {
-            
-            for (Point q : points) {
-                // p and q refer to the same object
-                if (p == q) continue; // goto next q
-                // make sure p < q
-                if (p.compareTo(q) > 0) continue; // goto next q
-                // p and q are 2 objects with the same value
-                // i.e. repeated points
-                if (p.compareTo(q) == 0) findRepeatedPoints();
-                pqSlope = p.slopeTo(q);
-                
-                for (Point r : points) {
-                    // q and r refer to the same object
-                    if (q == r) continue; // go to next r-loop
-                    // make sure p < q < r
-                    if (q.compareTo(r) > 0) continue; // go to next r-loop
-                    // p and q are 2 objects with the same value
-                    // i.e. repeated points
-                    if (q.compareTo(r) == 0) findRepeatedPoints();
-                    prSlope = p.slopeTo(r);
-                    // make sure p,q,r are collinear
-                    if (pqSlope != prSlope) continue; // go to next r-loop
-                    
-                    for (Point s : points) {
-                        // r and s refer to the same object
-                        if (r == s) continue; // go to next s-loop
-                        // make sure p < q < r < s
-                        if (r.compareTo(s) > 0) continue; // go to next s-loop
-                        // r and s are 2 objects with the same value
-                        // i.e. repeated points
-                        if (r.compareTo(s) == 0) findRepeatedPoints();
-                        psSlope = p.slopeTo(s);
+        java.util.Arrays.sort(itsPoints);
+        for (int i = 1; i != nPoints; ++i) {
+            if (itsPoints[i-1].compareTo(itsPoints[i]) == 0)
+                throw new IllegalArgumentException(
+                    "The input contains a repeated point.");
+        }
+        itsLineSegments = new LinkedList<LineSegment>();
+        findSegments();
+    }
+    private void findSegments() {
+        if (itsPoints.length < 4)
+            return;
+        final int nPoints = itsPoints.length;
+        double pqSlope, prSlope, psSlope;
+        for (int p = 0; p != nPoints; ++p) {
+            for (int q = p + 1; q != nPoints; ++q) {
+                pqSlope = itsPoints[p].slopeTo(itsPoints[q]);
+                for (int r = q + 1; r != nPoints; ++r) {
+                    prSlope = itsPoints[p].slopeTo(itsPoints[r]);
+                    if (pqSlope != prSlope) {
+                        continue;
+                    }
+                    for (int s = r + 1; s != nPoints; ++s) {
+                        psSlope = itsPoints[p].slopeTo(itsPoints[s]);
                         if (pqSlope == psSlope) {
-                            // at this point:
-                            // pqSlope == prSlope == psSlope
-                            // p < q < r < s
-                            ++nSegments;
-                            LineSegment lineSeg = new LineSegment(p, s);
-                            lineSegList.addLast(lineSeg);
+                            itsLineSegments.addLast(
+                                new LineSegment(itsPoints[p], itsPoints[s]));
                         }
-                    } // s-loop
-                } // r-loop
-            } // q-loop
-        } // p-loop
+                    }  // s-loop
+                }  // r-loop
+            }  // q-loop
+        }  // p-loop
     }
-    
-    // check repeated points
-    private static void findRepeatedPoints() {
-        throw new IllegalArgumentException("input contains a repeated point");
-    }
-    
-    
-    // the number of line segments
+    /**
+     * number of line segments
+     */
     public int numberOfSegments() {
-        return nSegments;
+        return itsLineSegments.size();
     }
     
     /**
@@ -110,7 +80,7 @@ public class BruteCollinearPoints {
      *  has 5 or more collinear points.
      */
     public LineSegment[] segments() {
-        return lineSegList.toArray(new LineSegment[nSegments]);
+        return itsLineSegments.toArray(new LineSegment[1]);
     }
     
     /**
