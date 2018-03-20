@@ -12,6 +12,7 @@
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.In;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class BruteCollinearPoints {
@@ -30,7 +31,7 @@ public class BruteCollinearPoints {
                     "Some point in the array is null.");
             itsPoints[i] = points[i];
         }
-        java.util.Arrays.sort(itsPoints);
+        Arrays.sort(itsPoints);
         for (int i = 1; i != nPoints; ++i) {
             if (itsPoints[i-1].compareTo(itsPoints[i]) == 0)
                 throw new IllegalArgumentException(
@@ -80,7 +81,7 @@ public class BruteCollinearPoints {
      *  has 5 or more collinear points.
      */
     public LineSegment[] segments() {
-        return itsLineSegments.toArray(new LineSegment[1]);
+        return itsLineSegments.toArray(new LineSegment[numberOfSegments()]);
     }
     
     /**

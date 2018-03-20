@@ -98,7 +98,7 @@ public class FastCollinearPoints {
      *  subsegments p→s or q→t.
      */
     public LineSegment[] segments() {
-        return itsLineSegments.toArray(new LineSegment[1]);
+        return itsLineSegments.toArray(new LineSegment[numberOfSegments()]);
     }
     /**
      *  This client program takes the name of an input file as a command-line
