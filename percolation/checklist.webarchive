@@ -1,592 +1,0 @@
-bplist00Ò_WebMainResource_WebSubresourcesÕ	
-_WebResourceData_WebResourceMIMEType_WebResourceTextEncodingName^WebResourceURL_WebResourceFrameNameOOA<html><head>
-<title>
-Programming Assignment 1 Checklist: Percolation
-</title>
-<style></style></head>
-
-<body>
-<h3>
-Programming Assignment 1 Checklist: Percolation
-</h3>
-
-<p>
-<br>
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Frequently Asked Questions (General)</b></center>
-</font></td></tr></tbody></table>
-
-</p><p><b>What's a checklist?</b>
-The assignment provides the programming assignment specification;
-the checklist provides clarifications, test data, and hints that might be
-helpful in completing the assignment.
-
-</p><p><b>Which Java programming environment should I use?</b>
-For novices, we recommend the lightweight IDE <a href="http://www.drjava.org/">DrJava</a>
-along with the command line.
-If you use our Mac OS X or Windows installer, then everything should be
-configured and ready to go.
-If you prefer to use a different IDE (such as Eclipse), that's perfectly
-fine tooâ€”just be sure that you know how to do the following:
-</p><ul>
-<p></p><li>Add <code>algs4.jar</code> to your Java classpath.
-<p></p></li><li>Enter command-line arguments.
-<p></p></li><li>Use standard input and standard output (and, ideally, redirect them to or from a file).
-</li></ul>
-
-
-
-<p><b>Where can I find the Java code and Javadoc for the algorithms and data structures
-from lecture and the textbook?</b>
-They are in <code>algs4.jar</code>.
-Here are the <a href="https://algs4.cs.princeton.edu/code/">APIs</a><a>.
-
-</a></p><p><a><b>Where can I find the Javadoc for the input and output libraries
-from lecture and the textbook?</b>
-They are in <code>algs4.jar</code>.
-Here are the </a><a href="https://algs4.cs.princeton.edu/code/index.php#stdlib">APIs</a><a>.
-
-</a></p><p><a><b>How can I classpath in the textbook libraries from the command line?</b>
-If you use our Mac OS X or Windows installer, then you can automatically classpath
-in the textbook libraries using the commands <code>javac-algs4</code> and <code>java-algs4</code>
-(instead of <code>javac</code> and <code>java</code>).
-
-</a></p><p><a><b>I haven't programmed in Java in a while. What material do 
-I need to remember?</b>
-For a review of our Java programming model (including our input and output libraries),
-read Sections 1.1 and 1.2 of  <em>Algorithms, 4th Edition</em>.
-
-</a></p><p><a><b>Can I use various Java libraries in this assignment, such as <code>java.util.LinkedList</code>,
-<code>java.util.ArrayList</code>, <code>java.util.TreeMap</code>, and
-<code>java.util.HashMap</code>?</b>
-No. You should not use any Java libraries until we have implemented equivalent
-versions in lecture.
-Once we have introduced them in lecture, you are free to use either the Java
-library version or our equivalent.
-You are welcome to use classes in the Java language such as <code>Math.sqrt()</code>
-and <code>Integer.parseInt()</code>.
-
-</a></p><p><a><b>How do I throw a java.lang.IndexOutOfBoundsException?</b>
-Use a <code>throw</code> statement like the following:
-
-</a></p><blockquote><a>
-<pre>if (i &lt;= 0 || i &gt; n) throw new IndexOutOfBoundsException("row index i out of bounds");</pre>
-</a></blockquote><a>
-
-Your code should not attempt to catch any exceptionsâ€”this will interfere
-with our grading scripts.
-
-
-</a><p><a><b>How should I format and comment my code?</b>
-Here are some recommended </a><a href="https://introcs.cs.princeton.edu/11style/">style guidelines</a>.
-Below are some that are particularly important (though we will not deduct for style in this course).
-
-</p><ul>
-<p></p><li> Include a bold (or Javadoc)
-comment at the beginning of each file with your name,
-date, the purpose of the program, and how to execute it.
-
-<p></p></li><li> Include a bold (or Javadoc) comment describing every method.
-
-<p></p></li><li> Include a comment describing every instance variable.
-
-<p></p></li><li> Indent consistently, using 3 or 4 spaces for each indentation level.
-Do not use hard tabs.
-
-<p></p></li><li> Do not exceed 80 characters per line. This rule also applies to the
-<code>readme.txt</code> file.
-
-<p></p></li><li> Avoid unexplained magic numbers, especially ones that are used
-more than once.
-
-</li></ul>
-
-
-<p>
-<br>
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Frequently Asked Questions (Percolation)</b></center>
-</font></td></tr></tbody></table>
-
-
-</p><p><b>What are the goals of this assignment?</b>
-</p><ul>
-<p></p><li> Set up a Java programming environment.
-
-<p></p></li><li> Use our input and output libraries.
-
-<p></p></li><li> Learn about a scientific application of the unionâ€“find data structure.
-
-<p></p></li><li> Measure the running time of a program and use the doubling hypothesis
-to make predictions.
-
-<p></p></li><li> Measure the amount of memory used by a data structure.
-
-</li></ul>
-
-<p><b>Can I add (or remove) methods to (or from) Percolation?</b>
-No. You must implement the <code>Percolation</code> API exactly as specified, with the 
-identical set of public methods and signatures or your assignment will not be graded.
-However, you are
-encouraged to add private methods that enhance the readability, maintainability,
-and modularity of your program.
-The one exception is <code>main()</code>â€”you are always permitted to
-add this method to test your code, but we will not call it unless we specify
-it in our API.
-
-</p><p><b>Can my Percolation data type assume the row and column
-indices are between 0 and nâˆ’1?</b>
-No. The API specifies that valid row and column indices are between 1 and <em>n</em>.
-
-</p><p><b>Why is it so important to implement the prescribed API?</b>
-Writing to an API is an important skill to master
- because it is an essential component of modular programming,
-whether you are developing software by yourself or as part of a group. When 
-you develop a module that properly implements an API, anyone using that module (including 
-yourself, perhaps at some later time) does not need to revisit the details of the
-code for that module when using it.
-This approach greatly simplifies writing large programs, developing 
-software as part of a group, or developing software for use by others.
-<!--
-For example, the correctness of your program relies on
-<code>WeightQuickUnionUF</code> implementing its documented API.
--->
-
-</p><p>
-Most important, when you properly implement an API, others can write
-software to use your module or to test it.
-We do this regularly when grading your programs. For example, your 
-<code>PercolationStats</code> client should work with our
-<code>Percolation</code> data type and vice versa. If you add an extra public
-method to <code>Percolation</code> and call them from <code>PercolationStats</code>,
-then your client won't work with our <code>Percolation</code> data type.
-Conversely, our <code>PercolationStats</code> client may not work with your 
-<code>Percolation</code> data type if you remove a public method.
-
-
-</p><p><b>How many lines of code should my program be?</b>
-You should strive for clarity and efficiency. Our reference solution for
-<code>Percolation.java</code> is about 70 lines, plus a test client.
-Our <code>PercolationStats.java</code> client is about 50 lines.
-If you are re-implementing the union-find data structure
-(instead of reusing the implementations provided), you are on the wrong track.
-
-
-</p><p><b>What assumptions can I make about the input to main() in PercolationStats?</b>
-It can be any valid input: an integer <em>n</em> â‰¥ 1
-and an integer <em>trials</em> â‰¥ 1.
-In general, in this course you can assume that the input is of the specified 
-format. But you do need to deal with pathological cases such as <em>n</em> = 1.
-
-
-</p><p><b>What should <code>stddev()</code> return if <em>trials</em> equals 1?</b>
-The sample standard deviation is undefined. We recommend returning <code>Double.NaN</code>.
-
-</p><p><b>After the system has percolated, my PercolationVisualizer colors in light blue
-all sites connected to open sites on the bottom (in addition to those connected to open sites
-on the top). Is this "backwash" acceptable?</b>
-No, this is likely a bug in <code>Percolation</code>. It is only a minor deduction
-(because it impacts only the visualizer and not the experiment to estimate
-the percolation threshold), so don't go crazy trying to get this detail.
-However, many students consider this to be the most challenging and creative
-part of the assignment (especially if you limit yourself to one union-find object).
-
-
-</p><p>
-</p><blockquote>
-<pre>&nbsp;&nbsp; % <b>java PercolationVisualizer input10.txt</b></pre>
-<img src="percolation-backwash.png" alt="Percolation backwash">
-</blockquote>
-
-<p><b>How do I generate a site uniformly at random among all blocked sites
-for use in PercolationStats?</b>
-Pick a site at random (by using <code>StdRandom</code> to generate two
-integers between 1 and <em>n</em>) and use this site if it is blocked; if not, repeat.
-
-</p><p><b>I don't get reliable timing information in PercolationStats when <em>n</em> = 200.
-What should I do?</b>
-Increase the size of <em>n</em> (say to 400, 800, and 1600), until
-the mean running time exceeds its standard deviation.
-
-<!--
-<p><b>How should I compute the mean and standard deviation?</b>
-Don't reinvent the wheel&mdash;use <code>StdStats.mean()</code>
-and <code>StdStats.stddev()</code>, respectively.
--->
-
-</p><p><br>
-
-
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Style and Bug Checkers</b></center>
-</font></td></tr></tbody></table>
-
-</p><p>
-
-
-</p><p><b>Style checker.</b>
-We recommend using <a href="https://checkstyle.sourceforge.net/">Checkstyle 8.5</a>
-and the configuration file
-<a href="https://algs4.cs.princeton.edu/mac/checkstyle-coursera.xml">checkstyle-coursera.xml</a>
-to check the style of your Java programs.
-Here is a list of available 
-<a href="http://checkstyle.sourceforge.net/availablechecks.html">Checkstyle checks</a>.
-
-</p><p><b>Bug checker.</b>
-We recommend using 
-<a href="http://findbugs.sourceforge.net/">FindBugs 3.0.1</a> (with Java 7 and 8)
-and the configuration file <a href="https://algs4.cs.princeton.edu/mac/findbugs.xml">findbugs.xml</a>
-to identify common bug patterns in your code.
-Here is a summary of <a href="http://findbugs.sourceforge.net/bugDescriptions.html">FindBugs
-bug descriptions</a>.
-
-</p><p><b>Mac OS X and Windows installer.</b>
-If you used our Mac OS X or Windows installer, these programs are already installed
-as command-line utilities.
-You can check a single file or multiple files via the commands:
-
-</p><blockquote>
-<pre>% <b>checkstyle-coursera HelloWorld.java</b>
-% <b>checkstyle-coursera *.java</b>
-
-% <b>findbugs-coursera HelloWorld.class</b>
-% <b>findbugs-coursera *.class</b>
-</pre>
-</blockquote>
-
-Note that Checkstyle inspects the source code; Findbugs inspects the compiled code.
-
-<p><b>Eclipse.</b>
-For Eclipse users,
-there is a <a href="http://eclipse-cs.sourceforge.net/">Checkstyle plugin
-for Eclipse</a>
-and a <a href="http://findbugs.cs.umd.edu/eclipse">Findbugs plugin for Eclipse</a>.
-
-
-</p><p><b>Caveat.</b>
-The autograder runs Checkstyle, but since programming style is subjective,
-it does not count toward your score.
-The appearance of a Findubgs warning message often indicates an error
-or poor coding practice (but false positive are possible).
-
-
-
-</p><p><br>
-
-
-
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Testing</b></center>
-</font></td></tr></tbody></table>
-
-
-</p><p><b>Testing.</b>
-
-We provide two clients that serve as large-scale visual traces.
-We highly recommend using them for testing and debugging your 
-<code>Percolation</code> implementation.
-
-</p><p><b>Visualization client.</b>
-<a href="../testing/percolation/PercolationVisualizer.java">PercolationVisualizer.java</a> animates the
-results of opening sites in a percolation system specified by a file by performing the following steps:
-
-</p><ul>
-
-<p></p><li>
-Read the grid size <em>n</em> from the file.
-
-<p></p></li><li>
-Create an <em>n</em>-by-<em>n</em> grid of sites (initially all blocked).
-
-<p></p></li><li>
-Read in a sequence of sites (row <em>i</em>, column <em>j</em>) to open from the file.
-After each site is opened, draw full sites in light blue, open sites (that aren't full) in white, and
-blocked sites in black using <em>standard draw</em>, with with site (1, 1) in the upper left-hand corner.
-
-</li></ul>
-
-The program should behave as in 
-<a href="percolation20-by-20.mov">this movie</a> and the following snapshots
-when used with <a href="../testing/percolation/input20.txt">input20.txt</a>.
-
-<blockquote><pre>% <b>java PercolationVisualizer input20.txt</b>
-</pre></blockquote>
-
-<table border="0" cellpadding="2" cellspacing="0">
-<tbody><tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</td><td><img src="percolation-50.png" alt="Percolation 50 sites">
-<br><center><font size="-1"><em>50 open sites</em></font></center>
-</td><td><img src="percolation-100.png" alt="Percolation 100 sites">
-<br><center><font size="-1"><em>100 open sites</em></font></center>
-</td><td><img src="percolation-150.png" alt="Percolation 150 sites">
-<br><center><font size="-1"><em>150 open sites</em></font></center>
-</td><td><img src="percolation-204.png" alt="Percolation 204 sites">
-<br><center><font size="-1"><em>204 open sites</em></font></center>
-</td><td><img src="percolation-250.png" alt="Percolation 250 sites">
-<br><center><font size="-1"><em>250 open sites</em></font></center>
-</td></tr>
-</tbody></table>
-
-
-<p><b>Sample data files.</b>
-The directory
-<a href="http://coursera.cs.princeton.edu/algs4/testing/percolation/">percolation</a>
-contains some sample files for use with the visualization client.
-Associated with each input <code>.txt</code> file is an output <code>.png</code> file that contains the
-desired graphical output at the end of the animation.
-For convenience, <a href="http://coursera.cs.princeton.edu/algs4/testing/percolation-testing.zip">percolation-testing.zip</a>
-contains all of these files bundled together.
-
-
-</p><p><b>InteractiveVisualization client.</b>
-<a href="../testing/percolation/InteractivePercolationVisualizer.java">InteractivePercolationVisualizer.java</a> is similar
-to the first test client except that the input comes from a mouse (instead of from a file).
-It takes an integer command-line argument <em>n</em> that specifies the lattice size.
-As a bonus, it writes to standard output the sequence of sites opened in the same format used by
-<code>PercolationVisualizer</code>, so you can use it to prepare interesting files for testing.
-If you design an interesting data file, feel free to share it with us and your classmates by posting it
-in the discussion forums.
-
-</p><p><br>
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Possible Progress Steps</b></center>
-</font></td></tr></tbody></table>
-</p><p>
-
-These are purely suggestions for how you might make progress.  You do
-not have to follow these steps.
-
-</p><ol>
-
-<p></p><li><b>Consider not worrying about backwash for your first attempt.</b>
-If you're feeling overwhelmed, don't worry about backwash when following the possible progress steps below. You 
-can revise your implementation once you have a better handle on the problem and have solved the problem without 
-handling backwash.
-
-<p></p></li><li><b>For each method in <code>Percolation</code> that you must implement
-(<code>open()</code>, <code>percolates()</code>, etc.), make a list of which <code>WeightedQuickUnionUF</code>
-methods might be useful for implementing that method.</b>
-This should help solidify what you're attempting to accomplish. 
-
-<p></p></li><li><b>Using the list of methods above as a guide, choose instance variables that
-you'll need to solve the problem.</b>
-Don't overthink this, you can always change them later. Instead, use your list of instance variables to guide 
-your thinking as you follow the steps below, and make changes to your instance variables as you go. Hint: At 
-minimum, you'll need to store the grid size, which sites are open, and which sites are connected to which other 
-sites. The last of these is exactly what the union-find data structure is designed for.
-
-<p></p></li><li>
-<b>Plan how you're going to map from a 2-dimensional (row, column) pair
-to a 1-dimensional union find object index.</b>
-You will need to come up with a scheme for uniquely 
-mapping 2D coordinates to 1D coordinates. We recommend writing a private method with a 
-signature along the lines of <code>int xyTo1D(int, int)</code> that performs this conversion. You 
-will need to utilize the percolation grid size when writing this method. Writing such a 
-private method (instead of copying and pasting a conversion formula multiple times throughout 
-your code) will greatly improve the readability and maintainability of your code. In general, 
-we encourage you to write such modules wherever possible. Directly test this method using the 
-main() function of Percolation.
-
-<p></p></li><li><b>Write a private method for validating indices.</b>
-Since each method is supposed to throw an exception for invalid indices, you should write a private method which 
-performs this validation process.
-
-<p></p></li><li><b>Write the <code>open()</code> method and the <code>Percolation()</code> constructor.</b> The open() method should do three things. First, it should validate the indices of the site that it receives. Second, it should somehow mark the site as open. Third, it should perform some sequence of <code>WeightedQuickUnionUF</code> operations that links the site in question to its open neighbors. The constructor and instance variables should facilitate the <code>open()</code> method's ability to do its job. 
-
-<p></p></li><li><b>Test the <code>open()</code> method and the <code>Percolation()</code> constructor.</b> These tests should be in <code>main()</code>. An example of a simple test is to call <code>open(1, 1)</code> and <code>open(1, 2)</code>, and then to ensure that the two corresponding entries are connected (using <code>.connected()</code> in <code>WeightedQuickUnionUF</code>).
-
-<p></p></li><li><b>Write the <code>percolates()</code>, <code>isOpen()</code>, and <code>isFull()</code> methods.</b> These should be very simple methods. 
-
-<p></p></li><li><b>Test your complete implementation using the visualization clients.</b> 
-
-<p></p></li><li><b>Write and test the PercolationStats class.</b> 
-
-</li></ol>
-
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-<tbody><tr align="left">
-<td bgcolor="000000">
-<font size="+0" face="helvetica" color="ffffff">
-<center><b>Programming Tricks and Common Pitfalls</b></center>
-</font></td></tr></tbody></table>
-<p>
-
-</p><ol>
-	<p></p><li><b>Do not write your own unionâ€“find data structure. Use <code>WeightedQuickUnionUF</code> instead.</b> 
-	<p></p></li><li><b>Your <code>Percolation</code> class must use 
-                  <a href="https://algs4.cs.princeton.edu/code/javadoc/edu/princeton/cs/algs4/WeightedQuickUnionUF.html"><code>WeightedQuickUnionUF</code></a>.</b>
-                  Otherwise, it will fail the timing tests, as the autograder intercepts and counts calls to methods in <code>WeightedQuickUnionUF</code>.
-	<p></p></li><li><b>It's OK to use an extra row and/or column to deal with the 1-based indexing of the
-                  percolation grid.</b> Though it is slightly inefficient, it's fine to use arrays or union-find objects that are slightly larger than strictly necessary. Doing this results in cleaner code at the cost
-                  of slightly greater memory usage.
-	<p></p></li><li><b>Each of the methods (except the constructor) in <code>Percolation</code> must use a constant number of union-find operations.</b> If you have a <code>for</code> loop inside of one of your <code>Percolation</code> methods,
-you're probably doing it wrong. Don't forget about the virtual-top / virtual-bottom trick described in lecture.
-	
-</li></ol>
-
-
-
-
-</body></html>Ytext/htmlUUTF-8_Bhttp://coursera.cs.princeton.edu/algs4/checklists/percolation.htmlP¦!%Ô_WebResourceResponseO bplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Jhttp://coursera.cs.princeton.edu/algs4/checklists/percolation-backwash.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0v9ï ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"4081-4c5d3f689b0d5"_Fri, 27 Jul 2012 18:34:31 GMT_x
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdRnJpLCAyNyBKdWwgMjAxMiAxODozNDozMSBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNSBHTVShF1UxNjUxM6EZXxARdGltZW91dD01LCBtYXg9OTahG18QFCI0MDgxLTRjNWQzZjY4OWIwZDUiAAgAGwAmAC0AOgBIAFYAWwBqAHUAegB8AIcAiQDuAPAA+gD8ARwBHgEkASYBRgFIAU4BUAFkAWYAAAAAAAACAQAAAAAAAAAcAAAAAAAAAAAAAAAAAAABfQ==_Mon, 19 Mar 2018 16:08:25 GMTUbytesU16513_timeout=5, max=96ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸
-$'09;=DLWbdfhjlnprtvƒ…‡‰‹‘“•—«°¾ÇÌÚéôÿdn…¥!AGMalq‡‹˜±µÉ×éì             n              O@‰PNG
-
-   IHDR  l   Ü   Û@/  MiCCPICC Profile  xÕYy8•ß·ßï{&spdvÌóœyÇÌs…cÉL‘)J¢AŠ¢TH*dhPJE‘¹$’LÅ}5|¿ûüîıïşs÷óœı~ÎZk¯½Î»ÖÖ: °ÏQÃÃƒaF BB£"lõ(Î.®Ü@x ğT¯Èp]kkğ¿¶ïƒ Úf>—ÚÖõ¿ŠıÏ’·O¤ 5Âöôô
-Ağu `=¯ğˆ( P«ıilT8‚Ñ÷ÌˆàwÛØï7^ØÆ¿0ıKÆŞV  4*5Â ¢ B§Äxù!zˆ `™B½B ;#XËËŸê {"#¶»,êùozüşS©ÿè¤RışÁ¿2™Ø  2<˜ÿëËÿe¼¯_	é	¡Á–Û¾aE>3ŞTsäÉ…|6Ãƒù‘8|BìÚ6–õ´´úƒµ|#ŒlŒŒ…¬Ã£ô¶1òÎ ßğ(kû?ô¤}KzO¤á_=¥T³mŸÑ#ôÆˆh["¸=2ÆÎÁHDA	şöNd¾yûü¡Ã°o€‘éo˜) Êt{.fÄçüAaæÛ6 sÁJÀ">H şôRÀPNÂ‹A`
-Á!Èˆ0dL‚)äôÿƒbôkœ2î¿k¤ /D6úŸ9ÏFAæü«3 x#ø/ŠÌ±ÍÛ¶.Ò= õ_sş•ØÖ÷ËÙZÙYÙmB£åÑŠh=´&Z­
-(hV4BïD« uÑÚhu„§
-ŒÀ¢Ùï¯ÛúC}c
-ÂâÕıîöo÷üË¿¤şùş€€'sÍs-  Ê'Y è‡…ÇGøùGQt‘•ë#I1õ’–¤ÈËÊÉn³ÿß´í=ë·±K¶¿ö"ˆµÿ_4?y ‘˜ù-à ·¸ÆíûM‰;ú äyEGÄüÖ‡Ş~` 0 Êì‰@yÏò@	¨`Ì€°.À‰$#@,8 R@8
-ƒÓ ”€rp	\ ´Ğ§à%xFÁ$øÀw°A"Bdˆâ…„ 	HR´ CÈ²…\ È
-…¢¡Pt:	B jè*tê€@Ï ×Ğ4}…ÖaL€™anX–U`]Ø¶‡÷Â~ğ>8N‡sà¸®ƒ›àøü…?ÁË(€¢C±¢øPR(”>Ê
-åŠòEE ’PY¨|TªÕŠêE=G¢æPkh,šŒ¦ ¥85A; ½ĞûĞIèlt!úº	İ…~C/ 71DF£†1Å8cü0±˜L>¦sÓy‰™Ä|Çb±¬X¬2Öë‚ÄîÇfcÏa°íØgØqì2‡cÇIà4qV8*.
-—;‹«ÃİÅà&q«4t4¼4ò4F4®4¡4©4ù454whh¦i6hi…hÕh­h½iãisi+h[iûi'i7ğ$¼^oÄ§àğõønü;ü?*] ]2]İºûtctk&‚8AŸ°‡MÈ!TÚ	¯	KD"Q˜¨Ct%FsˆÕÄ{Äâ*=™^šŞ”Ş›ş }}ı ı<-ƒƒ.ƒCC>Ã5†~†9FZFaF}F*ccãMÆ!Æe™$G²"…²I5¤¤&“0“!“7S:S9Ó=¦q2Š,@Ö'{‘ÓÈänò$3–Y„Ù”9ù(óeæ'Ì,L,;YYâXŠXn³Œ²¢X…YMYƒYsYYY×wpïĞİá³ãÈú;VØ8ÙtØ|Ø²ØØ^²­³SØÙƒØO°7³s 9Ä9l8b9ÎstsÌq2sªszqfq6r¾á‚¹Ä¹l¹ös•sõq-sóps‡sŸå¾Ç=ÇÃÊ£ÃÈ“Çs‡g–—Ì«ÅÀ›Ç{—÷#……¢K	¦Pº(|\|&|Ñ|øğmğ‹ğ;ğ§ò7ğàT|ò:yw	¬|#D+¤"ä/tF¨WhEXDØI8S¸YxF„MÄT$A¤Vä(QT[tŸh™è1¬˜ŠXØ9±§â°¸¢¸¿x‘x¿,¡$ qNâ™$FRU2T²LrHŠ ¥+#U+5&Í*m!*İ,=/#(ã*sB¦WfSVQ6X¶Bö­“œ™\ª\«ÜWyqy/ù"ù
-D#…ƒ
--
-‹;%vúì<¿ó•"Yq—b¦b§âO%e¥¥z¥YeAeåbå!fk•l•ûªU=ÕƒªmªkjJjQjj_Ô¥ÔƒÔkÔg4D4|4*4Æ5ù5©š4Gµ(ZZ¥Z£Ú|ÚTí2í::Ş:•:Óºbººuºóz²zz7ôVôÕôõÛPÆYO™GŒøüŒjŒ÷·›`LÌMN˜™r›z™V›.˜)›%šu™ÌíÌÍ?Xˆ[DX´î‚w™í:µë¥e¨e³°2µ:e5l-b½Ïú–ÖÆÚ¦ÈfÊVÎö€m¯ÙÎİ®Æî»½}®ı[Q‡h‡NGÇ=Õ+NN'Feœ¹p¸¸´¸â\]+]—wî>½{râŒ=ƒ{EöÆí}àÆáìvÛÁê~ÍãáäQãñƒjE-£.{šz{.xé{ñúä­ãç=ë£ésÒgÚWÓ÷¤ïŒŸ¦ß)¿Ymÿ|ÿ¹ ı€Â€Å@“À’À• « ª ­`§à†š›¡L¡A¡]a<aqaÏÂ%Â3ÂG÷©í;½o!Â<¢2ŠÜÙÅŒ\û¢E£EÅhÅÅ¬Æ:Æ^‹#Å…ÆõÅ‹Ç‰ŸN0J¸¸½ßkç¾)Æu/$AII¦œL6N¾”‚O	Jyœ*›z2õ[šSZk:wzrúø!ãCµôC™ê™%‡Ñ‡?9¢päì‘Í,ï¬‡Geæı‘í•ığ˜Ü±‚c[9¾9Or•rÏÇ=>xBûÄ¥“¤“	'ÇOí:Õ”GÉËÊûvÚıôƒüù%gğg¢ÏŒX´œ<{üìBÿÂ—EzEÅ\ÅGŠWÎyŸ8¯s¾¾„»ähÉzi@é«ÆšÊ„ËòË±å1åS½U.VWrT­üYZ5zÉöRWµruuWMn-\];[·§îéeƒË-õRõX^W¢¯|¼êqu°Ñ¼±óšÊµúëB×‹ood5AMñMÍşÍ£-.-ÏnšİìlUo½qKúVU_[Ñm–Û¹wğwÒïlİM¸»ÜŞ>×á×1ŞéŞùöó½]6]OºÍ»ï÷õÜëÕí½{_ó~Ûµ7ª<l~¤ô¨©O±ïÆcÅÇ7(=iêWîoyªú´õ™Æ³;ÚÏ÷¼0}ñè¥åËgƒƒ¯†ö¾ò~5ó:øõâ›˜7o“ßaŞe3çp”½{ß0ª4z{Ì`¬ïƒİ‡·ã^ãŸ&"'~L¦O§ò§y§«gägÚffŸ~ÜıqòSø§¹ŒÏ¤ÏÅó¢ó×¿è|é[p^˜\ŒXÜúš½Ä¾Tõmç·Îeëå‘ï!ß7V²VÙW/­©¬õ®;­OoÄşÀı(ø)ö³uÓ|óİVÈÖV85‚úë.€BzØ×€¯UHá‚äOÀ·ÿÎ)~I é
-„È Ø:ïC© w»IÌ}l.—&Ö¿›Î`Ct¤·epeô ù3…’3˜»YI;v³U²/rjper¿æ•¥$ñ½LQ-û.a/y]šE&^vLŞB¡Q‘K)Cù‹ª½Z›¿æa­y[İúlq†¯ULÎ˜.›Û[Ôî·"[ëÚ„Ø±ë°ŸrÄ;‰9¹¸¹FìNÛs|o‘Û÷JKÔ*Ï*¯rïó>Ç}ú…ú»XjIs†Ğ…¬‡Î†½
-ïİ×Q™u(:*Æ+Ö6N7^2aÇ~hÿÜ¡Ä¤ºƒg’SRBRÓôÓ¥qd`23ß¾äzVéÑììcÇrsrrsçœ8vòè©Ãy©§ó£Îxu,4-R/–<ÇuîüzÉTé“×Ê
-ÊTx^4©”®b®Ú¸ô¡úaÍÕÚÂºÔËÁõÚWÄ®’¯n6Î\{~½åFqSr³W‹áM‘VšÖ™[½mo§ÜÙsW¹±}¶££³à^h—~7{÷bÏÓŞk÷ó$<t{¤×'ú˜şñò“wı]OëHzî÷Âú¥Ú ÀqhåÕØë7oß•ŸI~6ºwÌìƒâ8e?ñuòõÔİéŠ™ÌÙ »>IÏæ†>—Î}Q^À,-Ö}M_òø¦»,ôáûÏ•…Õ™µë6ÆLıü¼ùmkë—ÿa]”jİÉÄÚá¤iXh¦i{ğ•tÙ„¢;½	ƒ2#7‰´I–avcÉcícC±+søs^àæáàµ¡äğõ	à…	?¥3Ï‘x!Å+í/sC%o¥pvç¸’”r¬J§ºF‘æ˜¶˜Nˆn£Şš–ašQ›ñ+“YÓUs¬i¥ˆ•Œµ‚’­’‚½”ƒ#§ƒ3pşâ2âúxwë{“İv»+z0xÌR»<K½ö{;øÈøâ}'ıÚı‹bm‚$ƒqÁBn‡‹·Ø'"ŞD^‹:í£Ëû-îI|UBêşİv&§’î,HLqNÕJH§IŸ?ô"£5³ôğ¡#AYÖG³Ù³·MäÜÏ­?~òDÌÉİ§´ó(§Áé÷ùwÏ”¤œ¥ê	£‹'Ïõ¯.9ZzÁºL¡œ¥|µâíÅ;•eU©—<«õjøkQµãu÷.WÔ§5x_1¸*Øˆnœ¸Ö}ıâô&ïfƒÁ›Ø›s­/oİi«¾}êNÒİ v—ãNå{¢]İô=pÏjïüıÉÃõ÷=xÜ÷¤¿ÿÙÓçÏ^=óâİË‘ÁÑ¡¯&^O½™~ûñİÜğÂÈÒûï£k q¡	ËÉø©ªé×³¤–ŸNÌ½ÿ’¶0şÕbéÖ²Â÷†U…µ[F?†6şø_úŸCÙ¡iĞ711X%ì"®…&‰ÖÏ…_ ë"äéø6IX&V²8³*‹!«ã@¶döÓ—9»¹F¸×y™)²|–üa9‚—…ú…—DÙÄ´Åı$²%¯HIÿ”å“3’÷WÈÚY§øXiN… *ªf¢î­qP³X«^»Vç¼n®^’~³¡‘°1­ñŒI·éy³(s#f‹Ñ]5–VJVëÖ·m’lÕl—í®Ø99¼w,t²w¦wîuIqUs]Ú]·Ço/ïŞ!·ãî¦G5ÁSÕsÅ«É;ÊGŞgÑ·Á/Ä_Ü& 2Ğ;ˆ4\âJí;n²³ï^DJ¤Vä¨›Ñq1Š1‹±õqAñ"ñã	%H¤°HÌI29ˆ:x/9‰¡ÔÅ´ÛéY‡32¾dŞ:œyÄ6‹'ëãÑÙÉÇÌsXsÆrëÇœĞ;Épòİ©ê¼˜Óúù¤ü‘3µñg
-™ÇS3ñœÅyó3%M¥éìÊ„Ê6Ê+®\Ìªô®Ò¾Äyé{õ@MCmv]ÀeãzátÃÄ•{WËÓ®y_7»¡Ö$Û,ÒÂ{“­•ù©t›ùç]¡vùƒN—{‘]¹İ=½k(÷>{|¸çÓÉÒ~ƒZ¯ÄßH½Û5’;úu<qJj|Zú‚ÿª»œ»ºô#lÛÿ¿kKÛgV	€
-&ä@x	€Cäo,¤œ} X°Wğ! ïÀ(»ïŸóBN, C*6HUEh y¦ûA.’MŞDòÇYq"Y¢ä%BĞu$üÓÃRğ.8>_‡_Á?Qü(ST8ª Õú„œEzèPt1ú!z#ŠäeY˜6Ì¬ Ö›ƒíÁnâ”q¸Ë¸4"4¾4•Èn%FB{•v¯…ÏÀ÷ÓqĞùĞ]%`	TÂm"ñ ñ=½>}5™!‰á3£ãs’9©ÉezÈä—ÌTæE–4VvÖ«;lw¬²•²›±¯pTqºp¹º¸“xÔxÖx[)‰|úüşW•‚±BfÂ‚"È¨h§X²ÓÅIúHÙIÊ¨ÉÊÉ‰Ë+íQ”P’WVW‘SSRĞÔÕ’ÑVÓ1Óİ£¥ŸkPo8`´n"lêh–eŞiñÓÒÀê¤õ¸­Šİ1äôÓu*qŞr¥îîÙ+å–ïQÃ<ß{ÛúôúéøßÔêÙº~$B8òAô¾XŞ¸	9¬’˜¾O¹’–yÈ3Sç1k(»,'ì¸ÎIÒ©‰Ó7Ïäõ/Ò?G9¿U:VÖ]Q_YpéPMtk½ş™FŞëLMøL+¶x‡½]¢S¿‹Ú“q¿ñá‡ÇìıÏò_pV½Vx{kDmôÚ8ÿdæô‡
-s	ó-óK”e³•Èµ³·~şÚ? €BüO@*°ÜH½a'Ri²CêLqà¨@jC`	b„D!=håAˆï¿ÂdXv† ùı}xÅ†ÒC… Î¢zPKh´:ÉÏg‘¬ÜÉÅoc¾a¥°~Ørì{7n®7LC¡ñ¦©¦Y U¡M¡íÃ³á}ğ×èPtöt•˜àGxBT!V Yoı
-CÃ4£ã8É4ÏOÆ‘Ï2Ë0ßgñFòÑÊlx¶{ì94969;¹²¸íyøxy»)…|QüÖ2‚L‚ß…F…‹´‰6ˆUŠ—HKI—®©—m•{(?¢°¬È $©l®â¦­–«^«ñPsN›¤£¦ë£—§ßc°a$ojRkúÙ\Ş"nW·»õ>›>;1ûÃsN6Î­®Â»óöbÜâÜç©şãŞ^>~ş)ÁÌ!µaác)Q‚Ñ}±Ññ	/NÒ>¸–Ò’H;{¸'+=[?•Û{"ë”åirşë‚’Bßb©sË%·/d–Û^ä­œ»t«æhe=¹aøjõµØ&Íœ-‹­Ú*ïj÷é4í’éa½=˜{ôæñ£şÛÏ®>x)58ıªôÓ;üpó{¯1Ú5&“#Ó¡3ëSçPŸ“ç7ÂÇ—ì¿µ—XÉ_ë~*nıñ?Ğà"H¥ÉYû! &0 ßKB¦HE(©õA0¬{ÃÇàxEBé +şê9‡Ö@G¢kĞãndµça°LX;ìiìk/Î×€[Gª(y4´J´Ghßãñ9øY:Cºr!‘ğ•HœBê3aŒÙ$Ò]&O2¹•9ŒE‚å²²SØÙe9è98‡¸:¹y*yK(E|çøËêÛ„‰ÌŠAâ\ê’îR‡¥oÈLÉqÉ;)œÙùVIP9\åI=@£[KPûˆÎ’§ş ¡•QŸ‰•é ¹—Å’e¨Õ¤»íˆ½»Ã”S˜ó¦ëñ="{;Ü=¨hÏZo'_¬ß­€ğ ‘à±ĞRän.¹}'67Şk¿F"kÒrò«Ô;éÕù‡²²åsÈ¹«'FNõn<SzöxQê¹˜’à>åİ«Üª©µv—å®|nì»^Ó”ÙâÙªÖÆp{ôn}GÜ=ÍnĞs÷şş‡Š>?.ëwyF?päù£—Ğ òPğ«Ò×oÁ;©aû‘Ø÷ù£õcN¼œ|6Õ5İ8S<›øÑı“"rcş\5ñEéËêÂÍÅ¨¯Ò_g—Š¿Y-ÃËW¾ï]Á¯\_İ»†]»¼n»¾ºqî‡ö±Ÿi››[ÛşôU@j–HƒzHùqdkkI©Uàç‰­­²­­ŸåH²üÒüûÿŠma,Rs/nŞF=úéÉÛÏoÿxM‚ÿX1™   	pHYs     šœ    IDATxí]xU–îw'@ˆ„„	„GDÅUD1" 
-®®Ì º>wtÀq|ñí¬:»ˆ23îÌ(;ê((¾fFE@PA•‡("ïGÈÈ ï~í_]¡lºëŞªNuº«;§Ñ|U÷{Ï9ÿ=õ÷­ê{ê½^¯>„ !@tSGR;B€ ˆD(B@D"šà£Æ„ !@$B1@š Ñ5&"ŠB€Ğ„ ‘ˆ&ø¨1!@‰P„€&ˆD4ÁG	B€H„b€ 4!@$¢	>jLD"„ ! 	"MğQcB€ ¡ M‰h‚„ ‘Å !@hB€HD|Ô˜ ,!À‹Ñğ1ûé@sA±Ç­ØĞh2ô(HÂ£I¥#1¡ÚdŠò7„€Å#ì¢–áM$‚yì±Ç~øá•×Ï[l	i}rŒáÕ5Å‰Iİ»Ÿ—"aj2­ÍµGK™çVøTçòƒ·ŞšŠ#‰É)İS{)¨ni®=¦VµÕĞ3SAµËåê›‘:ÿéyá•s1P8£Øà g±¡‰D ÓÖ­[×¯_ÏÁ«óªzæzhæ“f‹ñ*«Ôæq»ßÿåM#¯š|ù¤ûœm­²b(4›-‡÷¼³øßXåi¹Cšõ”Élæ¨v»\ï?0õ²ñS.ŸxŸÓÉQm-;¸ë7nPÁ:Íèáì
-^756\û¦0M‹êd„bCv–qZIÄf³É"B‡Ã‘”ä0›­àuYu˜¤x<îdÈ%¢.+ÓY“ÙÙNd““’’L&3GµÛí<«ÚárrT[IY-²…Ÿj°G5Ú£7.’ÙşË8‹fpû»­ÛcLAğ5ÀÎÙ*A–#üZÙV¾îØ}
-ªÅvbßVÍT'ëK\RlÈëOW„Le‡‹¢üì­ÃvSCB€Ğ	D":2ƒˆUˆDbuäÈnB@'‰èd ÈB V ‰Õ‘#»	 @$¢“ 3XE€H$VGì&t‚@l¯AÊøOMTIëñ…#v‚PÅ®•ïÜ×†µæŞ§º½ ˜İ¹PÅ®í¨jşŠ|Ù^ã­PÀÕ÷OÖ1ß µ£ä&b3@íFEC5ÓSY ÔÆ2‰`]·	xF,ç’u#äqù2AÒ…ÿdÅÄBHpjƒª¼PíV½3UûlóúT»¹ª…µùAı3Œí^Këè%áµO¼aÒñzN±!7²Ì+PÎ†À2\B&LX½zu`EDÎMf[Î á&£‰³ Ücğ–íÙjIê–Ñ×ãe^«&ƒ±µ¹éÄÑb•†ª_„V<Õ^OÙŞï}ª³<®ºU›¬¹½ÜÛPÓ}ÉV,ÿ(º	x²á„I¾Zâ)6"70bÌKFs¾“ñõ'ª¿Zúúèo?¯W¦‡¼o6›÷nÛtàû/Kv+;N…9ı‡q…ËÉœk˜M¦“µU›_yã©½zóT[,{¶n8¸í«’][´Èææv™›=×ğ©>Õ²Íƒ=z^8j<ZyS“ÑĞÖÖfwŸn«ÛŠÙ¡‰•Øˆ‰¹xô¤³ÛØ©´³¥¼xŸ@"×ß–Wp¡Ëí”E…6«)s –@@yáÈ±•T—ØµyåÛ£'Ş–;°w>=H§6›÷” ©„PxÙU×O¿¿Åk1[Köï„j~?Rmzv¿I34[x	ÄM»W½Œ}t³x%›(6d!Š•Øˆ‰àÁ ÄÅ&Ùír¶M—«’6‰ày z“Å]¶P•j—¨ßâPÍë<tÕ-¢_²¶yÌ—Oµlmp!Ş®äjkñzx/@À›xo0	î4Ú%ªˆbCi˜¢Ü{k%£© "ŠB€Ğ„ ‘ˆ&ø¨1!@‰P„€&ˆD4ÁG	B€H„b€ 4!@$¢	>jLD"„ ! 	È-63b‡³+ÊXöb³°[«Qq,lÿÄø tÆ¨”)Æ‚zEÕPŠ–gUËt"ùT‡À¼‚fxÍYÂo±ˆª™*Ï­À.} M8¹ĞˆT«sÛéúŒbCvxÄ–­’-ŒVlDDN¨®(ŞÇY»	©ª8tj*J,'·Õbµª­’ÅQ¶ğT­²êêr¨öVW”×<;Õª‘à#«E¶°®ö¸àµ‹¹„ßl²øTË¶–)lil¨<²ßdâí;ÓÜÜØÖÚêd”EªˆbCé˜‰!›½£|ÁÉúO…ÑE ã‚ÑéèÀ†¡ÅFt€£=ì±¡i&‚¯´>¹¿\ğ^¢Ã¸“µ[|©Çâßıº`øåc¦Ì@^Œ¬
-1E¯©(]4ÿ–@@yzNÁÌG~ÇßËÙ¯ÎŸSxñ˜+oø9_uUYñÏÎ	PÁ:íS0ãÑç0	çzí~ªG=i:WµõxÉ7Ÿ{èß¼˜‘İ“˜c±Ú¾\şöŞí›îœû³™§º©±¹n÷Üù°\èìrŠ®š‚0Ùì‰}ó‡:’’¹¹ìGj¯Ì¼A¶µ2Iw€V«]}p'&'çjÂ6šlşB¢-1Ij³1„‡,	ÉİròÜ½x‘@hKLNMÏÌ+¸ Y},¿Ì+¶%CmŸÜYıs^•`³ÛLû›‚æ(ä?ijlh<¼‰Ë’ğ–Sl°ğ÷}­ÆUlh"„Â—'.d¸00±vosòrsx]/}6 Ê1[å9ªñt¯Ã¼Êª=!¨ÆË°ª	¯Lcó—`› YQµAœ} d1sˆ].d$…',ĞÌœú¡#Vm †z
-`	ÅF Èí¯‹£Øá‡† ,è”  @$Ba@š Ñ5&"ŠB€Ğ„ ‘ˆ&ø¨1!@‰P„€&ˆD4ÁG	B€H„b€ 4! u±VÎ`™)Vd³V7AÀh4›ğ?ÖfÚìX$Å²+V±d•U\n2Ñ#ZqT{L#V§£cEÕ[°
-V‰Ğ¥°÷oí9ôBÌ§:ÕÊÍ²q€¿V›ÍíbÒ:\ †@ªùûÎX­.€ÎQ™*Ø@±µpAÄWlh"£É|º®ö‹şfOH`^É¾Mëjíİ¾Ñ¼Äâv2óY‘ƒlÎ`ĞY%5GË?y÷ÿ„,Æfp)¬V­¯>¶ïûèœ¯º¾ö8KQpyõÑÒOß}IÈa«v»=‚×[7àjWÖ÷ƒVW}›>ù{JZ–¸ÊŠ¡$|`ÇæÚªÊÏŞ]Zæ¨nmmíæ¬Áè°ºŠ@9Åg€â,6´îÅ{İu×­Y³FMPÚ“zôè•‰«š)l2´5·ÔW•"³.Ñ‘ŒmtY’˜ƒ€AšNÕ¦gç+%¼{kÊY»#‡EIuS}U¹
-Õ¦ÚÊÒÆÓ'Òûæc/q–…B¹×[SqÈêèÌj£É€m€¡š×•_^P’–İŸ¯»vVğñŠåÑİ‹—bÃoÜÎ=Œ¯ØĞ40˜™ólü-wMÿ…›½Ñb9Z¼Á7ÌxøYìeÉùö6[mŸ¾»ğûu?úç÷qÄ¼C2kòüìi™8aæl¾êŠC{ş0{êÌGŸËÎâe§ğ˜möO—üåû¯V=ö—q;Ã": âr¹Ìù×‹ÇM0ı~·o÷6Yhp;Vz`÷œ*[\˜7xÄ/æ¿ÛêÆÆ¦Ÿ/ú6šÁÃ‡’ø‹­$"“l!æ·¸àqYËÖ¢õ¸ç„7œñ <oÀpàÀŒ,^Æõ$l¿nÄ~´âSEÕÂä_x^JÄ2QxraÁ]úl0™9ª}}÷¾4x™]ÂSøËVXãõu39ª´ú8PA4Î)6dQ•Øˆ‰ˆ‰§¬G' Uí†p$|d‘%Å*_¶$rìÏv"=îVªø’gUÊ™’‚êv=bŸÁJ¥~~e	[îÓÊW}V÷¹u|&‚Ä4[tY°¿]')º)Â µw"vÉGª=«Yê®ÌßX˜R9!@ş‰ø£AÇ„ !2D"!CFBÀ"4è˜ BF€H$dÈ¨!@ø#@$â„@È‰„5 "¹NDXŞÊYå«ò­õ‰)I
-^`ñŸøÏß%éUR'b—RUÀ †ÿğåÄã !ßé9ú”ËI	Rb—²b(ä$Q–Ğ¹åB‡
-ªÕ.#>·ãh)£—ñåØˆ	Øø>í1ğ$)t*¶
-ş+T‰µ‚”ğ	–K¤*Ÿ0D²ŸêöA’ß!»V¾s¡;¾j†Y²İ©+Œ‰ 	9œ*½$òëY‘iIH³\p›„ÍİP‹Uí¬I•Öu40±Q… &ì] ¤Ú·”KÅT£Ÿ³ªØªÛÚUş˜&zH¥c®g•Äü½÷ ğo¢ócŠÙŠ•ØĞš€7aÂ„Õ«WËBPhOJí,8MT‰§Fƒ©­µ©î˜//¹.}Y1"‡µº²´ùô‰ìÃŒg`]ƒØÆc¨8°ÃšØ-5½_µ/®4#op‚#IQµû×w€Â«ò=†šòƒB:Õ,gÊMf[6¯âzİÚæ1(oÅ²¥ÑMÀ£Ø»ŸNã+6"7é;`È £<ìÜ6ä¤œ®«ùzÙÕeû‚›{T¾o·¾½åºx”ÇÉÜ
-ªëk«6~¼¤ªd¯š=ÒGŒˆÄ#ƒè¼Xöîñ¬ı 
-é|C ÚÅœ‰ªko\YªF/d<î65^;ûepæÉ*uELŒbCêX‰È‘ÈĞKÇNš9»Å‹Ì·Š#ûA"²€j),9vâÕewƒDTjIï“;iæşK‰…¼ıëÏ
-/3yæƒmNææ¡³µdÿÎ+ßR©Z¥X1<¢ØÖX‰È‘nÔÁ .6‰xÌ‚„,šU©v… ³W[/qˆğpÇŸZ\ìWxÌ˜œ… Z#úl®j€(6ô9x´^Ç…ì"bZ'3CE†úD€HDŸãBV1ƒ ‘HÌJè"}YEÄD"13Td(! OˆDô9.d!3‰ÄÌP‘¡„€>ˆÜb3äq`£¬(c°c«VK¹*Õ¦ À‚wø‚ÿñpYÃÚŒ"Å»_ÀkvŠ¼Æ^²tBUD±¡×€ˆ\øÖÕV•ÜÍY‰}k«+K:¨ºeÕÇË«WİÒp¦ìğnaß6‰ ¸­¹¡¾º
-êy^›-U¥‡Ô«KIŠÙaÅ·KlÄ†´›Fğ[TT$ëü
-/z`ÿ×^ëƒA½døPÃ¸`t:0¦ájB±Á¸‹M3ì9pàÀ§Ÿ~:11‘ÿøN¾ç{¾ûî;Lª†¾xñbşBù;îØ¾}{úç4éS0ã±çg"¯==»päÕWNÎŸ‰+9øæïü÷ÿZ˜‘İI9,½‹íëUï}ıÑ"–€®Ê)6@Ç²#‚[]\ñšH0%%%6Ìf³Éâ%¦¤¤HÇá:èŞ½;T+ö1E™P’»åôÊ&‚Ü;[brô¼ˆÀÉNÀ3[¬^ß&›™9ı³úâì@lµÙSÓ2B55Zò‰³ØĞD"P …ï>‰€w1#{4£O¨vºe ÃKv#åß›¸\ØÎ›Õ¹ğmƒ7§@»ğB5‚†İ©Q¬õ	ò$İnsgÀÈ6LkÅ†,‚ñô¯ì@S!!@¨E€HD-R$G²‰ÈÂB…„ ! "µH‘!@È"@$"„€ZˆDÔ"Er„ ! ‹ ‘ˆ,,THj Q‹É„€,¼•Z²
-‘™PpŠ•éüÅéò*OÑ'¥úyø¨ìP½v²ØøûÎMfˆÁD›-³Û.ö±XìPm±bÉİåfæ1£«72ê’@b#x°Ø,ÎbCSPâ2®¬¬œ7oİ.\¬ÖYîß¯vS;V'Áå‡zæ™gøE“‡‡¬E¶¤úXùgï-D,`É®¬ ’¯°ıo}Í±½ßo•pV¬"êª¡“/?z3¥g:g_^“Å²oÛF†ºÀbÖRÚ@¹N;§Øè:±¡i/^°ÃÔ©S‹‹‹g»wïv:áX«Õ:tèPÅ>wîÜ™™™Ù¿¾ä™3g§wÑEuëÖ/yäÈ‘òòr¾LjS3ólöD/scaÌfÌuU®–Æ,¥ˆõ°/ÅFb€ÕDç±¡i&‚Ô•Aƒ½õÖ[HÃcùrˆaoçuëÖqd:P5räÈµk×òùi;»õÖ[üq¾ŠüqÄˆ‹-ºà‚ø’/¼ğÂ#<Â—é@í½O¾”™7ĞËÎ²1Ûì+ßüó›×üê¹%&‹‰;òZŒÆÆÆ†ƒŸ¿áõ¸q;'/Óù¥aÄXç±¡‰DD˜0qåßSà:Çm`1»BŸŠª%I¾…CWâ_EÉÎğª…(f³‡y$X(ªÆ³üó2$á­k¢ãQÿ«8@jÆHç±‰hë¼ûó0ö,vÆÕÇ92`ßçœB¿É6AŠ@Œ7%I’~­uzØy¦†±g±«0vò`è;6¢6İGj@ºD€HD—ÃBF±ƒ ‘HìŒYJè"]EÄD"±3Vd)! KˆDt9,d!;‰ÄÎX‘¥„€.ˆÄ:‘NZ<Uö¬FL”Q/öÑÄr<hç Uù„ -o‚Ø|şJ%§ÂnšÊÕˆ‰2ê%;Á]Ç†VÁ
-,pÆ‡ÖwÆBô‰|~ÏÈàÀğm@|ˆ.à¯¢$8Îv¸
-İºÜ. ÉìAØµ;o€ËU™«ŞØ­‚SEX+`LÅ‡Ó+mNC~Å†,>ø¢êŒØĞš€7mÚ´êêjqÍ¸¬İ(Äˆnİºµµµ•%Ğ±r$à<˜¿J²k×.1Ç,EèäôéÓ;vìÀ®zØìŠ/ÙI	xyƒœeï0²¶²´éô‰^}ó}[4²¼1àÊ9¬àãËùà0Û‡£Rl„H¡Ç†¦™¾À›šš6oŞ.°Ä~Ş–Íéz×¬Y³eË–Ÿıìg|şB(¿øâ‹HºÅ+8JUàé8ÂU%{ÕhLNË¼tÜF³	hÉÊMFğu¢³F¶6b…a„Zç±¡‰D b%Œ`‰]İu×]Hæw‹ÙxA17|òÉ'‘¹Ï7¯ójÓûä]7ı~³·6³76í^õ×èfñŠÎÙ£ZIDÖ…jn|Ä§!¸ßæ¿
- 3|4Ú£«æxk‘ËÙêõZ8$âä)FW¾tÀŠhÑŠú‰—3(TEÊ‰(cD„ !ÀA€H„U„€2D"Ê‘!@p á€CU„ ! Œ ‘ˆ2F$AˆD8àP!@(#@$¢ŒI„ =.6CRÇb±JÜ?¿Ò’HéŒu“Šæu Vµ›-VlÏÉZN±eDœy-áI±!A|­ØĞ#‰ eNq»¼²²²†††mÛ¶)æÎ ³.îØ-ij<Szp¶úáHScs[Ks\òÅ't£ˆÅ°¢¼¨¨ˆãUEŒF§Ã#«½!ÅF´†^QoØcCÓL©+Ï>ûlbb"ÇtÄÓwŞùí·ßrdü«–.]ŠnıK‚_{íµ+V¼ÿşûü;¨5k&,Á=È–,[¶lÀ€²URá+¯¼²jÕ*ÉÿªG>şÍ7ß<eÊø.µ•=ÀnçØÒX¶*¸°OÿÂ?k2YX/ÁK‰š›k~X÷¨Dq+<hïÕ'ïÁ>p8¬<áõn÷[œ{ôĞ®`OeK¢w>±°wN>^N#k
--Vëú–ìŞºşŞ'â>šëµëÕy¿,¼ìê±7üÜÅŞ£["+9¸hş,åÑŠM$‚ï+„Haa¡Ífğ'à/é(áœ8/
-á *++ +î›IÅºıAµbqŸ>} zÈ!şe!aE_ £lsÙÂ„¤ä¬~üg"M§ö}…÷¸Èö¡B¯×jOè“7Ğ‘”Är,ìq»ÉêMŠbl¤gõË:¿ /õaYkµÙSzö²$8²òâ¹ßk«İa¥ÓÙÆê¿\.'«6¸<Z±¡‰DàÂ|„O"ø¶ÁŒ ØgV‰â4DŸ¢jÅ™k,eµó_Ã%6UÃ#ş+ĞTCXV‘¡%y¼FDŒc–_¸2ñ4V­ÔO|î»@,cSãÅ(²ªÁª“béÓ°îÈ†B·ÛŒ<Z#^Áàv™„+CÄE¯¸Ùt’œñ6nm !ÑŠú‰7p$èœ BB€H$$¸H˜  	D„Î	B $ˆDB‚‹„	B "‘@Dèœ BB€H$$¸H˜  	D„Î	B $ˆDB‚‹„	B ­‹Í°à*!!!°×sÏ‘#ÇO“;WÜ`·ÛJ‚O‘Í	Õü•fh|‚›³JÔ«Vì¶AFMÖ©¥’ÁFxmKàï;cms!x-uŞØ`µÚ-6;gÙ•ÑdGêõªÁª“bÃbÁšJ»ËmfY‹ZD$¼Æ ™¸’F“^›…°=«C‹Ù
-Vmpy´bC‰€***æÍ›Ç_±ŠÅH	ö™U‚ä”¾}ûr¹BïêÕ«±%Õ‚ø3Â÷ğáÃ,EÁå/¿ü2ÔóUcó=¨şıï¥‡Á=H%èbÈ²ÁV)œu«°_åî|bÏÕGV.ù“Ùdb­ó4mmmİÜ'©’1‘?€öS'«?{÷%ÄÇT¬e†GêÍ‹bl|½êİÔ´Ş¼Ø°XömÛX_}ì³wÌFÎfÉ·§®æØ®ï¾ÂXNl`”OÖWN´bCë^¼ÈÃ¥ÂŸàJŞ¾};.N$>pÆ —ÒöÕçé©7Š’Ø„Èú*Ã;öîUµ‡&ä1¹ÉÈèå~y{œîK.°bùG|†íTX0Ğ7L¹iëMV—=†ã¥{“z¤§g÷Ãšq–Iømi:£>OÕ®ÊSz¦öÊDª5Ë*“ÁØÚÜtâh1K  <Z±¡i&"fñ.Y²™fşøŸ‚kGuÓM7Í;×¿<øxß¾}Hç.İ’G}tÎœ9|ûwîÜ9bÄ¾ŒT›7xøıóñog~±8ºÛhB{¯¬Ü9³Bl°8Ô—EâşıÃ·»üÚI3ç¸Ú˜[¾cæ_Yràù_L–pˆƒƒñ·Ü}í¿Ş‹ıY¾ ïùãµŞÑŠM$ç˜†ğy@ÈğÅĞ›¢ nİ–c. è”¢€¿w^Ü'xó^€K#ãß*JÇx	lå™ê3Ñ!< XñA5€dTÆj±Ïk$û2¯AÁks^G+6˜„qdÄ/"Ö×‘¿"52şòñqª×ÇËD˜­p3Î!G1Ÿ•ªL„ØfUÌY„}
-§:ŸÓLÇ|^3keí:Œxlpï­eÍ¤BB€ ü ñƒ	B tˆDBÇŒZ„€D"~`Ğ!!@„ ‘Hè˜QB€ğC€HÄ:$Ğ 	3jA~DbÖA£ø×OµÌ¡™f1^ª×Çæ2¬Õd¨µÃÎÃOµ©‚ >,K¸•¬Fú/÷¹¥à5Y÷| F:6´’r½°ÈZÖ©«ã››››|©Pö@±+ÙVz.»×MØ™ª±QXßÉXš…0Â¾3­mÌİL"l€%PÇ1hp	ÑÑØèä,{7[€dÄ,Œ"á’hlrr–½›­PoL´bCkŞSO=…˜æ'¼#†Å‹ı«ƒÇŠ')DSHù¾êñ–dïŞ½‘ƒÇ÷±tàÀ•bG¨™¹ü¯'°vßŒÔùOÏ‹nŞoşë‰òª:…äLƒ¡öh‰=19å¼t¯—™€‡Ù•³µ’*QŠ	±äiİS{)xİÒ\{¬T¥;ÑŠM$ß¬‰Ut‘„‰“õ,ö€oQ~Ì)*Ò› ğQã5’aà»ã#'ÇDêÉ(QdÑø®ÒTa²ÂNámw
-©&ñ•>ŸÕx¿uZIDŠZ: ®‰ ı:Ó5Ç¼&Â† ‘HØ ¤®‰ ‘H×wòšD"aƒ’:"º&D"]sÜÉkB l‰„Jê¨3¨/+Å"‚Îè9ê}6×ÕEİ†° uÅjXŒ N%¾üîå…ç_=~Àµ²Gş6vaIÆJyCÕñCk>;¸æÓn½'<ÿB¬˜Í±“Ö‰pÀ¡ªè#ĞPUµèº±¢	)=b—M$î8şÃvÑëüoşµ¢±fˆD4CHt2ïß1ıØöOT•šzåÃsM¾±“5‡§ûÊm[7ıéwˆZî^·Ùš˜Qí%æ'‡QE”GçÇğ]  ÎIDATü¢ë%IÍëwÁ¿ı<|QR¯ôHè‡¬—=³àĞšO÷¼üÄ¡ö$©¼+¯ŠBô`5aB}t&ù×\'voIH¬+-±wëC"Z’•}ş¸kšëë$œÅÃŒè‘ˆ4¬t S’322‡_ãŠy>±Gêš'ß÷ñrÚÊ0«®ôÈÒ»ooª­;÷	³Í†{™ÜÑíz-b©˜ngbi´º¬­¸£i®«ïõµ=rò–Şs;xPš<%& ¤±¦úê'çvKù·›±µ]ÜÜË`Ì¿ıíocb$ÈÈ®Œ@rzow[kö¥—9Îë™;zŒğ|á“)Ù9itK ƒÀZ¤ÿ§x^ÿ|[®Ş<úuF=V$MÚlÉÉ¢'Ä|®÷œç#Áûñº7¼"$f"D"Ñ¼0Hw‡Ğ?È2H‡ıÕsCz°ªçÑ!Û˜ôÌ0õÕ7tûœµë0FˆH„¦T¡stË#]ŠAˆDt~™y
-èGºƒ‰(Ä(Uë]ñHd"ı_#d¡2:á‘®É D"ÊJ1@Ôy¤Ë2‘HL\ d¤*¢È#]™AˆDTE'	Å
-Qá‘.Î D"±rujˆ0ƒ‰¨M’‹!"Æ#Ä bTĞb³º:ÈTµD€GˆA¤Á ‘  ƒ¸B Sy„Ä?VˆDüÑ ã¸B “x„$ JˆD ¡Ó¸B ì<BD"Á˜PI\!F!‘"YX¨0®ƒ°b‚H„…•Çy„„D"p¨*®è0ƒğã€^ÈÇ‡jãé½ŠÓ^}#ë’‘ŠîyÜî·§M®/="¾«]Q¾
-‰tÁAïê.ƒGvşımlc2›Õ`qì‡íuGŠ‡Üt³á.(C$Ò\&Â‰ =	'šÔ!Ğ é‚ƒN.áD€H$œhR_„@D€H¤zLº¼åÿşrxíçM?şãÎµÿó„ÆN›»Z[?ê?O>¤(D"ñ1ñïEñºÏköíÑèçéÊò½Ë—jìD±¹ÇåÜ»ìÃ†šjEÉø ‰q$/¨!`‰šfRL„@ËéSå›7ŒÆœ¹ÂŞ½»ØA[cCõî]õåeÙ—^Ö#'WêÕítVíÚY»Ÿ½[·´‚ÁX±*Uá «ÈÊ6mH2ÔŞ=¥ló†Ìá#º§ üÌñcu%GĞ¿(|lÇ¶”œ\Çy=!&Õ{vA„¥5&Ğrü‡í¨JJÏÈ»r¬Ùj•´´œª/Û¼òéC
-¥Âø; ™HüiÜzÔÖĞğŞmÓ¶¿µxı3¿ıûŒ[šëëàjÓÉoM¸gÙ‡5{÷¼sË”ı«Vˆş·9óÑ½w|úøC'ÀÃ”ı+—à²nŞ“Xr–Ò—ıWÏÍ—¾_ôê²_Ü%vîv¶­˜ı¯mWüò¾o^|áÄıkÿçÉUÏ–z[~ÿİşøüÉâC;Ş~ÃÙÜ$•Ÿ<|pÉ”	;ŞZüÏYÓ·¾ö²T4‰¿1[Ê6}=õ•Å)Ù}kªq}–nøzĞä)`ÛW~!~ÿãŞ÷ñ²‚‰7 ‚ío¾^½wÏ¬W'¥õ
-Fä›—şrÁ–à&‹p	œ?îšâµŸ›>ÇGÖ¯MHI)ÿfÓÀ	“Ê·|s^ÿ|GÏ4”OzáEKB‚ ğåÚ•¿9f.§VV|·eú?—¥(@•ÿgç{oßöŞ‡İ2û@Ä\r×}şµñtL3‘xÍ8÷%¿èz0œLê•VP€«Ç¸­ ƒœª¬(ûf“«¥¥éD­ˆBñú/².¾D–A~üç»>]yÃŸ_¶&:DáóÇ¯Ü¶¼P³o¯Õá(¸şÜé êğçŸõ¿¦H”ƒ@ w7õee^·»¥¾åàˆ¹yŸÍ}øğkD1éï•ÌE-N“{gŠÂRUœ‰ÄÙ€vwÏëÙpü(¼m=}ú£ÿ¸sÕ¯g—oŞØzæ´ä?G¤ö;_:õ?8òå:ÜáIŠTˆgxnRòÕzÌ2ú—sÅèÒM<.Wñ—kû_=^ûöå—p3µ{ég|zÅB£ÑˆéL¯Aƒ?yôÁï…{(©O³]˜¶t…‘HWå8ôKñ¼mùë‹ÎææÛŞı`ÔCf»È`0ŠŞ¦ôÍ­Üú¬ç³ƒe÷ßİ|ò¤(€éL¿1ãpGS¼~mŞ˜qÈîíüÇ;Éé½»geC(ºùµ%ãÿ{şÏÉÄKNÏ(š¿`ú?–Uíú¿ìÊjŒïB"‘øß¸òÏDªªàRéÆ¯OWVˆ³×ãik8ãljj¨®Â-	&#ø2…ÓnÁº’#_­Ã1Ö—•JXØIS^zÅëõ®˜sŸô(w4%¾<s´LdMLÌqÉ–…Î¿æZ±•ÇãÁãU¨ÀB2¬XAa‹ï±.~Ê9y¤§à<Iimøi&"©‹û"‘¸âøq7Ş=óõ¢1Ÿ<ö««şó©ŒÂàÛ…Ó:xõªË?ºïßo¾ÏDVşê~”LšrÅœ‡¿xê7¯]3úoã®øşõWüÀO¶7.üÛéÊÊO{·-¨Ê¹|”ÑdÊu¥øÛ-pËsşÕí$NÉ¿vÂwÎXtİX«#©÷°‹–?p/­±¦fé=·CÅâ‰Wã×âá?›å¯¥‹Ó« ºÈ@Ç¼›x¨‰ç x†ŠK×‘–&-ÓÃ½àãÊ7šMÒS”4TÇñç(àÇ–”Œt0ıi®;)şjƒ>¡å»]cÿ1ÚœH$FÌ&ô‚ İÎèe$ÈB F ‰Ñ#³	½ @$¢—‘ ;E€H$FÌ&ô‚ ‘ˆ^F‚ì b"‘82›ĞD"z	²ƒˆQˆDbtàÈlB@/‰èe$ÈB Fø½e×¢¹qX    IEND®B`‚Yimage/png_Jhttp://coursera.cs.princeton.edu/algs4/checklists/percolation-backwash.pngÔOôbplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Dhttp://coursera.cs.princeton.edu/algs4/checklists/percolation-50.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0vFØ ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"865-4c4f2bbb23076"_Mon, 16 Jul 2012 13:51:56 GMT_t
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdTW9uLCAxNiBKdWwgMjAxMiAxMzo1MTo1NiBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNSBHTVShF1QyMTQ5oRlfEBF0aW1lb3V0PTUsIG1heD05OKEbXxATIjg2NS00YzRmMmJiYjIzMDc2IgAIABsAJgAtADoASABWAFsAagB1AHoAfACHAIkA7gDwAPoA/AEcAR4BJAEmAUYBSAFNAU8BYwFlAAAAAAAAAgEAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAXs=_Mon, 19 Mar 2018 16:08:25 GMTUbytesT2149_timeout=5, max=98ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸ÿ!*357>FQ\^`bdfhjlnp{}ƒ…‡‰‹‘˜¥ª¸ÁÆÔãîù^h~6<AU`e{Œ‘¥©½Ëİàö             n              øOe‰PNG
-
-   IHDR   È   È   ­X®  ,IDATxÚíİ±jK€a„‘5šÑXf!!;v…×(và«`ƒYp"#81ÆNã@É
-+36U psã—p~`.gÒK×4Ü¢Ü=ıø³¢»ºªşé–ªêÔÒTQKš@‚A!"A„ ˆ‚ BtYüöïé?OşSÉßşõzº¾¾>½wï^%«««Óáp8·Ìıû÷“e‚,eâ^qÏT™¨ó¼2ñì½^/Yf0L×ÖÖ’eúışŒT™¸F\+U&ê¢?Òı±½½Oàäÿ¿WòÛÿ7]ZZZCHB€  A ‚ tH˜ç	ªøûé¹FG«ˆy’l‚ÄÄË¼>zôhz||\ÉÑÑ‘)ˆşHc:› ñ:šwÃhôT|ÿşİÀ-ˆş(ø‰E‚„ !A¢?ıAè‚€ Í$6¨Ì»aü_=½Šoß¾¸ÑibLg$vqåšœyşüy%Ó•••d™ ëƒkk+Ù>ãñx:’eö÷÷;İ†1¦‹~bÕ!:&?şœ>~üx~¥;.È‡’ísssã«iƒ„ !AB‚„ !AB‚„ ÍŸ(¬CÌs„Uüøñcº»»›,t]ÓÓÓdû|ıúu:™L’enooMæ$RBšşëlnnÎŞUÄä^*×ˆşH•‰İ„M|şTƒåååÙdªLL$ç¨K´aã>±ºÎõõu²/..f¤"®Qç«‰Ï?/B€x»¥"×JŠFşB‚!B‚„ !AB‚„ ù%‚<|øpúàÁƒJâÜ¼\xçÎä½‚&v~´AªÎwïŞÍŞ¦Êäšk*óú5ú¾TÄ˜Î&Èùùy±_¬¶®ÅŠ6HEüê×yƒ,² uŞ ¥úcŞ˜&AB‚„ !AB‚„ !AB‚tG…&
-M¶h©I<à¼(-R7ˆå6²š„ !AB‚„ !A‚!š'HÓRÆ„Ò¼4–9'êé>Sõ‘¾µYdM=úéÓ§¹É’5zÎÎÎ’m}yyY´>‹šL<kòê’k±ºN¤¥N·qm\ÑO,‚„ !AB‚„ !AB‚¤ù‚<yòd–µŠñxlpgbgg'ÙÖ{{{Eë»SõÉ•+·4Ãá0Ÿ ¹N¹E;…#£SÔ½Ö¼ëÄ½Z9Q(»{wÉù‰U2iC§+‚ A‚!B„ õõuƒ¥£D
-Ïããã$u¯5ï:9SØÎ#Æt6AŞ¼y3[NRÅ—/_ŠwZª>A2±M¶d½?~ü˜¬ÏÛ·o³İëğğ0y¯«««Ù
-ˆT™EŞ)Úëõw-Vİ¤Mz¥%³»Ç/r*bæ:–‰¤¢­Ûi;¿X‘ !AB‚„ !AB‚„ ùs¼xñb–[¶ŠÉdRôáâ¼¿T}‚:eJ§}ùòe²>Y3"¦îõúõëéÖÖV²ÌéééÂ
-2ò	’k†3¶‹Æ¯h¥Ój6‘W¯^%Ûèää¤µÏ–z®`ss³èdsãÖbuù•ŞÖ¤9±X‘ !AB‚„ !AB‚„ ùe‚ôûılYúb TÇu]£££dÅ<I›åO1ŠÕ%ÆtãšBVA$m€µXA @€ @«)™hİ†©’[nclí´QÆ@hÖè…İr[2iClâu“6¼ÍJ¢!«	AB‚€ A‚!AòË)y[‹–ãx5“›e'İÚÖY`+yˆgC#———k•1xËôGŸ+ë!%×bùÄj9¶X‘ !AB‚€ A‚„ ùe‚¬®®«x¤'&SÄÿ°ë”1ÀËôGŸ+Æt6A†Ãa+!’e§XYY!AG‰1İù¤MÊ&ƒ!B„ !A‚™(ÌI
-šbww×`é(Y'
-#è¢6THo’*L&.&1¦ew¯ù–IEÌ¸P>±B‚„  A@‚€ A‚‹+ÈÆÆ†FEcˆíÔ‘s Š:igcL{ƒ`!‰}ğ©¨“/Ø'B„  A ‚ ÄD!Lzƒ4Š‹‹‹d_\__k'k±B‚€ A‚D£„ !AB‚dd‘S6Ñh”L…º¹¹©25õhäÕ“É$™(úööVÇÔàìì,Ù———Ú)Y“W×ùÄŠõ/©hëqÁ>±|b„ !A@‚€ ÑN!A‚,€ Ãá°ÖWä±­b_ÇÔ`gg'Ù{{{Ú)1¦;Êmyÿşıìm[ÅçÏŸúùcB9õüuh¯®®’×y÷îµX>±ÚG®lû777ÉëœŸŸ„ !AB‚„  A@‚€ ]$R=¼eÇ³U	U<}út¡Ÿ?6Ş¥?&¤ë\çğğ0ygÏå¤×ë¼X(bLûÄd5 @€  A"¶··g¬"ş§“‰©2±é*vqÍ+)!Se‚8_.G™¸WÜ3U&ê<¯L<{´AªÌ`0˜®­­%Ëôûı©2q¸–şøkıc:› Bt5"A„ ˆ‚ BD‚A!5ş ãàFR¡0€    IEND®B`‚_Dhttp://coursera.cs.princeton.edu/algs4/checklists/percolation-50.pngÔOöbplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-100.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0vT ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"aef-4c4f2bbaf6b7a"_Mon, 16 Jul 2012 13:51:56 GMT_t
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdTW9uLCAxNiBKdWwgMjAxMiAxMzo1MTo1NiBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNSBHTVShF1QyNzk5oRlfEBJ0aW1lb3V0PTUsIG1heD0xMDChG18QEyJhZWYtNGM0ZjJiYmFmNmI3YSIACAAbACYALQA6AEgAVgBbAGoAdQB6AHwAhwCJAO4A8AD6APwBHAEeASQBJgFGAUgBTQFPAWQBZgAAAAAAAAIBAAAAAAAAABwAAAAAAAAAAAAAAAAAAAF8_Mon, 19 Mar 2018 16:08:25 GMTUbytesT2799_timeout=5, max=100ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸ "+468?GR]_acegikmoq|~€‚„†ˆŠŒ’™¦«¹ÂÇÕäïú_iŸ7=BWbg}“§«¿Íßâø             n              úO
-ï‰PNG
-
-   IHDR   È   È   ­X®  
-¶IDATxÚíİ±kGÇq*„‘u¾óYFãla’;“øPŒ ŠUØ*\(`Âˆ+Üc5Á ‚Pá&…µqgTR¹P™Ş¨Nï>À…ß«°oŸãçñìîwàUffwæswÖì¼™P(”Â2Ã- P B¡ „B…
- 
-@(€P(Mróî“ïv)Œ¯ï=š\¼xqrşüùÂXXX˜t»İÒ:—.]2ë(Cê¨/õiÕÑ˜ËêèÚ[­–Y§ÓéL.\¸`Öi·ÛÓ°ê¨µeÕÑX<óquu`ÎëÍŸ÷j;ËËËq@t³vÿú§0îşöÇdff†¨X|ñÍ÷æ¼şôçßµ½v!€ € € iísAQ|;>`ÁU0º_~eÎë¿ş^Ûk×>Im¼”uxõêÕÉÃ‡ckk+ìâæææÌ¾:Útóô§±[íèÚs[ )ç£Š¡5D_Geê¦[åíÛ·awùòåÒ1{ê\¿~İÕŸÆn]{n å|4ş'@ €   @ €   @ ’?Pñìè¦ÅÉÉIèß°­¾:×®]sõ§±[íä¸§r>ªZÓa@†ÃáäöíÛ…1ÜÛjg}}}2??oÖQ4}¼ßï—ÎÇÒÒ’Yg45û)‚n7ÈÁÁùïoŞ¼qJc•wïŞMö”ºá@>}Z:üÄJø  @ €   @ €   ÉÈşşştñÅë×¯]ƒÒ>‡ÕÎÙÙÙdeeÅ¬£h:ñx\:ÛÛÛfÓÓS6
-£€(%d]o”@ê[«(´qÕW¯×3ûÒæÂª£64VÈ:™iõå}\GQÖúŠšİ«õ“ôY¬ª†>M­¹sÿêÕ+³¯/^LÃ*jÃó+jÌ‘?y=ÏÆEÍ‡îÁÇü·  @ €   @ €   @ Ò W®\™ñ.
-¥ğÔ&UÇ“¾T1;;k¶£ø³ëV¨¯¨…¤{`õuîÜ¹éî­UG›`
-«çøs®‘Ó|hM'}+êÙŸÔŸXQRö‰¥Oı¨oªÉi>B¿A €   @ €   @ €  •ÂF!…l~ä£&9fwO9ùoÜl““hğú€   @ €   @ €   ÈûâI=ª+Õ£÷…™ŞÍÄ²4–‘›N©.sLßªMÉ²ôœ‘©Gs
-ÍG¨äÕDy<şÜ¼×/_¾L»¸ÉÄC“WG½ş€(ÜÅâ'@ €   @ €   Z ‡Ó]×¢,î Ğ†ªu¯WWW“o&Zã‰Ì]œ2ºİn*ó,½íUÁÅh4
-ëëğğĞìkooÏÕÎ£GÌvCÁZ}}È#DeíD>m‘t£ìîé²»{Ú©sv÷Ú>¬€   @ €   @ €|^ Ş´¡UŒíííéqá¢XZZ
-ëkmmÍìË»áªCLV;¡)<­¾Ş¶ÊÚQ_©æ]k:ÈÎÎÎôS©(’.jİHk<
-O““îÕ— >{öÌ¬óøñã°ñ‰Õ—6Òª“ëIQİ·ç¢ÕjÕ÷Y,oÒ†”_éQÙİ£ÆãI¢áIÚ#İ*oµZ?¬€   @ €   @ €ü·lnnN'¸(ô7ş”7Hïû³Æ£ğÔ‰Lª{`õuãÆÉ;wÌ:ëëë¡­¾tèªßï›uÆãq–@4vkÜºö²6:N¨NÕ§hQ¤N«©PŸÖ˜Rq½ÿ¾9İİİÊ>µ`]—¢×ë%İlÎîY¬¿ÒS>‹UÅ¤‘ÁÃŠ @ €   @ €   ÈgÒn·Ã²ôi…^?–zÒÔ§5¦”Ùş[[[æx´ORå¼ÃVDŞ,­i€$¢Ó€V;‘»äĞiAk<Jsê™-Ú²…#Æ²ù¸wï?±RşÄÊí5ĞQÏbU5»{Ù|”=_€   @ €   @ €Ô¦ÊÛQÖD«&Ly]JsjG¯ƒóÌ‡1•tÊHÙ|<xğ šGnu6â8­êÔ5ŸpTD¹­â|„¹M™´Áó•îMÚ ‚4?y«8•Íj€   @ €   @ €ü? )_Á¦×¢E¼^-åûîªQ¯`«â|„¾‚-åK<=/œ››sÕ‰<kõå}×aÔK<£B§­ñh8ò%9EèK<S¾:ÇŸXÙÄßç¦µJêã«u~«’YM €   @ €   @ Odaa!ÙÀ•íOÒ
-ıÛS'jL'''f_Ú'ñ´£S|V;Êv˜r‘ŒF#s<§§§®ù¨"­é0 İn·²RX1??ï^HV;Şœ²:âjµ£Å¨°êx kLV;º¦çL)Z­q{?ø´éjµ3«ù+Çlâ)bEew÷$mÈqÎR%ÑÈ2«	@ €   @ €   @ òé€¤Ü(Œ¾ÙV¬¬¬¸ÚÑ†™Õ7³¤RyZíè•g
-«7=«Ædµ£kÊqÎÎÎÎÌq{_e§ÓV;ûûûq@”ÔsPŸÈE‘úe˜ŞkÜŞÍÄ”¡ù°Æ¬)çcvvÖìKá©y
-Ôs“şÄjúWzÊP®[«èçEÊùğ>õ“·’+  @ €   @ €   @²²¸¸H.["«´¡WG­éÆ?‹EÔ3"«lV‚ A „  B € 6
-	6
-Ù(¬g4=iCmŸÅ"   @ €   @ €  Ùñ¤%bBï´Òsöz=W;UM›*BSz’WW5Y²'rK^=Í:JÜÜôš¤É«ëœ´!Õ³?Š¨×x’64Hvï@ €   @ €   @>/n·ëÚàRÛ¢F•½Ù»umºvO;«««f;Ú¼SXuÔF¿ß7ëƒÆÑ=°îÑp8ŒòäÉ“é§hQgûÉoE»É{{{æ˜k½°µ)k]¿÷ƒVkÒjGk:HÙ×Q®_é9eOı,VU£’ïI@ €   @ €   @òrëÖ­énqQllldy³­1+tê.Ç.kÌkkkµ¢ÃgÖõ{7eµ&­v´¦Ã€´Z-Ãf¶ˆô	YGGGÜ§’Ğš&iCMƒg±ÈjB  @ B  @ B   @>Èòòò´Á¢Ğß”õŞ8«²3êdbY¥„´ê(ô~¹ˆ:êK}Zu4æ²:ºvİ«N§Ó™nLZuÚíö4¬:jcsssº\;;;ÌGÉ|hM‡¡PšZ B¡ „B…
- 
-@(€P( ¡PêZş#§ ìÏG}    IEND®B`‚_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-100.pngÔ Oõbplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-150.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0v`ş ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"cf2-4c4f2bbafe8eb"_Mon, 16 Jul 2012 13:51:56 GMT_t
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdTW9uLCAxNiBKdWwgMjAxMiAxMzo1MTo1NiBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNSBHTVShF1QzMzE0oRlfEBF0aW1lb3V0PTUsIG1heD05N6EbXxATImNmMi00YzRmMmJiYWZlOGViIgAIABsAJgAtADoASABWAFsAagB1AHoAfACHAIkA7gDwAPoA/AEcAR4BJAEmAUYBSAFNAU8BYwFlAAAAAAAAAgEAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAXs=_Mon, 19 Mar 2018 16:08:25 GMTUbytesT3314_timeout=5, max=97ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸ "+468?GR]_acegikmoq|~€‚„†ˆŠŒ’™¦«¹ÂÇÕäïú_iŸ7=BVaf|€’¦ª¾ÌŞá÷             n              ùOò‰PNG
-
-   IHDR   È   È   ­X®  ¹IDATxÚí±k\Ù‡…£­#k<ã±/Ñ-Ş „“1›h…I´‹w*¼à„Sˆ€0V&nR¸P'QH*R×éİç˜ğ{ .ï¼cöìõ}3ß…_åÃ¹çİ{¿7Ï:÷;5¢Ñh¥mŠ! Ñ „F@h4 ¡Ñ „F@h´Iäó¯¿}±û‡R}ºµ=ºtéÒèÂ…¥šŸŸµÛíJ›Ë—/›6Ò‡]3ã‘dSåG}©OËF1WÙèÙ5V<ŸüâËÑÅ‹M?Íf³e#­VË´i4®ùXZíš1ş»}×|,,,„ØDÎ‡ÆÀ²Y^^DƒµûÏÿ–êë?ım455•L´Ìx$Ù¤ŒIc`ÅóÓû¿OG?úìWfÌ¿ıû²‹9J‚@ @ @ @ @ @ @ @ @ d‚ Ñßøµ ÊôóáÓ¤73×0ã‘d“2&Ï¹•İ"iò33æ/ÿøç±Dy’0@”x©êpiiiôàÁƒR÷â¿şÕoL}of6ÄF}iáZ6ç/ıpÔYûÊ´¹ğa'»5ã*­é0@ôsTÕ¡İj¯_¿öşñªëó)ÂF}é3Â²ÑgÈİÿ2mIn j>øÄ         @t@¥ªCı]]ƒ^¦““_ç£‹ii¶Ñ
-±Q_¿~şÓæÊêg£Û‡1m”'ÉmDÍÇ¸Jk:^¯7º}ûv©ºİ®+(-Z½‘ËtõÓ/Fßÿà¦”ã€k¬1êtâ’‰òU5W¯^5múı~m·b·MÏ^¹‹ İäéÓ§æ¿¿zõ*lïç+ÇIÓXíÑ£Ga}ÉWÕ|Œó'–b·š=é'€ € € € € € € € € Hş€ŒŞ¾}[ª—/_ºLyAP¦oşúïQsé'¦M®Ç@5Ö‡Ã°¾ä«j>îŞ½kÚœÖÅn=›=i¢P%!s éééÑ7LÉÆãkeeÅô377ç>ÁgùÑ...š6JpI–|È—e£X¢ÆzvvÖ5Ö6ê+Õ|¨Ÿ¤{±RêÊ•+•1ËÆãKo«)3õ‰õâÅÓæÙ³g…¬&O¬¨±ÖbòŒu„úJ5Uÿm           ÉäÚµkÅ–I÷æ)ÉcÙxÊ—%-?Ò¹sçBl¼ÉD4V_çÏŸ/²·–’`’e#òU5®2¯33¦ŸèqÔ|h-Y~´«æCk:é^¬¨½?©ßX)÷båö¢·±Õô6$j><{±’ş‚ € € € € € € € € € € H­!QH¢Dá·Üj’²H@äV“:mˆ’çÄó‹Îõ                     Rg@<	#%f¬R×¯_Ï²ôh”<¥Gs[$JJV•çô”­# š0@<Å«Ç¹XrJ=yòÄÇçÏŸ»üDÍ‡ ±üDoG©å-·)÷bMº<{±RŞ“Î'€ € € € € € € € ± ¤×ëY×2u»İân=Ë¦ßï€CJ¨Zã¸ººê»05h>”L´üxkåæ¦v»ˆ’*ãº •0ÓÛ´L‘`š}íïï²läc{{Û´9>>vÅ£g³ühl¬eó._U~"w[$MæVİ=RQÕÄ=ªcÑ†ÈO¬”E4²Û¬                  ò~ñ–­£t°HYç2)áÕ×ÚÚšÙ—®’e#:ÄdÙlll¸“‰–NŠZ6’÷ù«üxK¦FHk:â­T¦£££¤‹ZiÅ#yltL6*&Õ—ÛãÇM›‡†Å#H¬¾”LŒ–NŠjŒªÆ1õKM±[ñx^F#í^¬”4ÎÕİ£âñìÅªkÑOu÷ì6+€ € € € € € € € €¼_@677‹	.“şÆŸr€tGŸä±‰,ª1°úºyóæèÎ;¦Í­[·ÂâQ2ÑêK‡®:i3‹1ªÇÔ€(v+={•V«HT†SÇEõ-“·¬f¤Ô§“÷ˆk”îİ»gÆ³»»›4ÅÅE3ïù³­6–ÔWÊdsv{±R_;œÛ^¬”E¢Ä^,         ± ¤Ùl†•Õ<;Vúÿ¤ëÇR¢>­˜RVû“ƒò$)ãÑ©C+wÉşWù‰<½Y%­i 	Då@-ÌÓi@Ë&2K._V_ŠE1Y6z&Ï|D¥ˆùØÚÚâ+êË³÷'å5Ğ¢“¾«j>ªö€ € € € € € € € €Œ “~`J×Y6*ªª‰–NFÅ,_V_ŠE1Y6z&Ï|D˜Š¼ÊîÛÎÇıû÷ã ñ¹õñô<¼çˆgä‘[+µlt,u\ë{ÜFÛ#·)¯öü¤GmÈm/VJE}òzçc¢«š € € € € € € € € €¼_@<W°y®üò<¼çÊ¯È+ØtÍ˜e£Ã7ã
-ˆç
-¶È+ñÆö
-¶”—xz.œuÙDƒµúòŞuè¹Ä3õqÚ”—x¦¼TUX~Ö××óÛ‹•ú+§Ÿô³Ú´VK}|5Ç½XQŸ¼µÜ¬                  òİ2??ŸlÒTíOÒ’ò2›¨˜NNNÌ¾”'ñ„³ü¨b`J@úı¾Ïéé©k>"cRŸV_ŠÙ›L´üìííÅÒëõ
-rË”k¶ÙŠYš››s/$Ë7y¥#®–-FÉ²ñŞ™¨˜,?Ş…¦1ªÇÈ9SYU«/½ø<ó¡5iÙhM'İ‹•# ½X¹}bEUwO¹7®E4B?± @ @ @ @ @ @ @ @ @òäàà ¼LŞ“gï£î®%O¾³ä•åG‡|¼eN-?ºòL²l¼åY“åGÏäñ£1ªÇÈ9{óæÙ—ò$ùĞš´l´¦Ã Q‰NÏI@½mÊ¤˜’N–wÁNOO›~$Ùx€åÇ›LL)Í‡³N8zæ#*ï|TÙèhªùĞ&İ‹UM<u‘€:mˆªîO‹h$¿'@ @ @ @ @ @ @ @ @ @ @²daaalëÓ¢t$–”LTÏ²™™™)NZ6²³ZÓIAŠØµ+»O,„ !   ‚ @€  A ’- $
-‰ÂL~A"‹xŞX)HTÑ†Ü¶š¤ÖDb€ € € € € € € € € € H8 Ò£QR’§ªDå»ÀVUê2åÄ...šñèn=É²‘ÜJ¦–b·MÏ´ô¨ç–Û¨bÉ©•ªXòp8+^-_9×b«*pò%+%-^U´!×
-ğ{ªÊíë³(å'Vê-$QE4¢”ôú         üi·Û•)Á¥ÅT¦~¿Ÿ% ÊsXqëôšb·lôìİn×´ét:£ÕÕUÓF	0É²‘ù²lKÊ1Ô)?+I6)cªš^¯ÈŞŞ^ñ-Óññq¶[,i1*	hÙ““Óf0„Å¼¿¿oöuxx8ÚŞŞ®å|xä™åGk:q¾'=U‘ ¯êø‰•ú“7»O,         üY__/A™666²l+fI'ÏtØÉ²QPyËF'ø"\V_kkk£•••ZÎ‡GùğøÑX~´¦Ã i4µl½E,iaëä™e“:+í]DVÌGGGÅ±lêœLŒÖtÒ½Xãü‰•ÛsMzÑ†qı€ € € € € € € € €L ËËË…Ã2éoÊ:ygÙ¨:£N&VÙ¨Ÿe#é~9²¥–”pS…=ËF'Ï—Õ—]c`Ù´Z­"1iÙ4›ÍB–|lnnš1ïìì‰0ËF†RÏG•úªkÅ1ZÓa€Ğh“Ú „F@h4 ¡Ñ „F@h4 ¡ÑÆµıÅG,Î¦ôe¸    IEND®B`‚_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-150.pngÔ"#$Oõbplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-204.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0vh˜ ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"ffc-4c4f2bbb016e7"_Mon, 16 Jul 2012 13:51:56 GMT_t
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdTW9uLCAxNiBKdWwgMjAxMiAxMzo1MTo1NiBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNyBHTVShF1Q0MDkyoRlfEBF0aW1lb3V0PTUsIG1heD05NqEbXxATImZmYy00YzRmMmJiYjAxNmU3IgAIABsAJgAtADoASABWAFsAagB1AHoAfACHAIkA7gDwAPoA/AEcAR4BJAEmAUYBSAFNAU8BYwFlAAAAAAAAAgEAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAXs=_Mon, 19 Mar 2018 16:08:27 GMTUbytesT4092_timeout=5, max=96ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸ "+468?GR]_acegikmoq|~€‚„†ˆŠŒ’™¦«¹ÂÇÕäïú_iŸ7=BVaf|€’¦ª¾ÌŞá÷             n              ùOü‰PNG
-
-   IHDR   È   È   ­X®  ÃIDATxÚíÏoVÇ†)Ë€~|¶1	b‚e¹`[ANCH	1ªˆBHRPÓÈ²TÔˆFĞED„Z”ET©‘X îJ²A^Uj6Y°l•eÄºûìûÜò^‰]ï{OÒéø~ö3ÒYñjæÌÜyîwñ™sf[A£Ñ*Û6–€F@h4 ¡Ñ „F@h4 ¡Ñ¶2 'ßx«8µúI¥¸xµØ»woÑ××WiıııE»İ®Õxş˜K¶ÿà¡Æ%.N^»aû™˜-æ/¯YÍ‘ù¥rœæèK¯ƒƒƒÖŸ¡¡¡bê•¶Ÿ™×ß.Z­–íg`` ôÉõ£9inN£µ‰<‘‘‘Úµhô<´œF{¨N£½¨5pšÃ‡§D‹°úWÚş[±mÛ¶$¶÷È´K¶«5ÒDÆûåßÿeûyvá•âÒƒZÍä¹wÊ5pšŸ^ùmÈŸ“¿ù£íçg·ÿêG>¹~4'ÍÍi´6‘ç‘êÙç4A                  ²… ÑßøµªìÅµ;éß?nÇ’u÷„4‘ñ^ıÃ_m?í£Ç‹Ó7¿°šgæ_.×ÀiûÙÅ?ÇŞ¼fû9şŞG¡~ä“ëGsÒÜœFkyˆâ$É Qà¥nÀ‰‰‰âı÷ß¯´•••ãÚØzû9ÛÑİ“D£±´qf÷Ş}ÅøÒ9«Ñ&Ò†tš¡‰ò¾!ŸøäüÑœR=ND{: ú9ªP¸öİwßeÿÄªÓh¬¦}b¥²È'Vªç±å?± @ @ @ @ @ @ @ @ @šˆTêTœCTÙúúz,€sğHùğœõ´’h4Ö…{_[ÍèôBqöî—V£˜‚oN3yşİ¬@>94§TÏ£ÑNÈÜÜ\qöìÙJ›9¥M«7r•8UìÜµÇjdM\pE¥Ï}û¦{û=éË%_àtßÄu\^^¶{M¾ÅÅE««^ív:@îÜ¹cÿı›o¾	M~3ŸıÉù‰¥¾êÎÆ¥úÄÊmßÿ½İk@_$®és?ë'€ € € € € € € € € Hó¹uëVéx•=|ø04yÅ9A•½õÕ·eb‘ÓÈšø`•}ç|úÅ¯“¥¾ÜXòE‰`N£ i×ññãÇv¯)NòèÑ#«¹téRŞ@áÔÔT133SiÊ&TYM§™œœL¶ˆÛwt•¿4Î"e
-H§QàRÑd§QÖ2øœ¦g°]ô>k5
-îÉœF}¨/§‘/©Öº§§Ç>WYWWWÆªÛk½½½!¿µ']?'ë'Vª³XëÔ³X*¸à4*Ø)ÚùÄJµÖÚLumtt4‰FcE>±"~kOş/{@ @ @ @ @ @ @ @ @ @ @¶ ‡*'Xe
-*Èã4‘ò¥Oƒ€ÚÜÎ~²}{ÆRĞÍjvv‡Ktº~ºzvİ{ú¬FAI™Ó¨õe5ÁºÄš›ëGk“2Jîö‡LÁÄhÙP×ö¢ö¤ÓhOwä/H‹6¤:‹Õ´_ÈÙ¸”€D~A"ıDÎbmÚO,           !PH @aÎ@aÎêî)š¤ººiER×@€ € € € € € € € € € €Åğğpí€M,=é+Rz4´àÒ£MÛ$š›óYk£ò¬ukİ‰€hO'$R¼ZƒF‡;q!e*ôì
-A«Pt¤xõ©ßıÉjæ~õûÒœF}D|NU¼ºS‹‰g-^İ´¢¹­iE¸'½aŸX                  Ídnn®¬‰Ze³³³ÅØØ˜Õ,..v, £ÓeÔ¹Êt¯`ûèq«éÛw°h=7e5ºQæ4ê#â³|rıhNÑ`¢ë'zÒ iÖn·Ó¢ Jİ€+++å¯D•­¯¯—8ÍF5¦ó)%Ø«Ÿ–oî*›yçziN£>&Ï¿k5§o~QŒ/³š³w¿,!q¬Óüë¤İ:ËR¶È(LuK¿$®)âŞÄ{¹S•³hCä+÷Y¬TE6íaE         ÿ ‘²¡%$U¦8‰‚‰N£¤«ìQò'c:Ÿäsª±öÍœ,7n•)Ø(sõ¡$&§yfşå2ÃÑi'Q0Ñi”t¥2¦N#‹Îß­³LY©¹»öt2@>øàƒò8I•}öÙgY7µÒù#‹hu*Ÿ^\»S¾¹«L›íø{YÍ±7¯%óG¸±LŒN£,Iæ4)oÔÚıû÷ís=sæLmyÏbe=ú‘ğÚáT>¥:‹•ÊŸ&~b¥²Hu÷ÆV         ÙX@^{íµâã?®´Ü¾İ»w[dM¤¤jÔçU6üÂlqpñçV3vâT2Ltc)éJYN£j*™ê4QsøêÕ«ö¹NMÕg]¶Z­t€¤ŠpNOO<¨´{÷î%]H7–ìÀå˜N#Ÿs>üË—/[VWW“¥ô]ıªU™Êœö>k5ÑùèóÈlÎz+b¹ÏbE>±rÅŠØçŸnıÑFêÔêî[ú°"€ € € € € € € € € ÈÆ244”&º;9Yn€*»}ûvòÍæLÙ‚ÓirVû{Z¡Òù£8Iª±T5ñišï3]§¬C§ù!ÑÿÈóÈµÎÚÓÉ ¹xñ¢Ø‡~XÖçuš7n„ Ñ"Õ-dÊ…Š "ßFs×8Íòòr2ŸqwV™‰Êt•8ÍH*“ïÎÍ]kà4S¯\È{+UÑıÌÖ:¹hCäìÖÀ5Hås§mhRµıS«Ÿ € € € € € € € € €l%@®\¹b]nŞ¼Y,--YÍİ»wC	SJš©K¬I¹Ø‘„)ùî4š»ÖÀiÎŸ?ŸÌge&º&UpT‰R§ÑUn¹¦R^eçüÑÜµN3óúÛySn•æè4J“ŒL^i°)Òi£)·kkkV3>>Ş±—Ö·¤Ü¦Lô¥1OòYéÂN£tã¬)·9¯|b¥,ÚĞ´³X9-ò‰•²ˆF¤/é|’Ï‘O¬M{O:€ € € € € € € € € È$r›®½r]›Y ]‹–âzµèl>´%CmV@"W°¥¼/Ò—Æt>Ég]ç4º~.ël‘K<S–„¬»ì±§§'¤Iu‰§Ò`&z×aäÏ¬53_â­qìÆ’ÏÑ;]?Gæ—Ò’ªhCîO¬œg±R]İ´O¬Üg±"ŸX)ªí'=‹                  Ò|@úûû³=4U2Ô†t¦¸LDïÑ£G¶ŸÅÅÅb}}İj'‰fÂ)
-\eª˜õ2ÔéëÏ…{_—ÕF–Ò'éÆ’Ï‘~LtıÌ_^KÈÜÜ\ù&­²¦F›Ï²ŞŞŞP?‚Äõ­)«W½«L›Qæ4êCYuN£€£jN£Ö3Ğ²•8İ¹kÕDßè?¤¬ªK>Ëw§ÑÜµN31=›÷,V‰œÅÊuípôKæ4êc3mHu«qUM @ @ @ @ @ @ @ @ @6[·n•ç*SV^q>ËT2Ltı(é*ÒJyjT™®<“9úPõA§QVœF9Åœæ­¯¾-«:M4-7jÓ%Ÿå»ÓhîZ§9yíF:@T¢3’	¨7r•)B®ÀœÓhÃ*Ğid]]]!M¨Ôå“1]?òY¾;æ®¬B§‰¬áÓ,?½µ«Lµr{ÛVÓ·¼Ìt$#şìèî±ıÈ¶ïèJ¢ÑXÒi¸L¢GÖ³X9«»7ñ,Vªêî9?±"şD>±vµF’h4Vª³X»'@ @ @ @ @ @ @ @ @ @ @ÈÈÈH§º»»Ë[e
-Ş(Àç4ÑŸÒ”¾ëü‰–9˜aÚLUÖ½§¯‘§"ææ%S0QAP«ÙÙ]f:
-”:Íşƒ‡šW´¡‰×@ç<‹•ê¤SIõÒ¸³X                     ÒÑ€($PH 0Ã/Hªêî¹ßX©æ¶Y‹6Dš¤ZÇÆ]                     H´lf
-‹”øTêR¦²¡n,•ÍYzTss­MÊÒ£©ÖQ¾»±4÷¬¥G#Å«UÀÙiT zyyÙj?~®«ZW˜:
-u®bÉ*8İ´âÕ‘õ‰¯°)4+DÚ“nhO'$rıAª¢¡ë‹mÈuöGŸEMûÄjbÑ†T€ÔÑ¨ÛÓ                  ›¹¹¹rsWÙììl166f5‹‹‹efÓ(NÍLtıÈ¤‰ô¥8‡ ¨2e¯N/X‚{í£Ç­¦oßÁ¢õÜ”Õ( &sõ¡¾œF¾È'§Ñœ¢®™²üRhReµ'İşĞNÈõë×Ë_€*»ÿ~#S<õ–t¦Í¨€™Óh#½û¥ÕŒ/+NßüÂj&Ï¿;jóÎuÛÏÂê§e_N#_ä“ÓhNš›ÓDƒ‰)Me·×ô¢]__·š•••rO:ötÖO,ŠÔb5­º{ä,ÖF\İ£Ú~öÿƒ € € € € € € € € €l, §OŸ.­²3gÎ4mgÊ<Sb‘Ó(à¦˜‚Ó(ƒï™ù—­&š¤ ŸëgßÌÉ²/§‘/òÉi4'ÍÍi´6ÙcW—.Ù½¦€´âN311QîI§ÑNÈÀÀ@#¨3½Ii)ûÎi´a›6/m\çó‹kwJHœFÁÄN­ñ›$m÷ÉîÈ¢MüÄjÚ¼rÅÚ¬Ö±UM @ @ @ @ @ @ @ @ @~ ‡.;¬2ıMYÙ‚NÓßß_´ÛíZ*":Lw&F4º¨ÑÙç'¯İ°š‰éÙÒ/7–æ®5pšV«UZÍĞĞPiN£>¾ôªõùÄÅ«Å‘ù%«™¿¼–ıyÔi4VİZËçÏC{: 4ÚVm B£ 4€Ğh B£ 4€Ğh›µı¤EI÷¤yQâ    IEND®B`‚_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-204.pngÔ&'(Oûbplist00ÔjkX$versionX$objectsY$archiverT$top † ¯#)*0123MNOPQRSTUVWXYZ[\]^_`aeU$nullİ	
- !"___nsurlrequest_proto_prop_obj_6___nsurlrequest_proto_prop_obj_3R$2___nsurlrequest_proto_prop_obj_0R$3___nsurlrequest_proto_prop_obj_4V$class___nsurlrequest_proto_prop_obj_1R$4R$0___nsurlrequest_proto_prop_obj_5___nsurlrequest_proto_prop_obj_2R$1€€€	€€€€ €Ó$% '(WNS.base[NS.relative€ €€_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-250.pngÒ+,-.Z$classnameX$classesUNSURL¢-/XNSObject#AÀ0vo‚ ÈÓ456ALWNS.keysZNS.objectsª789:;<=>?@€	€
-€€€€€€€€ªBDEFGHIJK€€€€€€€€€€€VServer\Content-TypeTEtag]Last-ModifiedX__hhaa__TDate]Accept-Ranges^Content-LengthZKeep-AliveZConnection_bApache/2.4.27 (Springdale) OpenSSL/1.0.1e-fips mod_fcgid/2.3.9 PHP/5.6.25 Phusion_Passenger/4.0.50Yimage/png_"105d-4c4f2bbb1fe8b"_Mon, 16 Jul 2012 13:51:56 GMT_x
-
-YnBsaXN0MDDZAQIDBAUGBwgJCgwOEBIUFhgaWkNvbm5lY3Rpb25WU2VydmVyXENvbnRlbnQtVHlwZV1MYXN0LU1vZGlmaWVkXUFjY2VwdC1SYW5nZXNURGF0ZV5Db250ZW50LUxlbmd0aFpLZWVwLUFsaXZlVEV0YWehC1pLZWVwLUFsaXZloQ1fEGJBcGFjaGUvMi40LjI3IChTcHJpbmdkYWxlKSBPcGVuU1NMLzEuMC4xZS1maXBzIG1vZF9mY2dpZC8yLjMuOSBQSFAvNS42LjI1IFBodXNpb25fUGFzc2VuZ2VyLzQuMC41MKEPWWltYWdlL3BuZ6ERXxAdTW9uLCAxNiBKdWwgMjAxMiAxMzo1MTo1NiBHTVShE1VieXRlc6EVXxAdTW9uLCAxOSBNYXIgMjAxOCAxNjowODoyNyBHTVShF1Q0MTg5oRlfEBJ0aW1lb3V0PTUsIG1heD0xMDChG18QFCIxMDVkLTRjNGYyYmJiMWZlOGIiAAgAGwAmAC0AOgBIAFYAWwBqAHUAegB8AIcAiQDuAPAA+gD8ARwBHgEkASYBRgFIAU0BTwFkAWYAAAAAAAACAQAAAAAAAAAcAAAAAAAAAAAAAAAAAAABfQ==_Mon, 19 Mar 2018 16:08:27 GMTUbytesT4189_timeout=5, max=100ZKeep-AliveÒ+,bc_NSMutableDictionary£bd/\NSDictionaryÒ+,fg_NSHTTPURLResponse£hi/_NSHTTPURLResponse]NSURLResponse_NSKeyedArchiverÑlm_WebResourceResponse€    # - 2 7 Y _ z œ ¾ Á ã æ147Y{~€‚„†ˆŠŒ‘“•—¦²´¶¸ "+468?GR]_acegikmoq|~€‚„†ˆŠŒ’™¦«¹ÂÇÕäïú_i€ <BG\gl‚†“˜¬°ÄÒäçı             n              ÿO]‰PNG
-
-   IHDR   È   È   ­X®  $IDATxÚíÍo×Æ)–6ÆökŒ“à@L°,lËÁ1I€”Y	I
-
-¥Zh]DD¨E,¢JÄuWÈ±ªÔl²`™*Ëˆu÷Ù÷˜òŒ”U;Ï{’óÚ¿+î=÷ã÷Îà3çÜMF«l›X@h4 ¡Ñ „F@h4 ¡Ñ „FÛÈ€yãíâèåO+íğÊ…bÿü’ÕÌ¿³Z´Z­¢···ÒvîÜYì}ş íGöôèxHãÆ’G.^±ıLLÏ–¾;æ®5pš/(víÚeıéïï/¦^=cû™yı\100`ûéëëí‡ææ4Z›È~ìŞ½»íZKÓ®Ù7Öàà`¹N³oß¾<@äØåoşUioüùoÅä©w­æìİ›6mjkƒû§m?²§v‡4‘ñ~õ÷Ú~]xµôİi4w­ÓüüüoCşùÍm?¯\ÿK¨ŸÈ~hnN£µ‰ìGÄY»~4Vd?¢ã9$                  ı_ Ê^\½Q<3ÿ²Õ,_ı"æøÓc¶YWO_HïÄşjûi8Túî4š»ÖÀi{e%äÏÁ·.Ú~½ÿq¨ŸÈ~hnN£µ‰ìGôP¶ëGcEö#ÅIÒ Qà%r°õ«UecK§Šíƒ{¬F‡HÛid[ººS4Kc:|–ïN£¹ë@:MÿÄ)ş…ìG¤ŸÌı¨sşmßTŸé4@ô8jÒ#=úŠ•õH¯ó+Ë:õ•·¶ÌW,         æ¢•vêïêZô*;yó^1<½`5gnUôî·Ywß@ŠFciL§‘Ïòİi4wŞœfòô{µ€È~„j‰ûÑ$@t¦Ó ™››+N<Yi³³³!§´HúE®²‘ÃG‹mOí°Ùæm])•µàŠğº±z÷Œæıú=îË%_àtŸµ™Wcº±ä³|wÍ½í~µZy€Ü¸qÃşû×_š|_±²6¶ÎW,õ•ñm\İßbÕùm\­¯X                  ÍäÚµkÅ÷ß_i÷ïßÿ[Peoùm™Xä4²î]­Mf“2áÜXS¿üuÚXêË%_”æ4
-fíG& Ó%Ÿå»ÓD²7S…SSSÅÌÌL¥MLL”e5frr2m7oÙZş²9‹h”å¦à4
-”)šì4ÊºSŸÓØág­F.™Ó¨õå4ò%k­µFk¹ÑŒJ×ÊœÖúŠõÁXÍwß}—¶iú-–
-.8
-6DŠ6D^±ÒRSøm\Æ+¯
-‘ € € € € € € € € € € €¨ÃÃÃ•¦ aww·ÕDÊ—şÔb:ûÙæÍ)¥ ›Õlë
-—ètılíŞ^tíèµÁdN£>Ô—Õ<öEA7§Qfæf5×&2÷º÷C¾;æŞn?t‡eG>AÖë/VİO¬o±Öë½c_± @ @ @ @ @ @ @ @ @ @ „@!B…u
-#Õİ#OÕñuMùí™¿XM»:ò©³€s‹6¬Ûë @ @ @ @ @ @ @ @ @ @ ¤±€µ0Rz´§§ÇjTâ4³ôh¤¯¦•­óhnÎ­M¤ôh'¢3]kñê³gÏZÍÃ‡k_ç,
-d¤Xr¤xõÑßıÉjæ>ü}iN£>²ŠWG@²Š‰GÆ{ôè‘İ³cÇ5ï–Û¦mˆZ»¦§V¤ŸN,ÚĞ©÷¤×ôšŞ¸W,         æ277W:Ve³³³ÅÈÈˆÕ,..ÖˆóG¦Àe¤Ÿáé…2ê\e
-ğµ²šŞ=£ÅÀsSV£€¤ÌiÔ‡úrù"ŸœFsŠ]?2eùE4‘ñçp{ÍLmg­V+µµµò	PewîÜ)Ş|óM«yğàA	‰ÓdİX2E÷5¦Ód‚½pù³ò—»ÊfŞ]+ÍiÔÇäé÷¬fùêÅØÒ)«9yó^	‰Ó(˜(`&ú$ŠîGÖZëLº±t¦÷Š•õ-Væ+V]tY'mÈü+ë•7b:“ÿË™         Yg€,//— TÙñãÇ‹‰‰	«QœDÁD§QÒU& n,™² 5¦ÓÈç,öÌ)n•)À'sõ¡$&§yfşå2ÃÑi'Q0Ñi”t¥lI§‘eîGÖZëLº±t¦Ó ¹téRId•İºu«tÈi¸Éš¼Ò%‹hu–O/®Ş(¹«L‡íĞû[ÍÁ·.–æ4ê#â qı(˜(F™‰Íi2oÔı1A@·¯:‹íúèëë[¿ßb©v»Ñd>Òëü+âO_±2¿pMgqC¬                  òŸíµ×^+>ùä“JS°MU
-æÂ…i´}ûv;–,¢‰”Tšâ‚ Ê†^˜-Fa5#‡–æ4ê#ZÑõ£¤+e&:*8ª"¢ÓÈêDgÉík¤bæÀÀ@ YÎéééâîİ»•vûöíÔ…tcÉöîİ[é4ò¹ÎÍßâlù”¨²©•ÓÆRú®KeNUOØi¢O´è~ÔµÎ:Ói€Dª»GsÄ7ò·XËzÅjbu÷:_ywı€ € € € € € € € € È“¤¿¿?Å)UÎûüóÏ+íúõë©‹àÆ’)[Pc:Mfµ¿ˆ)Óï‡ˆú3ÅI²ÆRÕD7–®ƒSÖ¡Óü˜‹G#ûQ×:ëL§²²²b'öÑG•õyæÊ•+!@´Hí²n@ä»ÓhîZ§Éº[O¦h»;°ÊJT¶ Ó¨Äiİ€d™|wşhîZ§™zõLgmĞc¶­Ó5¿bE¾ıiW$@Ÿ@dN-ÚeÕö^ş@ @ @ @ @ @ @ @ @ d#rşüy›èrõêÕbiiÉjnŞ¼J˜RÒL»Äšº¦ä»ÓhîZ§9}útÚQV¡K`RõE•(u]åVwÂTæUvÎÍ]kà43¯ŸëÌ”[¥Áf¤ÓFSnWWW­fll,ö«öx\?óóóá `»”[¥ï:ÒCŸ[$¥ÜníŞÒD|Ò˜®ù¬ta§Qºq­)·umˆ¼bemÈú+ë+«º{ßbe^­1]?ò9òŠµn«š € € € € € € € € €ü4@ê¼‚M×¢e\¯½‚íşıûV£d¨ˆßZ×OôşÅÈlŠs8®ƒ‹Œ•u›î1Œh">iL×|ÖõqN£ëçj½‚-r‰gfIÈv—=vww‡4Ñ _»K<u©ÓDï:Œ\âYgD:ëÏ-]İ!M´Æ±ëG>+-Ùiµ qšıóKõ¾b¥¥S&¾bEÆËú+ëè:YÏ¯XûX@ @ @ @ @ @ @ @ @ äÉ²¶¶V’*‹£åIİX²ÁÁÁ&2ŞÃ‡m?‹‹‹Åƒ¬Fq’h&œ6·ÊT1°N@†§¬?gnUV_tYwß@HñIcº~äóÉ›÷¬FqfşÕ<@æææÊ_Ò*‹F›³¬««Ëú#‹hzzzBã	×O´¦¬R\õXe:Œ2§QÊªsPs4Z§Qvã¶§vX,so5¦K>Ëw§ÑÜµN31=Û™¯XM¼ºÎW¬¬o±:µhÿ         ù¿ ríÚµ2â\eÊÊ«UDtşÈ"UƒŒ]?ÑlA•òÔ¨2]y&sõ¡êƒN£¬<%9rŠ98ÍÛ_~[V)tYæŞjL7–|–ïN£¹kœæÈÅ+y€è é×¶Ê”Q§L@§Q„\9§Ñ8ÊtÙÖ­[CšP©Ë6s“Ïòİi4w­ÓØh–Ÿ~µ«LµrUÔi”Q§L@§Q@2â2]?²Í[¶¦h4–€t.å»ÓDÒ{µ+ÚUİ½‰ßb5­hCä+âOæ·Xí4kCW5          'ÈøøxyàªL2øœF)°ÊòsoàsšèÁ—iSœ)x:$}wşDËœFL0çs×Şò¾?«	ÖÁ­Û"û¡ ¨Õlë*³
-FG­Ó<=:¾~Ÿ Ñ‰übÕù-VÓª»×mu>A¸'@ @ @ @ @ @ @ @ @ @ @($P˜ ˆÂòu-bİOÈ/VÖÜÖkÑ†Ìêî¡‹W›ö          $Z63Ã"¥G£}e•ºÌš›Ê†º±Tv´ÎÒ£š›Óhm2Kf­c¤ô¨ÖÀiö>0Hñjpv€>vì˜Õ<zô(µxu“Š%«àtÓŠWGÖ'R¼ZÀfh4VDµ¯®ó[¬ÌëšTn_¯EM{ÅjbÑ†,@ÖíÇŠ                  ?¹¹¹òpWÙììl122b5‹‹‹efÓ(N™¼2]?2i"})Î!ªLÙkÃÓV£à^ëÀ!«éİ3Z<7e5
-€ÉœF}¨/§‘/òÉi4§h†£ëG¦,¿MfP¶İ~LLÏæ²¶¶V>ªìÎ;LñÔ¯¤3FÌœFéäÍ{V3¶tªX¾ú…ÕL~¯X¸ü™ÕÌ¼»VšÓ¨õå4òE>9æ¤¹9M4˜Ø‰û1ÿÎj½¯X	è¼W¬È·Xm          Y€,//—‘ò*;~üx#ÑB9Sæ™‹œF7ı]İi”½öÌüËV£d =3G¬FÁ-™Ó¨õå4òE>9æ¤¹9Öf½îÇşù¥<@.]ºT>%ªìÖ­[i‹¨É‰~gZÈÆRæ™ÓèÀ6|"çó‹«7Êâ4
-¤5ñG-bòİÍMso›¶Û××™¯XM¼v¸i¤Îo±šú…DÇİ“                  òd9wî\	I•)N¢lAZe;wî,Z­V[JB*ÊéL÷Ëeh4–*ì92Ïä—ó[s×ßÕf`` ¼ËÑiúûûKsõqà¥ÖçÃ+Ê@˜Ó(a(²ªPé4²İ»w§h4V»µ–ÏòİÍMso·ûöíË„FÛ¨@h4 ¡Ñ „F@h4 ¡Ñ „Fm½¶`Ğh:P    IEND®B`‚_Ehttp://coursera.cs.princeton.edu/algs4/checklists/percolation-250.png            1   <   N   d   ‚   ‘   ¨  Oí  O÷  Oı  PB  PC  PJ  PS  Pi  Xm  ˜ò  ˜ü  ™I  ™R  ¡J  ©³  ©ú  ª  ±ı  ¼ğ  ½8  ½A  Å:  Ò0  Òx  Ò  Úz  êz  êÂ  êË  òÊ +             )             s
