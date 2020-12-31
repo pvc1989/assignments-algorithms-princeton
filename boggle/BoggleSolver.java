@@ -25,7 +25,7 @@ public class BoggleSolver {
         if (marked[v]) return;  // found an ancestor, just ignore it
         // otherwise, marked this vertex
         marked[v] = true;
-        // entend the prefix, at least 1-char longer
+        // extend the prefix, at least 1-char longer
         final char c = graph.getChar(v);
         prefix.append(c);
         node = node.next(c);
@@ -34,7 +34,7 @@ public class BoggleSolver {
             if (node != null) node = node.next('U');
         }
         if (node == null) {  // no subtrie rooted at current node
-            cleanPrefix(prefix, c);
+            restorePrefix(prefix, c);
             marked[v] = false;
             return;
         }
@@ -48,10 +48,10 @@ public class BoggleSolver {
         for (int w : graph.adj(v)) {
             getWords(graph, set, marked, w, prefix, node);
         }
-        cleanPrefix(prefix, c);
+        restorePrefix(prefix, c);
         marked[v] = false;
     }
-    private void cleanPrefix(StringBuilder prefix, char c) {
+    private void restorePrefix(StringBuilder prefix, char c) {
         prefix.deleteCharAt(prefix.length() - 1);
         if (c == 'Q') {
             prefix.deleteCharAt(prefix.length() - 1);
