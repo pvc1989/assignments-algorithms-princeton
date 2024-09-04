@@ -1,0 +1,6 @@
+# https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+
+# Exclude assignment description files from language stats
+*.css linguist-documentation
+*.html linguist-documentation
+*.js linguist-documentation
